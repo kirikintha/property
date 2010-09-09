@@ -1,0 +1,9 @@
+name            = RAM Property
+description     = The RAM Property Module allows users to cache xml from a RAM query path (CURL) and import and update content in the site
+dependencies[]  = content
+dependencies[]  = views
+dependencies[]  = property
+dependencies[]  = profile
+core            = 6.x
+package         = Property Suite
+version         = 1.0-RC1

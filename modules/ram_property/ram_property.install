@@ -1,0 +1,194 @@
+<?php
+/**
+ * RAM Property Module Install
+ * Version: 1.0.4
+ */
+
+/**
+ * Hook Requirements
+ */
+function ram_property_requirements( $phase ) {
+  
+  $requirements = array();
+  
+  switch ( $phase ) {
+    
+    case 'install':
+      
+    break;
+  
+    case 'runtime':
+      
+    break;
+    
+  }
+  
+  return $requirements;
+  
+}
+
+/**
+ * Hook Enable
+ */
+function ram_property_enable() {
+  
+  $output['!welcome'] = "You have successfully enabled the RAM Property Module. Please continue to the module admin pages for setup instructions.";
+  
+  drupal_set_message( t( "!welcome", $output ) );
+  
+  variable_set( 'ram_property_enabled', true );
+  
+}
+
+/**
+ * Hook Disable
+ */
+function ram_property_disable() {
+  
+  $output['!goodbye'] = "RAM Property Module sucessfully disabled, you have not deleted any content.";
+  
+  drupal_set_message( t( "!goodbye", $output ) );
+  
+  variable_set( 'ram_property_enabled', false );
+  
+}
+
+/**
+ * Hook install
+ */
+function ram_property_install() { //set the modules in the suite, each module can add to this array in their install requirements
+  
+  $module['ram_property'] = array(
+    'name'        => 'ram_property',
+    'title'       => 'RAM Properties',
+    'value'       => 'Version 1.0 RC1',
+    'description' => 'The RAM module allows users to import properties from a RAM server via CURL into to drupal content types.'
+  );
+  
+  propertyAdmin::_registerModule( $module ); //register the module
+  
+  $ramKeys = array(
+    'Mls_Num',
+    'Prop_Class',
+    'Prop_Type',
+    'Area',
+    'Asking_Price',
+    'Address',
+    'City',
+    'State',
+    'Zip',
+    'Status',
+    'Sale_Rent',
+    'Num_Bedrms',
+    'Fl_Baths',
+    'Hlf_Bath',
+    'Garg_Cap',
+    'Garg_Typ',
+    'Levels',
+    'Basement',
+    'Condition',
+    'Reservations',
+    'Number_Acres',
+    'Price_Per_Acre',
+    'Number_Units',
+    'Agent_ID',
+    'Agent_Name',
+    'Agent_Phone',
+    'Office_ID',
+    'Office',
+    'Office_Phone',
+    'Subdivision',
+    'School',
+    'County',
+    'Zone_District',
+    'Legal',
+    'Yr_Built',
+    'Remodeled',
+    'Ttl_Sqft',
+    'Bldg_2_Ttl_Sqft',
+    'Bldg_3_Ttl_Sqft',
+    'Finished',
+    'Unfinished',
+    'Remarks',
+    'Garage_Size',
+    'Garage_Comments',
+    'Extra_Descript',
+    'Siz_Cmnt',
+    'Taxes1',
+    'Taxes1yr',
+    'Taxes2',
+    'Taxes2yr',
+    'TaxesPer',
+    'Current_Use',
+    'Water_Rights',
+    'Const_type',
+    'Amenities',
+    'virtual_tour',
+    'Date_insertPropertiesed',
+    'Date_Modified',
+    'LotSizeRange',
+    'LotSizeActual',
+    'Agent_ID_2',
+    'Agent_Name_2',
+    'Agent_Phone_2',
+    'Office_ID_2',
+    'Office_2',
+    'Office_Phone_2',
+  );
+  
+  foreach ( $ramKeys as $key => $value ) {
+    
+    $key    = ( (int) $key ) + 1; //the darn key is always one more...
+    $keys[] = "key$key|$value";
+    
+  }
+  
+  variable_set( 'ram_property_default_tokens', $keys );
+  
+  $keys = implode( "\n", $keys );
+  
+  variable_set( 'property_tokens', $keys ); //set up the main array for the admin area, this controls how the xml is imported and how the content type is made
+  
+  variable_set( 'ram_property_setup', 'init' ); //indicate that the setup has not been completed
+  
+}
+
+/**
+ * Hook uninstall
+ */
+function ram_property_uninstall() {
+    
+  propertyAdmin::_unregisterModule( 'ram_property' ); //unregister the module with the suite
+  
+  //delete variables
+  variable_del( 'property_batch_chunk_maximum_limit' );
+  variable_del( 'ram_property_connection_filtered' );
+  variable_del( 'property_cache_maximum_limit' );
+  variable_del( 'property_content_type' );
+  variable_del( 'ram_property_connection_string');
+  variable_del( 'ram_property_website' );
+  variable_del( 'ram_property_ipaddress' );
+  variable_del( 'ram_property_orderby' );
+  variable_del( 'ram_property_api_host' );
+  variable_del( 'ram_property_api_host_filename' );
+  variable_del( 'ram_property_connect_log' );
+  variable_del( 'ram_property_connection_tested' );
+  variable_del( 'property_tokens' );
+  variable_del( 'property_connection_tokenized' );
+  variable_del( 'ram_property_connection_cached' );
+  variable_del( 'property_firstrun_imported' );
+  variable_del( 'ram_property_areas' );
+  variable_del( 'ram_property_connection_filtered' );
+  variable_del( 'ram_property_setup' );
+  variable_del( 'ram_property_property_key' );
+  variable_del( 'ram_property_broker_key' );
+  variable_del( 'ram_property_image_path' );
+  variable_del( 'ram_property_image_key' );
+  
+  //Clear all caches upon uninstall
+  cache_clear_all('*', 'cache', TRUE);
+  cache_clear_all('*', 'cache_filter', TRUE);
+  cache_clear_all('*', 'cache_menu', TRUE);
+  cache_clear_all('*', 'cache_page', TRUE);
+  
+}

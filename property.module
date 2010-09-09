@@ -1,0 +1,199 @@
+<?php
+/**
+ * @name Property Suite Module
+ * @category Property Suite
+ * @copyright 2010 Blue Tent Marketing
+ * @author Paul T. Huntsberger <paul@bluetent.com>
+ * @package Property Suite
+ * @version 1.0.4
+ *
+ * The Property Suite Module (internally known to the system as "property") is a set of modules that creates an Admin section for the end user, and a set of helper modules and functions for
+ * The larger Property Suite and their related modules
+ *
+ * Modules
+ *  Property = the overall suite module that controls caching and the larger menu system
+ *  MLS Properties = The MLS module supplies content types, views and an import tool for MLS feeds
+ */
+
+/**
+ * Definitions
+ */
+//error reporting
+define('REQUIREMENT_INFO', -1);
+define('REQUIREMENT_OK', 0);
+define('REQUIREMENT_WARNING', 1);
+define('REQUIREMENT_ERROR', 2);
+
+//module definitions
+define( "PROPERTY_MODULE_PATH", drupal_get_path('module', 'property') );
+define( "PROPERTY_MODULE_BATCH_FILE_PATH", PROPERTY_MODULE_PATH .'/inc/batch.property.inc' );
+define( "PROPERTY_MODULE_UPLOAD_DIRECTORY", file_directory_path() .'/property_suite/' );
+
+/**
+ * Hook Menu
+ */
+function property_menu() {
+  
+  $items = array();
+
+  $items['admin/settings/property_suite'] = array(
+    'title'             => t( 'Property Suite' ),
+    'page callback'     => 'drupal_get_form',
+    'page arguments'    => array('_property_suite_admin_main'),
+    'type'              => MENU_NORMAL_ITEM,
+    'access arguments'  => array('administer site configuration'),
+  );
+  
+	$items['admin/settings/property_suite/settings'] = array(
+		'title' 			      => t('Suite Settings and Suite Status'),
+		'type' 				      => MENU_DEFAULT_LOCAL_TASK,
+		'access arguments'  => array('administer site configuration'),
+    'weight'            => -100
+	);
+  
+  //Ajax Callbacks
+	$items['admin/settings/property_suite/ajax/commit'] = array(
+    'page callback'     => '_property_suite_admin_ajax_commit',
+    'type'              => MENU_CALLBACK,
+		'access arguments'  => array('administer site configuration'),
+  );
+  
+  return $items;
+  
+}
+
+/**
+ * Hook Init
+ */
+function property_init() {
+  
+  if ( arg( 0 ) == 'admin' || arg( 0 ) == 'batch' ) { //include the admin form, if in admin or batch - this needs to invoke a lot
+    
+    include_once( PROPERTY_MODULE_PATH .'/inc/admin.property.inc' );
+    
+    drupal_add_js( array( '_property_suite_admin_ajax_commit' => '/admin/settings/property_suite/ajax/commit' ), 'setting' );
+    drupal_add_js( PROPERTY_MODULE_PATH .'/js/jquery.functions.js' ,'module', 'header' );
+    
+    _property_init_invoke();
+  
+  }
+    
+}
+
+/**
+ * This is a helper function to load all the classes and we can invoke it at different stages
+ */
+function _property_init_invoke() {
+  
+  $dir   = drupal_get_path( 'module', 'property' ) .'/inc';
+  $files = file_scan_directory( $dir, 'class.' );
+  
+  foreach ( $files as $file ) { //get all the class files from the /inc directory and autoload those classes
+    
+    include_once( $file->filename );
+    
+  }
+  
+}
+
+/**
+ * Hook Cron
+ */
+function property_cron() { //This will query the last cron runs of all the modules in the
+  
+  //Check to see if we can geocode again through google
+  $googleDisableTimestamp = variable_get( 'property_suite_disable_google_geocoding', null );
+  $elapsedTime            = time() - $googleDisableTimestamp; // to get the time since that moment
+
+  if ( $googleDisableTimestamp && $elapsedTime >= 21600 ) { //Everytime cron runs, we check to see if on the next run we can use google geocode, if it has been 24 hours ( 86400 seconds ) since the last 620 error. NOT that I hav a preference at this point
+
+    variable_del( 'property_suite_disable_google_geocoding' );
+
+  }
+  
+  _property_init_invoke(); //guess we have to invoke this on cron
+  
+  $value = format_date( variable_get( 'cron_last', null ) );
+  
+  $cronStat = array(
+    'name'        => 'property_suite_master_cron_run',
+    'title'       => t( 'Property Suite Cron Run' ),
+    'value'       => $value,
+    'description' => t( 'The Property Suite last ran cron on: !time', array( '!time' => $value ) ),
+    'severity'    => REQUIREMENT_OK
+  );
+  
+  if ( class_exists( 'propertyAdmin' ) ) {
+    
+    propertyAdmin::_setCronStatus( $cronStat );
+    
+  }
+  
+}
+
+/**
+ * Hook Token Value
+ */
+function property_token_values( $type, $object = NULL, $options = array() ) {
+
+  switch ($type) {
+    
+    case 'property':
+      
+      $keys = explode( "\n", variable_get( 'property_tokens', null ) );
+      
+      if ( is_array( $keys ) && !empty( $keys) )  {
+        
+        foreach ( $keys as $key => $value ) { //This sort of reverses the order here
+          
+          $value = explode( "|", $value );
+          
+          $values[trim($value[1])] = trim($value[0]); 
+          
+        }
+        
+      }
+      
+      return ( empty( $values ) ) ? null : $values;
+      
+    break;
+  
+  }
+ 
+}
+
+/**
+ * Hook Token List
+ */
+function property_token_list( $type = 'all' ) {
+  
+  switch ( $type ) {
+    
+    case 'property':
+    case 'all':
+      
+      $keys = explode( "\n", variable_get( 'property_tokens', null ) );
+      
+      if ( is_array( $keys ) && !empty( $keys ) )  {
+        
+        foreach ( $keys as $key => $value ) { //This sort of reverses the order here
+          
+          $value = explode( "|", $value );
+          
+          if ( !empty( $value ) ) {
+            
+            $tokens['Property Suite'][trim($value[1])] = t( 'This Token corresponds to this RAM key: !key', array( '!key' => trim($value[0]) ) ); 
+            
+          }
+          
+        }
+        
+      }
+      
+      return ( empty( $tokens ) ) ? null : $tokens;
+      
+    break;
+    
+  }
+  
+}

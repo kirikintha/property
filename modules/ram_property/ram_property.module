@@ -1,0 +1,98 @@
+<?php
+/**
+ * @name RAM Property Module
+ * @category RAM Property
+ * @copyright 2010 Blue Tent Marketing
+ * @author Paul T. Huntsberger <paul@bluetent.com>
+ * @package Property Suite
+ * @version 1.0.2-RC1
+ *
+ * The RAM property module extends Property Suite abstract classes to child classes and allows for the importing of
+ * RAM data to content types
+ */
+
+/**
+ * Definitions
+ */
+
+//module definitions
+define( "RAM_PROPERTY_MODULE_PATH", drupal_get_path('module', 'ram_property') );
+
+/**
+ * Hook Menu
+ */
+function ram_property_menu() {
+  
+  $items = array();
+  
+	$items['admin/settings/property_suite/ram_property'] = array(
+		'title' 			      => t('RAM Properties'),
+		'page callback' 	  => 'drupal_get_form',
+		'page arguments' 	  => array('_ram_property_admin'),
+		'type'				      => MENU_LOCAL_TASK,
+		'access arguments'  => array('administer site configuration')
+	);
+  
+  $items['admin/settings/property_suite/ram_property/last_cache'] = array(
+		'title' 			      => t('RAM Properties Last Cache'),
+		'page callback' 	  => 'drupal_get_form',
+		'page arguments' 	  => array('_ram_property_last_cache'),
+		'type'				      => MENU_LOCAL_TASK,
+		'access arguments'  => array('administer site configuration')
+	);
+  
+  $items['admin/settings/property_suite/ram_property/quick_pull'] = array(
+		'title' 			      => t('Quick Pull'),
+		'page callback' 	  => 'drupal_get_form',
+		'page arguments' 	  => array('_ram_property_quick_pull'),
+		'type'				      => MENU_LOCAL_TASK,
+		'access arguments'  => array('administer site configuration')
+	);
+  
+  return $items;
+  
+}
+
+/**
+ * Hook Init
+ */
+function ram_property_init() {
+    
+  if ( arg(0) == 'admin' && arg(2) == 'property_suite' || arg( 0 ) == 'batch' ) { //if we are in admin && in the property suite, include the admin form
+    
+    include_once( RAM_PROPERTY_MODULE_PATH .'/inc/class.ram_property.inc' ); //class goes first
+    include_once( RAM_PROPERTY_MODULE_PATH .'/inc/admin.ram_property.inc' );
+    drupal_add_js( RAM_PROPERTY_MODULE_PATH .'/js/jquery.functions.js' ,'module', 'footer' );
+    
+  }
+  
+}
+
+/**
+ * RAM Property Custom Cron
+ * @name ram_property_cron_sh
+ * When executing the shell command ram_property_cron.sh we are invoking this function, which controls our batches and re-caching and image handleing
+ * outside of Drupals native cron, which just can't handle the import
+ * This is NOT HOOK CRON!
+ */
+function ram_property_cron_sh() { //Check to see if cron ran successfully, or has not run
+  
+  include_once( RAM_PROPERTY_MODULE_PATH .'/inc/class.ram_property.inc' ); //class goes first, don't know why cron exactly needs this...
+  
+  $success = ramAdmin::_runCron();
+  
+  $value = format_date( variable_get( 'cron_last', null ) );
+  
+  $severity = ( $success == true ) ? REQUIREMENT_OK : REQUIREMENT_WARNING; 
+  
+  $cronStat = array(
+    'name'        => 'ram_property_cron_run',
+    'title'       => t( 'RAM Property Cron Run' ),
+    'value'       => $value,
+    'description' => t( 'The RAM Property Module last ran cron on: !time', array( '!time' => $value ) ),
+    'severity'    => $severity
+  );
+  
+  propertyAdmin::_setCronStatus( $cronStat );
+  
+}

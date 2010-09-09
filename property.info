@@ -1,0 +1,9 @@
+name            = Property Suite
+description     = The Property Module is a suite of tools that allows you to use the same classes and functions in a centralized Property API. This is the base module for many other property based modules
+dependencies[]  = content
+dependencies[]  = gmap
+dependencies[]  = location
+dependencies[]  = views
+core            = 6.x
+package         = Property Suite
+version         = 1.0-RC1

@@ -1,0 +1,5887 @@
+$content['type']  = array (
+  'name' => 'Property',
+  'type' => 'property',
+  'description' => 'Properties are what loads from the MLS module, and update automatically on the site.',
+  'title_label' => 'Property Title',
+  'body_label' => '',
+  'min_word_count' => '0',
+  'help' => '',
+  'node_options' => 
+  array (
+    'status' => true,
+    'promote' => false,
+    'sticky' => false,
+    'revision' => false,
+  ),
+  'language_content_type' => '0',
+  'old_type' => 'property',
+  'orig_type' => '',
+  'module' => 'node',
+  'custom' => '1',
+  'modified' => '1',
+  'locked' => '0',
+  'comment' => '0',
+  'comment_default_mode' => '4',
+  'comment_default_order' => '1',
+  'comment_default_per_page' => '50',
+  'comment_controls' => '3',
+  'comment_anonymous' => 0,
+  'comment_subject_field' => '1',
+  'comment_preview' => '1',
+  'comment_form_location' => '0',
+  'page_title' => 
+  array (
+    'show_field' => 
+    array (
+      'show_field' => true,
+    ),
+    'pattern' => '',
+  ),
+  'print_display' => 1,
+  'print_display_comment' => 0,
+  'print_display_urllist' => 1,
+  'print_mail_display' => 1,
+  'print_mail_display_comment' => 0,
+  'print_mail_display_urllist' => 1,
+  'print_pdf_display' => 1,
+  'print_pdf_display_comment' => 0,
+  'print_pdf_display_urllist' => 1,
+);
+$content['groups']  = array (
+  0 => 
+  array (
+    'label' => 'Property Information',
+    'group_type' => 'standard',
+    'settings' => 
+    array (
+      'form' => 
+      array (
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => 
+      array (
+        'description' => '',
+        5 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'token' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'label' => 'above',
+      ),
+    ),
+    'weight' => '-3',
+    'group_name' => 'group_property_info',
+  ),
+  1 => 
+  array (
+    'label' => 'Agent Information',
+    'group_type' => 'standard',
+    'settings' => 
+    array (
+      'form' => 
+      array (
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => 
+      array (
+        'description' => '',
+        5 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'token' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'label' => 'above',
+      ),
+    ),
+    'weight' => '-2',
+    'group_name' => 'group_agent_info',
+  ),
+  2 => 
+  array (
+    'label' => 'Office Information',
+    'group_type' => 'standard',
+    'settings' => 
+    array (
+      'form' => 
+      array (
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => 
+      array (
+        'description' => '',
+        5 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'token' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'label' => 'above',
+      ),
+    ),
+    'weight' => '-1',
+    'group_name' => 'group_office_information',
+  ),
+  3 => 
+  array (
+    'label' => 'Tax Information',
+    'group_type' => 'standard',
+    'settings' => 
+    array (
+      'form' => 
+      array (
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => 
+      array (
+        'description' => '',
+        5 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'token' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'label' => 'above',
+      ),
+    ),
+    'weight' => '0',
+    'group_name' => 'group_tax_information',
+  ),
+  4 => 
+  array (
+    'label' => 'Property Images',
+    'group_type' => 'standard',
+    'settings' => 
+    array (
+      'form' => 
+      array (
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => 
+      array (
+        'description' => '',
+        5 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'token' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'label' => 'above',
+      ),
+    ),
+    'weight' => '1',
+    'group_name' => 'group_property_image',
+  ),
+  5 => 
+  array (
+    'label' => 'Featured Properties',
+    'group_type' => 'standard',
+    'settings' => 
+    array (
+      'form' => 
+      array (
+        'style' => 'fieldset',
+        'description' => '',
+      ),
+      'display' => 
+      array (
+        'description' => '',
+        5 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'teaser' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'full' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'token' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'label' => 'above',
+      ),
+    ),
+    'weight' => '2',
+    'group_name' => 'group_property_featured',
+  ),
+);
+$content['fields']  = array (
+  0 => 
+  array (
+    'label' => 'MLS Num',
+    'field_name' => 'field_property_mls_num',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '11',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_mls_num][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => NULL,
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  1 => 
+  array (
+    'label' => 'Property Classification',
+    'field_name' => 'field_property_class',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '12',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_class][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_class' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_class][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => 'Residential
+Commercial
+Land',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  2 => 
+  array (
+    'label' => 'Property Type',
+    'field_name' => 'field_property_type',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '13',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_type][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_type' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_type][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => 'Condo
+Duplex
+Farm/ranch
+Hotel / Motel
+Industrial
+Land
+M/f
+Mobile Home
+Office
+Parking Space
+Restaurant
+Retail
+Sf/mf/acreage
+Single Family
+Time Share
+Townhouse
+Triplex Plus',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  3 => 
+  array (
+    'label' => 'Area(s)',
+    'field_name' => 'field_property_area',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '14',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_area][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_area' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_area][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => ' Arrowhead
+Avon
+Bachelor Gulch
+Beaver Creek
+Bellyache Wolcott Red Canyon
+Berry Creek Ranch
+Booth Creek
+Brush Creek Not Eagle Ranch
+Cascade Village
+Glenlyon
+Cordillera Cvc Timber Spgs
+Cordillera
+Colorow
+Squaw Creek
+Cotton Ranch
+Dotsero Colo River Rd Sweetwtr
+Eagle
+Eagle Ranch
+Eagle Vail
+East Vail
+Edwards
+Scottsville
+Gypsum
+Gypsum Valley
+Brightwater Club
+Highland Meadows
+Homestead
+Lake Creek Valley
+Lionshead
+Minturn
+Redcliff
+Mountain Star
+Nw Eagle County Mccoy
+Burns
+Out Of County Property
+Potato Patch
+Sandstone
+Lionsridge
+Spraddle Creek
+The Valley
+Ridge At Vail
+Vail Golf Course
+Vail Village
+West Vail North
+West Vail South
+Wildridge
+Wildwood',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  4 => 
+  array (
+    'label' => 'Sale Rent',
+    'field_name' => 'field_property_sale_rent',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '15',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_sale_rent][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_sale_rent' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_sale_rent][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  5 => 
+  array (
+    'label' => 'Extra Description',
+    'field_name' => 'field_propert_extra_description',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '16',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_propert_extra_description][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_propert_extra_description' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_propert_extra_description][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  6 => 
+  array (
+    'label' => 'Construction Type',
+    'field_name' => 'field_property_construction_type',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '17',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_construction_type][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_construction_type' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_construction_type][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  7 => 
+  array (
+    'label' => 'Number of Bedrooms',
+    'field_name' => 'field_property_bedrooms',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '18',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_bedrooms][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_bedrooms' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_bedrooms][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '0|Studio
+1|One
+2|Two
+3|Three
+4|Four
+5|Five
+6|Six
+7|Seven
+8|Eight
+9|Nine Or More',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  8 => 
+  array (
+    'label' => 'Full Baths',
+    'field_name' => 'field_property_full_baths',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '19',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_full_baths][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_full_baths' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_full_baths][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '1|One
+2|Two
+3|Three
+4|Four
+5|Five
+6|Six
+7|Seven
+8|Eight
+9|Nine
+10|Ten
+11|Eleven',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  9 => 
+  array (
+    'label' => 'Half Baths',
+    'field_name' => 'field_property_half_baths',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '20',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_half_baths][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_half_baths' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_half_baths][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '1|One
+2|Two
+3|Three
+4|Four
+5|Five
+6|Six
+7|Seven
+8|Eight
+9|Nine
+10|Ten
+11|Eleven',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  10 => 
+  array (
+    'label' => 'Amenities',
+    'field_name' => 'field_property_amenities',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '21',
+    'rows' => '5',
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_amenities][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_amenities' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_amenities][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => 'Club Membership Available
+Clubhouse
+Community Center
+Cross Country Trails
+Equestrian Center
+Fishing
+Fitness Center
+Golf - Public
+Golf Membership Option Avail
+Health Club Membership
+Hiking / Pedestrian Trails
+None
+On Bus Line
+Pool
+Private Fishing Rights
+Racquetball
+See Remarks
+Tennis
+Zoned For Horses',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  11 => 
+  array (
+    'label' => 'Garage Type',
+    'field_name' => 'field_property_garage_type',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '22',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_garage_type][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_garage_type' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_garage_type][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  12 => 
+  array (
+    'label' => 'Garage Size',
+    'field_name' => 'field_property_garage_size',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '23',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_garage_size][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_garage_size' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_garage_size][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  13 => 
+  array (
+    'label' => 'Garage Capacity',
+    'field_name' => 'field_property_garage_cap',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '24',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_garage_cap][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_garage_cap' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_garage_cap][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  14 => 
+  array (
+    'label' => 'Garage Comments',
+    'field_name' => 'field_property_garage_comments',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '25',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_garage_comments][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_garage_comments' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_garage_comments][0][value',
+          'format' => 1,
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '1',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+      'format' => 
+      array (
+        'type' => 'int',
+        'unsigned' => true,
+        'not null' => false,
+        'views' => false,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  15 => 
+  array (
+    'label' => 'Virtual Tour',
+    'field_name' => 'field_property_virtual_tour',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '26',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_virtual_tour][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_virtual_tour' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_virtual_tour][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  16 => 
+  array (
+    'label' => 'Number of Levels',
+    'field_name' => 'field_property_levels',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '27',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_levels][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_levels' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_levels][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  17 => 
+  array (
+    'label' => 'Basement',
+    'field_name' => 'field_property_basement',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '28',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_basement][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_basement' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_basement][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  18 => 
+  array (
+    'label' => 'Condition',
+    'field_name' => 'field_property_condition',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '29',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_condition][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_condition' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_condition][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  19 => 
+  array (
+    'label' => 'Reservations',
+    'field_name' => 'field_property_reservations',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '30',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_reservations][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_reservations' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_reservations][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  20 => 
+  array (
+    'label' => 'Number of Acres',
+    'field_name' => 'field_property_acres',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '31',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_acres][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_acres' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_acres][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  21 => 
+  array (
+    'label' => 'Size Comment',
+    'field_name' => 'field_property_size_comment',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '32',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_size_comment][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_size_comment' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_size_comment][0][value',
+          'format' => 1,
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '1',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+      'format' => 
+      array (
+        'type' => 'int',
+        'unsigned' => true,
+        'not null' => false,
+        'views' => false,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  22 => 
+  array (
+    'label' => 'Price per Acre',
+    'field_name' => 'field_property_price_per_acre',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '33',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_price_per_acre][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_price_per_acre' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_price_per_acre][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  23 => 
+  array (
+    'label' => 'Number of Units',
+    'field_name' => 'field_property_num_units',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '34',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_num_units][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_num_units' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_num_units][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  24 => 
+  array (
+    'label' => 'Subdivision',
+    'field_name' => 'field_property_subdivision',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '35',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_subdivision][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_subdivision' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_subdivision][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  25 => 
+  array (
+    'label' => 'School',
+    'field_name' => 'field_proprety_school',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '36',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_proprety_school][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_proprety_school' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_proprety_school][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  26 => 
+  array (
+    'label' => 'County',
+    'field_name' => 'field_property_county',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '37',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_county][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_county' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_county][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  27 => 
+  array (
+    'label' => 'Zone / District',
+    'field_name' => 'field_property_zone_district',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '38',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_zone_district][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_zone_district' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_zone_district][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  28 => 
+  array (
+    'label' => 'Current Use',
+    'field_name' => 'field_property_current_use',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '39',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_current_use][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_current_use' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_current_use][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  29 => 
+  array (
+    'label' => 'Legal',
+    'field_name' => 'field_property_legal',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '40',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_legal][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_legal' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_legal][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  30 => 
+  array (
+    'label' => 'Year Built',
+    'field_name' => 'field_property_year_built',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '41',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_year_built][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_year_built' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_year_built][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  31 => 
+  array (
+    'label' => 'Remodeled',
+    'field_name' => 'field_property_remodeled',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '42',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_remodeled][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_remodeled' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_remodeled][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  32 => 
+  array (
+    'label' => 'Total Square Feet',
+    'field_name' => 'field_property_total_sq_feet',
+    'type' => 'number_integer',
+    'widget_type' => 'number',
+    'change' => 'Change basic information',
+    'weight' => '43',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_total_sq_feet][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_total_sq_feet' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_total_sq_feet][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'min' => '0',
+    'max' => '100000000',
+    'prefix' => '$',
+    'suffix' => '.00',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'number',
+    'widget_module' => 'number',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'int',
+        'not null' => false,
+        'sortable' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  33 => 
+  array (
+    'label' => 'Building 2 Total Sq. Feet',
+    'field_name' => 'field_property_bldg_2_sq_feet',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '44',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_bldg_2_sq_feet][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_bldg_2_sq_feet' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_bldg_2_sq_feet][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  34 => 
+  array (
+    'label' => 'Building 3 Total Sq. Feet',
+    'field_name' => 'field_property_bldg_3_sq_feet',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '45',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_bldg_3_sq_feet][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_bldg_3_sq_feet' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_bldg_3_sq_feet][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  35 => 
+  array (
+    'label' => 'Lot Size Rage',
+    'field_name' => 'field_property_lot_size_range',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '46',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_lot_size_range][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_lot_size_range' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_lot_size_range][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  36 => 
+  array (
+    'label' => 'Lot Size Actual',
+    'field_name' => 'field_property_lot_size_actual',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '47',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_lot_size_actual][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_lot_size_actual' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_lot_size_actual][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  37 => 
+  array (
+    'label' => 'Finished',
+    'field_name' => 'field_property_finished',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '48',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_finished][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_finished' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_finished][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  38 => 
+  array (
+    'label' => 'Unfinished',
+    'field_name' => 'field_property_unfinished',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '49',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_unfinished][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_unfinished' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_unfinished][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  39 => 
+  array (
+    'label' => 'Remarks',
+    'field_name' => 'field_property_remarks',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '50',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_remarks][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_remarks' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_remarks][0][value',
+          'format' => 1,
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '1',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+      'format' => 
+      array (
+        'type' => 'int',
+        'unsigned' => true,
+        'not null' => false,
+        'views' => false,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  40 => 
+  array (
+    'label' => 'Water Rights',
+    'field_name' => 'field_property_water_rights',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '51',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_water_rights][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_water_rights' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_water_rights][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  41 => 
+  array (
+    'label' => 'Asking Price',
+    'field_name' => 'field_property_asking_price',
+    'type' => 'number_integer',
+    'widget_type' => 'number',
+    'change' => 'Change basic information',
+    'weight' => '52',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_asking_price][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_asking_price' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_asking_price][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'min' => '0',
+    'max' => '100000000',
+    'prefix' => '$',
+    'suffix' => '.00',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'number',
+    'widget_module' => 'number',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'int',
+        'not null' => false,
+        'sortable' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  42 => 
+  array (
+    'label' => 'Date Inserted',
+    'field_name' => 'field_property_date_insertPropertiesed',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '53',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_date_insertPropertiesed][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_date_insertPropertiesed' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_date_insertPropertiesed][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  43 => 
+  array (
+    'label' => 'Date Modified',
+    'field_name' => 'field_property_date_modified',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '54',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_date_modified][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_date_modified' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_date_modified][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  44 => 
+  array (
+    'label' => 'Status',
+    'field_name' => 'field_property_status',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '55',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_status][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_status' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_status][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  45 => 
+  array (
+    'label' => 'Agent ID',
+    'field_name' => 'field_property_agent_id',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '27',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_agent_id][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_agent_id' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_agent_id][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_agent_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  46 => 
+  array (
+    'label' => 'Agent Name',
+    'field_name' => 'field_property_agent_name',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '28',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_agent_name][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_agent_name' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_agent_name][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_agent_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  47 => 
+  array (
+    'label' => 'Agent Phone',
+    'field_name' => 'field_property_agent_phone',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '29',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_agent_phone][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_agent_phone' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_agent_phone][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_agent_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  48 => 
+  array (
+    'label' => 'Agent 2 ID',
+    'field_name' => 'field_property_agent_2_id',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '30',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_agent_2_id][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_agent_2_id' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_agent_2_id][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_agent_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  49 => 
+  array (
+    'label' => 'Agent 2 Name',
+    'field_name' => 'field_property_agent_2_name',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '31',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_agent_2_name][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_agent_2_name' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_agent_2_name][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_agent_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  50 => 
+  array (
+    'label' => 'Agent 2 Phone',
+    'field_name' => 'field_property_agent_2_phone',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '32',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_agent_2_phone][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_agent_2_phone' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_agent_2_phone][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_agent_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  51 => 
+  array (
+    'label' => 'Office ID',
+    'field_name' => 'field_property_office_id',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '30',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_office_id][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_office_id' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_office_id][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_office_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  52 => 
+  array (
+    'label' => 'Office',
+    'field_name' => 'field_property_office',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '31',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_office][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_office' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_office][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_office_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  53 => 
+  array (
+    'label' => 'Office Phone',
+    'field_name' => 'field_property_office_phone',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '32',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_office_phone][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_office_phone' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_office_phone][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_office_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  54 => 
+  array (
+    'label' => 'Office 2 ID',
+    'field_name' => 'field_property_office_2_id',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '33',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_office_2_id][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_office_2_id' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_office_2_id][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_office_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  55 => 
+  array (
+    'label' => 'Office 2',
+    'field_name' => 'field_property_office_2',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '34',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_office_2][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_office_2' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_office_2][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_office_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  56 => 
+  array (
+    'label' => 'Tax',
+    'field_name' => 'field_property_tax',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '47',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_tax][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_tax' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_tax][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_tax_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  57 => 
+  array (
+    'label' => 'Tax Year One',
+    'field_name' => 'field_property_tax_yr_one',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '48',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_tax_yr_one][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_tax_yr_one' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_tax_yr_one][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_tax_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  58 => 
+  array (
+    'label' => 'Tax 2',
+    'field_name' => 'field_property_tax_two',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '49',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_tax_two][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_tax_two' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_tax_two][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_tax_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  59 => 
+  array (
+    'label' => 'Tax Year Two',
+    'field_name' => 'field_property_tax_yr_two',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '50',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_tax_yr_two][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_tax_yr_two' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_tax_yr_two][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_tax_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  60 => 
+  array (
+    'label' => 'Taxes Per',
+    'field_name' => 'field_property_taxes_per',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '51',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_taxes_per][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_taxes_per' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_taxes_per][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_tax_information',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  61 => 
+  array (
+    'label' => 'Property Images',
+    'field_name' => 'field_property_images',
+    'type' => 'filefield',
+    'widget_type' => 'imagefield_widget',
+    'change' => 'Change basic information',
+    'weight' => '8',
+    'file_extensions' => 'png gif jpg jpeg',
+    'progress_indicator' => 'bar',
+    'file_path' => 'property_suite',
+    'max_filesize_per_file' => '',
+    'max_filesize_per_node' => '',
+    'max_resolution' => 0,
+    'min_resolution' => 0,
+    'custom_alt' => 0,
+    'alt' => '',
+    'custom_title' => 0,
+    'title_type' => 'textfield',
+    'title' => '',
+    'use_default_image' => 0,
+    'default_image_upload' => '',
+    'default_image' => NULL,
+    'insert' => false,
+    'insert_styles' => 
+    array (
+      1 => 1,
+      0 => 1,
+      'auto' => false,
+      'link' => false,
+      'image' => false,
+      'imagecache_frontpage_slides' => false,
+      'imagecache_broker_thumb' => false,
+      'imagecache_user_image' => false,
+    ),
+    'insert_default' => 
+    array (
+      0 => 'auto',
+    ),
+    'insert_class' => '',
+    'insert_width' => '',
+    'description' => '',
+    'group' => 'group_property_image',
+    'required' => 0,
+    'multiple' => '1',
+    'list_field' => '1',
+    'list_default' => 1,
+    'description_field' => '0',
+    'op' => 'Save field settings',
+    'module' => 'filefield',
+    'widget_module' => 'imagefield',
+    'columns' => 
+    array (
+      'fid' => 
+      array (
+        'type' => 'int',
+        'not null' => false,
+        'views' => true,
+      ),
+      'list' => 
+      array (
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => false,
+        'views' => true,
+      ),
+      'data' => 
+      array (
+        'type' => 'text',
+        'serialize' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  62 => 
+  array (
+    'label' => 'Is Property Featured',
+    'field_name' => 'field_property_featured',
+    'type' => 'text',
+    'widget_type' => 'optionwidgets_onoff',
+    'change' => 'Change basic information',
+    'weight' => '9',
+    'description' => 'Check this box if you wish this properties to be shown on the front page featured properties list. This list will rotate randomly.',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => 0,
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_featured' => 
+      array (
+        'value' => false,
+      ),
+    ),
+    'group' => 'group_property_featured',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '0|Property Is Not Featured
+1|Property Is Featured',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'optionwidgets',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+);
+$content['extra']  = array (
+  'title' => '-5',
+  'revision_information' => '6',
+  'comment_settings' => '8',
+  'menu' => '4',
+  'book' => '7',
+  'path' => '3',
+  'page_title' => '-4',
+  'print' => '5',
+);

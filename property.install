@@ -1,0 +1,144 @@
+<?php
+/**
+ * Property Module Install
+ * Version: 1.0.0
+ */
+
+/**
+ * Hook Requirements
+ */
+function property_requirements( $phase ) {
+  
+  $requirements = array();
+  
+  switch ( $phase ) {
+    
+    case 'install':
+    break;
+  
+    case 'runtime':
+      
+      $requirements  = propertyAdmin::_getModuleStatus();
+      
+      $requirements2 = propertyAdmin::_getCronStatus();
+      
+      $requirements  = array_merge( $requirements, $requirements2 );
+      
+    break;
+    
+  }
+  
+  return $requirements;
+  
+}
+
+/**
+ * Hook Enable
+ */
+function property_enable() {
+  
+  $output['!welcome'] = "You have successfully enabled the Property Module. Please look at the module documentation for more help in development.";
+  
+  drupal_set_message( t( "!welcome", $output ) );
+  
+  variable_set( 'property_enabled', true );
+  
+}
+
+/**
+ * Hook Disable
+ */
+function property_disable() {
+  
+  $output['!goodbye'] = "Property Module sucessfully disabled, you have not deleted any content.";
+  
+  drupal_set_message( t( "!goodbye", $output ) );
+  
+  variable_set( 'property_enabled', false );
+  
+}
+
+/**
+ * Hook install
+ */
+function property_install() { //set the modules in the suite, each module can add to this array in their install requirements, and add all the classes in the inc directory as classes
+  
+  $dir    = drupal_get_path( 'module', 'property' ) .'/inc';
+  include_once( $dir .'/class.propertyInstall.inc' );
+  
+  variable_set( 'property_suite_modules', null ); //clear all modules on this install, to clean up the array
+  
+  $module['property_suite'] = array(
+    'name'        => 'property',
+    'title'       => 'Property Suite',
+    'value'       => 'Version 1.0 RC1',
+    'description' => 'This is the main module for the Property Suite Package.'
+  );
+  
+  propertyInstall::_registerModule( $module );
+  
+  $property_suite_directory = file_create_path() .'/property_suite';
+  file_check_directory( $property_suite_directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS );
+
+  $property_suite_thumbs_directory = file_create_path() .'/property_suite/thumbs';
+  file_check_directory( $property_suite_thumbs_directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS );
+  
+}
+
+/**
+ * Hook uninstall
+ */
+function property_uninstall() {
+  
+  $dir    = drupal_get_path( 'module', 'property' ) .'/inc';
+  include_once( $dir .'/class.propertyInstall.inc' );
+  
+  propertyInstall::_unregisterModule( 'property' );
+  
+  //delete variables
+  variable_del( 'property_suite_modules' );
+  variable_del( 'property_suite_cron_stats' );
+  variable_del( 'property_tokens' ); //Kill the property tokens
+  
+  $fields = variable_get( 'property_content_type_field_names', null );
+  if ( !empty( $fields ) ) { //if we have fields, delete them
+    
+    foreach ( $fields as $field ) { //destroy all field mappings
+      
+      variable_del( $field );
+      
+    }
+    
+  }
+  
+  variable_del( 'property_content_type_field_names' ); //destroy field mapping names
+  variable_del( 'property_batch_all' );
+  variable_del( 'property_cache_all' );
+  variable_del( 'property_content_type_last' );
+  variable_del( 'property_content_type_token_ascii_replacement' );
+  variable_del( 'property_enabled' );
+  
+  //Clear all caches upon uninstall
+  cache_clear_all('*', 'cache', TRUE);
+  cache_clear_all('*', 'cache_filter', TRUE);
+  cache_clear_all('*', 'cache_menu', TRUE);
+  cache_clear_all('*', 'cache_page', TRUE);
+  
+  $output['!goodbye'] = "Property Module sucessfully uninstalled, your content has not been deleted.";
+  
+  drupal_set_message( t( "!goodbye", $output ) );
+  
+}
+
+/**
+ * Implementation of hook_schema
+ * This is to add in the cache tables for the property suite module, so we can keep the property data in a protected
+ * Cache area, so that we don't expire the cache when other modules are installed, or cache is cleared.
+ * @todo All Caches should not point to this schema
+ */
+function property_schema() {
+  
+  $schema['cache_property_suite'] = drupal_get_schema_unprocessed( 'system', 'cache' );
+  return $schema;
+
+}
