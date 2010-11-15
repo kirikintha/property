@@ -21,7 +21,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       
     } else {
       
-      return user_load( 1 ); //Let's make sure everything get's under the super user if it has not broker id
+      return user_load( 1 ); //Let's make sure everything get's under the super user if it has not broker id.
       
     }
     
@@ -368,7 +368,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       $log = ( is_array( propertyCache::_getCache( 'property_suite_transaction_logs' ) ) ) ? propertyCache::_getCache( 'property_suite_transaction_logs' ) : array() ;
       
       $new_logs = array_merge_recursive($log,$logs);
-      propertyCache::_setCache( 'property_suite_transaction_logs', $new_logs, CACHE_PERMANENT, 'cache' );
+      propertyCache::_setCache( 'property_suite_transaction_logs', $new_logs, CACHE_PERMANENT, 'cache_property_suite' );
       unset( $logs );
       
     }
@@ -477,7 +477,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     );
     
     batch_set( $batch ); //set our batch, and watch it run
-    batch_process( 'admin/settings/property_suite/ram_property' );
+    batch_process( $manager->batchProcessPath );
     $manager->__destruct();
     unset( $operations );
     
@@ -563,7 +563,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     );
     
     batch_set( $batch ); //set our batch, and watch it run
-    batch_process( 'admin/settings/property_suite/ram_property' );
+    batch_process( $manager->batchProcessPath );
     $manager->__destruct();
     unset( $operations );
     unset( $fileTime );
@@ -635,7 +635,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     $manager->__destruct();
     
     self::_processMessages(); //Since this is the last phase of the logging
-    propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache', FALSE );
+    propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache_property_suite', FALSE );
     
   }
   
@@ -653,16 +653,16 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
           
       }
       
-      propertyCache::_clearCache( 'property_cache_batch_property_insert_' .$batchNum, 'cache', FALSE ); //when this batch completes, kill it.
+      propertyCache::_clearCache( 'property_cache_batch_property_insert_' .$batchNum, 'cache_property_suite', FALSE ); //when this batch completes, kill it.
       $batchItems = propertyCache::_getCache( 'property_cache_insert_items' );
       unset( $batchItems[$batchNum] );
-      propertyCache::_clearCache( 'property_cache_insert_items', 'cache', TRUE );
+      propertyCache::_clearCache( 'property_cache_insert_items', 'cache_property_suite', TRUE );
       propertyCache::_setCache( 'property_cache_insert_items', $batchItems );
       
     }
     
     $totalChunks = propertyCache::_getCache( 'property_cache_total_chunks' ) - 1;
-    propertyCache::_clearCache( 'property_cache_total_chunks', 'cache', TRUE );
+    propertyCache::_clearCache( 'property_cache_total_chunks', 'cache_property_suite', TRUE );
     propertyCache::_setCache( 'property_cache_total_chunks', $totalChunks );
     
   }
@@ -681,16 +681,16 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
           
       }
       
-      propertyCache::_clearCache( 'property_cache_batch_property_update_' .$batchNum, 'cache', FALSE ); //when this batch completes, kill it.
+      propertyCache::_clearCache( 'property_cache_batch_property_update_' .$batchNum, 'cache_property_suite', FALSE ); //when this batch completes, kill it.
       $batchItems = propertyCache::_getCache( 'property_cache_update_items' );
       unset( $batchItems[$batchNum] );
-      propertyCache::_clearCache( 'property_cache_update_items', 'cache', TRUE );
+      propertyCache::_clearCache( 'property_cache_update_items', 'cache_property_suite', TRUE );
       propertyCache::_setCache( 'property_cache_update_items', $batchItems );
       
     }
     
     $totalChunks = propertyCache::_getCache( 'property_cache_total_chunks' ) - 1;
-    propertyCache::_clearCache( 'property_cache_total_chunks', 'cache', TRUE );
+    propertyCache::_clearCache( 'property_cache_total_chunks', 'cache_property_suite', TRUE );
     propertyCache::_setCache( 'property_cache_total_chunks', $totalChunks );
     
   }
@@ -763,7 +763,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     unset( $fileTime );
     
     self::_processMessages(); //Since this is the last phase of the logging
-    propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache', FALSE );
+    propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache_property_suite', FALSE );
     
   }
   
@@ -781,7 +781,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
           
       }
       
-      propertyCache::_clearCache( 'property_cache_batch_images_insert_' .$batchNum, 'cache', FALSE ); //when this batch completes, kill it.
+      propertyCache::_clearCache( 'property_cache_batch_images_insert_' .$batchNum, 'cache_property_suite', FALSE ); //when this batch completes, kill it.
       $batchItems = propertyCache::_getCache( 'property_cache_insert_images' );
       unset( $batchItems[$batchNum] );
       propertyCache::_clearCache( 'property_cache_insert_images' );
@@ -809,7 +809,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
           
       }
       
-      propertyCache::_clearCache( 'property_cache_batch_images_update_' .$batchNum, 'cache', FALSE ); //when this batch completes, kill it.
+      propertyCache::_clearCache( 'property_cache_batch_images_update_' .$batchNum, 'cache_property_suite', FALSE ); //when this batch completes, kill it.
       $batchItems = propertyCache::_getCache( 'property_cache_update_images' );
       unset( $batchItems[$batchNum] );
       propertyCache::_clearCache( 'property_cache_update_images' );
@@ -836,10 +836,10 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
   public static function _analyzeCache( $propertyKey = '[Mls_Num]', $imageID = 'imagesavailable', $imagePath = null, $dateInserted = '[Date_Inserted]', $dateModified = '[Date_Modified]' ) {
     
     //Clear all cached data
-    propertyCache::_clearCache( 'property_cache_batch_property_insert_', 'cache', TRUE );
-    propertyCache::_clearCache( 'property_cache_batch_property_update_', 'cache', TRUE );
-    propertyCache::_clearCache( 'property_cache_insert_items', 'cache', FALSE );
-    propertyCache::_clearCache( 'property_cache_update_items', 'cache', FALSE );
+    propertyCache::_clearCache( 'property_cache_batch_property_insert_', 'cache_property_suite', TRUE );
+    propertyCache::_clearCache( 'property_cache_batch_property_update_', 'cache_property_suite', TRUE );
+    propertyCache::_clearCache( 'property_cache_insert_items', 'cache_property_suite', FALSE );
+    propertyCache::_clearCache( 'property_cache_update_items', 'cache_property_suite', FALSE );
     
     $properties         = array(); //This is the array we use to make the chunks
     $newCacheProperties = array(); //This is how we calculate old properties
@@ -917,7 +917,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       propertyCache::_setCache( 'property_cache_total_chunks', $totalChunks ); //now that we have everything preserved, they can batch out
       
       //batch items, flush, insert batches and update batches
-      propertyCache::_clearCache( 'property_cache_batch', 'cache', TRUE );
+      propertyCache::_clearCache( 'property_cache_batch', 'cache_property_suite', TRUE );
       
       if ( count( $insertChunks ) > 0 && is_array( $insertChunks ) ) {
         
@@ -959,7 +959,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     
     self::_logMessages( $logs ); //Log The messages
     self::_processMessages(); //Since this is the last phase of the logging
-    propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache', FALSE );
+    propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache_property_suite', FALSE );
     
   }
   
@@ -1069,7 +1069,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       propertyCache::_setCache( 'property_cache_total_image_chunks', $totalChunks ); //now that we have everything preserved, they can batch out
       
       //batch items, flush, insert batches and update batches
-      propertyCache::_clearCache( 'property_cache_batch_images', 'cache', TRUE );
+      propertyCache::_clearCache( 'property_cache_batch_images', 'cache_property_suite', TRUE );
       
       if ( count( $insertChunks ) > 0 && is_array( $insertChunks ) ) {
         
@@ -1112,7 +1112,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     
     self::_logMessages( $logs ); //Log The messages
     self::_processMessages(); //Since this is the last phase of the logging
-    propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache', FALSE );
+    propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache_property_suite', FALSE );
     
   }
   
@@ -1184,7 +1184,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
    */
   public static function _setFileTimes() {
     
-    propertyCache::_clearCache( 'property_cache_filetimes', 'cache', TRUE );
+    propertyCache::_clearCache( 'property_cache_filetimes', 'cache_property_suite', TRUE );
     
     $fileTime = array();
     

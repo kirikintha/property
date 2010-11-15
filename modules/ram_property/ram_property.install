@@ -1,7 +1,7 @@
 <?php
 /**
  * RAM Property Module Install
- * Version: 1.0.4
+ * Version: 1.0.5
  */
 
 /**
@@ -61,7 +61,7 @@ function ram_property_install() { //set the modules in the suite, each module ca
   $module['ram_property'] = array(
     'name'        => 'ram_property',
     'title'       => 'RAM Properties',
-    'value'       => 'Version 1.0 RC1',
+    'value'       => 'Version 1.0 RC2',
     'description' => 'The RAM module allows users to import properties from a RAM server via CURL into to drupal content types.'
   );
   

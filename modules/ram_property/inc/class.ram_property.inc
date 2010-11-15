@@ -5,13 +5,10 @@
  */
 class ramManager extends propertyManager {
   
-  protected $url;
-  protected $ch;
-  public $qry;
-  
   public function __construct() {
     
     $this->url = propertyTrans::_validateURL( variable_get( 'ram_property_connection_string', null ) );
+    $this->batchProcessPath = 'admin/settings/property_suite/ram_property';
     
   }
   

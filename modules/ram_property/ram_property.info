@@ -6,4 +6,4 @@ dependencies[]  = property
 dependencies[]  = profile
 core            = 6.x
 package         = Property Suite
-version         = 1.0-RC1
+version         = 1.0-RC2

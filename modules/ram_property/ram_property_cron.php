@@ -6,18 +6,12 @@
 // ------------------------------------------------------------
 // The name of your site. Required so that when we bootstrap Drupal in
 // this script, we find the right settings.php file in your sites folder.
-//define('SITE_NAME', 'sre.localhost:8082' );
-//define('SITE_NAME', 'sonnenalp.dev2.webenabled.net' ); //WEBENABLED VARIABLE
-//define('SITE_NAME', 'sonnenalprealestate.com' ); //LIVE VARIABLE
-define('SITE_NAME', 'sre.he243.vps.webenabled.net' ); //NEW WEBENABLED LIVE VARIABLE - TEMP!!!
+define('SITE_NAME', ''); //NEW WEBENABLED LIVE VARIABLE - TEMP!!!
 
 // The root of your Drupal installation, so we can properly bootstrap
 // Drupal. This should be the full path to the directory that holds
 // your index.php file, the "includes" subdirectory, etc.
-//define('DRUPAL_ROOT', '/Users/Paul/Sites/sandbox.drupal/btmsites.net/sre.btmsites.net/'); //local host directory - COMMENT ME OUT!
-//define('DRUPAL_ROOT', '/home/clients/websites/w_sre/public_html/sre/' ); //WEBENABLED VARIABLE
-//define('DRUPAL_ROOT', '/var/www/vhosts/sonnenalprealestate.com/httpdocs/'); //Live site directory
-define('DRUPAL_ROOT', '/home/clients/websites/w_sre/public_html/sre/' ); //NEW WEBENABLED LIVE VARIABLE
+define('DRUPAL_ROOT', ''); //NEW WEBENABLED LIVE VARIABLE
 
 // ------------------------------------------------------------
 // Initialization

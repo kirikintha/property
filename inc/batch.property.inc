@@ -38,7 +38,7 @@ function _property_suite_admin_batch_properties_finished ( $success, $results, $
   drupal_set_message( t( "!message", array ( '!message' => $message ) ), $status );
   
   propertyTrans::_processMessages(); //Since this is the last phase of the logging
-  propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache', FALSE );
+  propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache_property_suite', FALSE );
     
 }
 
@@ -68,7 +68,7 @@ function _property_suite_admin_batch_insert_properties ( $batchNum, $manager, &$
         
     }
     
-    propertyCache::_clearCache( 'property_cache_batch_property_insert_' .$batchNum, 'cache', FALSE ); //when this batch completes, kill it.
+    propertyCache::_clearCache( 'property_cache_batch_property_insert_' .$batchNum, 'cache_property_suite', FALSE ); //when this batch completes, kill it.
     $batchItems = propertyCache::_getCache( 'property_cache_insert_items' );
     unset( $batchItems[$batchNum] );
     propertyCache::_clearCache( 'property_cache_insert_items' );
@@ -109,7 +109,7 @@ function _property_suite_admin_batch_update_properties ( $batchNum, $manager, &$
         
     }
     
-    propertyCache::_clearCache( 'property_cache_batch_property_update_' .$batchNum, 'cache', FALSE ); //when this batch completes, kill it.
+    propertyCache::_clearCache( 'property_cache_batch_property_update_' .$batchNum, 'cache_property_suite', FALSE ); //when this batch completes, kill it.
     $batchItems = propertyCache::_getCache( 'property_cache_update_items' );
     unset( $batchItems[$batchNum] );
     propertyCache::_clearCache( 'property_cache_update_items' );
@@ -162,7 +162,7 @@ function _property_suite_admin_batch_images_finished ( $success, $results, $oper
   drupal_set_message( t( "!message", array ( '!message' => $message ) ), $status );
   
   propertyTrans::_processMessages(); //Since this is the last phase of the logging
-  propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache', FALSE );
+  propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache_property_suite', FALSE );
     
 }
 
@@ -192,7 +192,7 @@ function _property_suite_admin_batch_insert_images ( $batchNum, $manager, $fileT
         
     }
     
-    propertyCache::_clearCache( 'property_cache_batch_images_insert_' .$batchNum, 'cache', FALSE ); //when this batch completes, kill it.
+    propertyCache::_clearCache( 'property_cache_batch_images_insert_' .$batchNum, 'cache_property_suite', FALSE ); //when this batch completes, kill it.
     $batchItems = propertyCache::_getCache( 'property_cache_insert_images' );
     unset( $batchItems[$batchNum] );
     propertyCache::_clearCache( 'property_cache_insert_images' );
@@ -233,7 +233,7 @@ function _property_suite_admin_batch_update_images ( $batchNum, $manager, $fileT
         
     }
     
-    propertyCache::_clearCache( 'property_cache_batch_images_update_' .$batchNum, 'cache', FALSE ); //when this batch completes, kill it.
+    propertyCache::_clearCache( 'property_cache_batch_images_update_' .$batchNum, 'cache_property_suite', FALSE ); //when this batch completes, kill it.
     $batchItems = propertyCache::_getCache( 'property_cache_update_images' );
     unset( $batchItems[$batchNum] );
     propertyCache::_clearCache( 'property_cache_update_images' );

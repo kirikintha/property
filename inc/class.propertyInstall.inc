@@ -43,7 +43,7 @@ class propertyInstall {
       
       variable_set( 'property_suite_modules', $modules );
       
-      drupal_set_message( t( "!name has been unregistered from the Property Suite module.", array( '!name' => $module ) ), 'status' );
+      drupal_set_message( t( "!name has been unregistered from the Property Suite module.", array( '!name' => ucwords($module) ) ), 'status' );
       
       menu_rebuild(); //Rebuild menues when a module registers, and un registers
     

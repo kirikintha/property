@@ -1,9 +1,13 @@
 <?php
 /**
  * class propertyManager
- * @todo - Why is this giving a fatal error when I use implements factoryManager?
  */
 class propertyManager {
+
+  protected $url;
+  protected $ch;
+  public $qry;
+  public $batchProcessPath;
   
   public function __construct() {}
   
