@@ -7,11 +7,11 @@
 /**
  * Hook Requirements
  */
-function ram_property_requirements( $phase ) {
+function ram_property_requirements($phase) {
   
   $requirements = array();
   
-  switch ( $phase ) {
+  switch ($phase) {
     
     case 'install':
       
@@ -34,9 +34,9 @@ function ram_property_enable() {
   
   $output['!welcome'] = "You have successfully enabled the RAM Property Module. Please continue to the module admin pages for setup instructions.";
   
-  drupal_set_message( t( "!welcome", $output ) );
+  drupal_set_message(t("!welcome", $output));
   
-  variable_set( 'ram_property_enabled', true );
+  variable_set('ram_property_enabled', true);
   
 }
 
@@ -47,9 +47,9 @@ function ram_property_disable() {
   
   $output['!goodbye'] = "RAM Property Module sucessfully disabled, you have not deleted any content.";
   
-  drupal_set_message( t( "!goodbye", $output ) );
+  drupal_set_message(t("!goodbye", $output));
   
-  variable_set( 'ram_property_enabled', false );
+  variable_set('ram_property_enabled', false);
   
 }
 
@@ -63,9 +63,9 @@ function ram_property_install() { //set the modules in the suite, each module ca
     'title'       => 'RAM Properties',
     'value'       => 'Version 1.0 RC2',
     'description' => 'The RAM module allows users to import properties from a RAM server via CURL into to drupal content types.'
-  );
+ );
   
-  propertyAdmin::_registerModule( $module ); //register the module
+  propertyAdmin::_registerModule($module); //register the module
   
   $ramKeys = array(
     'Mls_Num',
@@ -134,22 +134,22 @@ function ram_property_install() { //set the modules in the suite, each module ca
     'Office_ID_2',
     'Office_2',
     'Office_Phone_2',
-  );
+ );
   
-  foreach ( $ramKeys as $key => $value ) {
+  foreach ($ramKeys as $key => $value) {
     
-    $key    = ( (int) $key ) + 1; //the darn key is always one more...
+    $key    = ((int) $key) + 1; //the darn key is always one more...
     $keys[] = "key$key|$value";
     
   }
   
-  variable_set( 'ram_property_default_tokens', $keys );
+  variable_set('ram_property_default_tokens', $keys);
   
-  $keys = implode( "\n", $keys );
+  $keys = implode("\n", $keys);
   
-  variable_set( 'property_tokens', $keys ); //set up the main array for the admin area, this controls how the xml is imported and how the content type is made
+  variable_set('property_tokens', $keys); //set up the main array for the admin area, this controls how the xml is imported and how the content type is made
   
-  variable_set( 'ram_property_setup', 'init' ); //indicate that the setup has not been completed
+  variable_set('ram_property_setup', 'init'); //indicate that the setup has not been completed
   
 }
 
@@ -158,32 +158,32 @@ function ram_property_install() { //set the modules in the suite, each module ca
  */
 function ram_property_uninstall() {
     
-  propertyAdmin::_unregisterModule( 'ram_property' ); //unregister the module with the suite
+  propertyAdmin::_unregisterModule('ram_property'); //unregister the module with the suite
   
   //delete variables
-  variable_del( 'property_batch_chunk_maximum_limit' );
-  variable_del( 'ram_property_connection_filtered' );
-  variable_del( 'property_cache_maximum_limit' );
-  variable_del( 'property_content_type' );
-  variable_del( 'ram_property_connection_string');
-  variable_del( 'ram_property_website' );
-  variable_del( 'ram_property_ipaddress' );
-  variable_del( 'ram_property_orderby' );
-  variable_del( 'ram_property_api_host' );
-  variable_del( 'ram_property_api_host_filename' );
-  variable_del( 'ram_property_connect_log' );
-  variable_del( 'ram_property_connection_tested' );
-  variable_del( 'property_tokens' );
-  variable_del( 'property_connection_tokenized' );
-  variable_del( 'ram_property_connection_cached' );
-  variable_del( 'property_firstrun_imported' );
-  variable_del( 'ram_property_areas' );
-  variable_del( 'ram_property_connection_filtered' );
-  variable_del( 'ram_property_setup' );
-  variable_del( 'ram_property_property_key' );
-  variable_del( 'ram_property_broker_key' );
-  variable_del( 'ram_property_image_path' );
-  variable_del( 'ram_property_image_key' );
+  variable_del('property_batch_chunk_maximum_limit');
+  variable_del('ram_property_connection_filtered');
+  variable_del('RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT');
+  variable_del('property_content_type');
+  variable_del('ram_property_connection_string');
+  variable_del('ram_property_website');
+  variable_del('ram_property_ipaddress');
+  variable_del('ram_property_orderby');
+  variable_del('ram_property_api_host');
+  variable_del('ram_property_api_host_filename');
+  variable_del('ram_property_connect_log');
+  variable_del('ram_property_connection_tested');
+  variable_del('property_tokens');
+  variable_del('property_connection_tokenized');
+  variable_del('ram_property_connection_cached');
+  variable_del('property_firstrun_imported');
+  variable_del('ram_property_areas');
+  variable_del('ram_property_connection_filtered');
+  variable_del('ram_property_setup');
+  variable_del('ram_property_property_key');
+  variable_del('ram_property_broker_key');
+  variable_del('ram_property_image_path');
+  variable_del('ram_property_image_key');
   
   //Clear all caches upon uninstall
   cache_clear_all('*', 'cache', TRUE);

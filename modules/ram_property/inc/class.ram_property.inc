@@ -7,7 +7,7 @@ class ramManager extends propertyManager {
   
   public function __construct() {
     
-    $this->url = propertyTrans::_validateURL( variable_get( 'ram_property_connection_string', null ) );
+    $this->url = propertyTrans::_validateURL(variable_get('ram_property_connection_string', NULL));
     $this->batchProcessPath = 'admin/settings/property_suite/ram_property';
     
   }
@@ -15,19 +15,19 @@ class ramManager extends propertyManager {
   /**
    * @name _connect
    * @param string $postData an XML request from the RAM server
-   * @return mixed returns either boolean false or the xml object, so you can check for successful query objects
+   * @return mixed returns either boolean FALSE or the xml object, so you can check for successful query objects
    */
   public function _connect() {
     
     $query['input'] = $this->qry;
     
-    $this->ch  = curl_init( $this->url );
+    $this->ch  = curl_init($this->url);
     
-    curl_setopt( $this->ch, CURLOPT_RETURNTRANSFER, 1 );
-    curl_setopt( $this->ch, CURLOPT_POST, 1 );
-    curl_setopt( $this->ch, CURLOPT_POSTFIELDS, $query );
+    curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($this->ch, CURLOPT_POST, 1);
+    curl_setopt($this->ch, CURLOPT_POSTFIELDS, $query);
     
-    $data = curl_exec( $this->ch );
+    $data = curl_exec($this->ch);
     
     return $data;
     
@@ -39,24 +39,24 @@ class ramManager extends propertyManager {
    */
   public function _shutdown() {
     
-    $log[] = t( 'CURL Info: !time', array( '!time' => date( "M/d/Y - h:m:s a", strtotime("now") ) ) );
+    $log[] = t('CURL Info: !time', array('!time' => date("M/d/Y - h:m:s a", strtotime("now"))));
     
-    $info = ( !curl_errno( $this->ch ) ) ? curl_getinfo( $this->ch ) : curl_error( $this->ch ) ;
+    $info = (!curl_errno($this->ch)) ? curl_getinfo($this->ch) : curl_error($this->ch) ;
     
-    while ( list( $label, $value ) = each( $info ) ) {
+    while (list($label, $value) = each($info)) {
       
       $msg = array(
         '!label' => $label,
         '!value' => $value
-      );
+     );
       
-      $log[] = t( '!label : !value', $msg );
+      $log[] = t('!label : !value', $msg);
     
     }
     
-    curl_close( $this->ch );
+    curl_close($this->ch);
     
-    return implode( "<br />", $log );
+    return implode("<br />", $log);
     
   }
   
@@ -68,7 +68,7 @@ class ramManager extends propertyManager {
   public function _batchProperties() { //we'll run the batch functions through here, run percent of insert and update here
     
     $manager = new ramManager; //Can I just use self here?
-    propertyTrans::_createPropertyBatch( $manager ); //Don't have to have the limit here, it will run through property
+    propertyTrans::_createPropertyBatch($manager); //Don't have to have the limit here, it will run through property
     
   }
   
@@ -80,7 +80,7 @@ class ramManager extends propertyManager {
   public function _batchImages() { //we'll run the batch functions through here, run percent of insert and update here
     
     $manager = new ramManager; //Can I just use self here?
-    propertyTrans::_createImageBatch( $manager ); //Don't have to have the limit here, it will run through property
+    propertyTrans::_createImageBatch($manager); //Don't have to have the limit here, it will run through property
     
   }
   
@@ -89,11 +89,11 @@ class ramManager extends propertyManager {
    * @category Module Batch
    * Is called as a method of the batch process, as batch runs, the insert is invoked
    */
-  public function _insertImages( $data = null, $fileTime ) {
+  public function _insertImages($data = NULL, $fileTime) {
     
-    if ( is_array( $data ) ) {
+    if (is_array($data)) {
       
-      propertyTrans::_storeImage( $data['imagePath'], $data['image'], $data['dateModified'], $data['mlsNum'], $fileTime );
+      propertyTrans::_storeImage($data['imagePath'], $data['image'], $data['dateModified'], $data['mlsNum'], $fileTime);
       
     }
 
@@ -104,11 +104,11 @@ class ramManager extends propertyManager {
    * @category Module Batch
    * Is called as a method of the batch process, as batch runs, the update is invoked
    */
-  public function _updateImages( $data = null, $fileTime ) {
+  public function _updateImages($data = NULL, $fileTime) {
     
-    if ( is_array( $data ) ) {
+    if (is_array($data)) {
             
-      propertyTrans::_storeImage( $data['imagePath'], $data['image'], $data['dateModified'], $data['mlsNum'], $fileTime );
+      propertyTrans::_storeImage($data['imagePath'], $data['image'], $data['dateModified'], $data['mlsNum'], $fileTime);
       
     }
 
@@ -119,91 +119,91 @@ class ramManager extends propertyManager {
    * @category Module Batch
    * Is called as a method of the batch process, as batch runs, the insert is invoked
    */
-  public function _insertProperties( $data = null ) {
+  public function _insertProperties($data = NULL) {
     
-    //$data = propertyCache::_getCache( 'property_cache_batch_property_insert_0' );
+    //$data = propertyCache::_getCache('property_cache_batch_property_insert_0');
     //$data = $data[319690];
     $data = (array) $data; //convert object to array, easier to play with this way
     
     //get agent user id @ todo make this into one function for both update and insert for all this stuff
-    $agentToken = token_replace( variable_get( 'ram_property_broker_key', '[Agent_ID]' ), 'property', 'Property Suite' );
+    $agentToken = token_replace(variable_get('ram_property_broker_key', '[Agent_ID]'), 'property', 'Property Suite');
     $agentID    = $data[$agentToken]; //Agent token is the proper field to query from the data
-    $agent      = null;
-    $agent      = propertyTrans::_loadBroker( $agentID );//take the broker id, and make the author of this node the, returns a valid user object
+    $agent      = NULL;
+    $agent      = propertyTrans::_loadBroker($agentID);//take the broker id, and make the author of this node the, returns a valid user object
 
     //prepare node with title
-    $fieldNames    = variable_get( 'property_content_type_field_names', null );
-    $contentFields = content_fields( null, variable_get( 'property_content_type', null ) ); //This is kinda unreliable, but I don't have another option
+    $fieldNames    = variable_get('property_content_type_field_names', NULL);
+    $contentFields = content_fields(NULL, variable_get('property_content_type', NULL)); //This is kinda unreliable, but I don't have another option
 
-    $titleTokens = variable_get( $fieldNames[0], null );
-    $replacement = ( variable_get( 'property_content_type_token_ascii_replacement', null ) == '#UNDERSCORE' ) ? '_' : '-';
-    $titleTokens = token_replace( $titleTokens, 'property', 'Property Suite' );
-    foreach ( $data as $key => $value ) { //change out the values for the tokens with the values of the keys, this means any token can be used here from the property list
+    $titleTokens = variable_get($fieldNames[0], NULL);
+    $replacement = (variable_get('property_content_type_token_ascii_replacement', NULL) == '#UNDERSCORE') ? '_' : '-';
+    $titleTokens = token_replace($titleTokens, 'property', 'Property Suite');
+    foreach ($data as $key => $value) { //change out the values for the tokens with the values of the keys, this means any token can be used here from the property list
       
-      $titleTokens = str_replace( $key, urldecode( $value ), $titleTokens );
+      $titleTokens = str_replace($key, urldecode($value), $titleTokens);
       
     }
     
     //Prepare Node Fields && Location
-    //-> leave this alone for right now, converting spaces $titleTokens = str_replace( " ", $replacement, $titleTokens );
-    $title = preg_replace( '/[^(\x20-\x7F)\x0A]*/', '', $titleTokens ); //strip out non-ascii
-    $title = str_replace( '&', 'And', $title ); //Unforntunately, you can't have ampersands in node titles, ;(
+    //-> leave this alone for right now, converting spaces $titleTokens = str_replace(" ", $replacement, $titleTokens);
+    $title = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $titleTokens); //strip out non-ascii
+    $title = str_replace('&', 'And', $title); //Unforntunately, you can't have ampersands in node titles, ;(
     
-    $propertyKey      = (string) token_replace( variable_get( 'ram_property_property_key', '[Mls_Num]' ), 'property', 'Property Suite' );
+    $propertyKey      = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite');
     $propertyKeyValue = $data[$propertyKey]; //This is the value that needs to get passed to the _nodeSave, so we can identify it later for re-cache
     
-    if ( !empty( $title ) ) { //If we do not have a title, kill the import
+    if (!empty($title)) { //If we do not have a title, kill the import
       
-      $node = propertyTrans::_nodePrepare( trim ( ucwords( strtolower ( urldecode( $title ) ) ) ) ); // 0 should always be the node title, prepare the node object
+      $node = propertyTrans::_nodePrepare(trim (ucwords(strtolower (urldecode($title))))); // 0 should always be the node title, prepare the node object
           
-      unset( $fieldNames[0] ); //Kill off the Node Title
-      foreach ( $fieldNames as $field ) {
+      unset($fieldNames[0]); //Kill off the Node Title
+      foreach ($fieldNames as $field) {
         
-        $key = "[" .variable_get( $field, null ) ."]";
-        $key = (string) token_replace( $key, 'property', 'Property Suite' );
+        $key = "[" .variable_get($field, NULL) ."]";
+        $key = (string) token_replace($key, 'property', 'Property Suite');
         
         $value = (string) $data[$key];
-        $value = trim ( urldecode( $value ) );
-        $value = preg_replace( '/[^(\x20-\x7F)\x0A]*/', '', $value ); //strip out non-ascii
+        $value = trim (urldecode($value));
+        $value = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $value); //strip out non-ascii
         
-        $field = str_replace( 'property_content_type_' .variable_get( 'property_content_type', null ) .'_', '', $field ); //Turn the field into a form that the node recognizes
+        $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field); //Turn the field into a form that the node recognizes
         
-        if ( strstr( $field, "location" ) ) { //if it is a location field, put into the node save differently
+        if (strstr($field, "location")) { //if it is a location field, put into the node save differently
           
-          if ( !empty( $value ) ) {
+          if (!empty($value)) {
             
-            $location[$field] = trim( $value );
+            $location[$field] = trim($value);
           
           }
           
-        } else if ( strstr( $key, variable_get( 'ram_property_image_key', 'imagesavailable' ) ) ) { //If the ley matches the image field map
+        } else if (strstr($key, variable_get('ram_property_image_key', 'imagesavailable'))) { //If the ley matches the image field map
           
           $imageField = $field;
           
         } else { // else it's a cck field, and we use a diffrerent parser
           
-          if ( !empty( $value ) ) { //If there is a value, use it - images should ignore this, there is a lot more we can do with CCK in the future, this is really simple eval right now
+          if (!empty($value)) { //If there is a value, use it - images should ignore this, there is a lot more we can do with CCK in the future, this is really simple eval right now
             
             //if the field has either a ; or a , then convert it to an array, if this cck field has anything more than 1 set as the number of values
             $cck = $contentFields[$field];
             
-            if ( $cck['multiple'] == 1 ) { //If the cck field is multiple, break up the values by either ; or ,
+            if ($cck['multiple'] == 1) { //If the cck field is multiple, break up the values by either ; or ,
               
-              $value = ( strstr( $value, ";" ) ) ? explode( ";", $value ) : explode( ",", $value ) ;
+              $value = (strstr($value, ";")) ? explode(";", $value) : explode(",", $value) ;
               
             }
             
-            if ( is_array( $value ) && count( $value ) > 0 ) { //If there is a value and it is not empty, then do it
+            if (is_array($value) && count($value) > 0) { //If there is a value and it is not empty, then do it
               
-              foreach ( $value as $multiple => $allowed ) {
+              foreach ($value as $multiple => $allowed) {
                   
-                array_push( $node->$field, array( 'value' => t( trim( $allowed ) ) ) );
+                array_push($node->$field, array('value' => t(trim($allowed))));
                 
               }
               
             } else {
                 
-              array_push( $node->$field, array( 'value' => t( trim( $value ) ) ) ); //make sure this is a string when it becomes a node
+              array_push($node->$field, array('value' => t(trim($value)))); //make sure this is a string when it becomes a node
               
             }
   
@@ -213,30 +213,30 @@ class ramManager extends propertyManager {
         
       }
       
-      if ( $location ) { //If we have a location, set it
+      if ($location) { //If we have a location, set it
         
-        $node = propertyTrans::_nodeLocation( $node, $location );
+        $node = propertyTrans::_nodeLocation($node, $location);
         
       }
                
       //Prepare Images for Insertion into the node
-      $imageKEY = variable_get( 'ram_property_image_key', 'imagesavailable' );
-      $images   = explode( "-", $data[$imageKEY] );
+      $imageKEY = variable_get('ram_property_image_key', 'imagesavailable');
+      $images   = explode("-", $data[$imageKEY]);
 
-      if ( is_array( $images ) && !empty( $images ) ) { //If there are images in this array, run em because they have already been cached!
+      if (is_array($images) && !empty($images)) { //If there are images in this array, run em because they have already been cached!
         
-        foreach ( $images as $image ) { //blow out images, and store them
+        foreach ($images as $image) { //blow out images, and store them
           
-          $node = propertyTrans::_nodeImage( $node, $imageField, $image );
+          $node = propertyTrans::_nodeImage($node, $imageField, $image);
                       
         }
         
       }
           
       //save node, with agent ID
-      if ( is_object( $node ) ) {
+      if (is_object($node)) {
         
-        propertyTrans::_nodeSave( $node, $agent, $propertyKeyValue, 'Insert' ); //@todo add an op to this, so it messages correctly
+        propertyTrans::_nodeSave($node, $agent, $propertyKeyValue, 'Insert'); //@todo add an op to this, so it messages correctly
         
       }   
       
@@ -249,119 +249,119 @@ class ramManager extends propertyManager {
    * @category Module Batch
    * Is called as a method of the batch process, as batch runs, the update is invoked
    */
-  public function _updateProperties( $data = null ) {
+  public function _updateProperties($data = NULL) {
  
     $data = (array) $data; //convert object to array, easier to play with this way
     
     //Get node ID from imported nids and create node
-    $importedProperties = propertyTrans::_getImportedProperties( variable_get( 'ram_property_property_key', '[Mls_Num]' ), variable_get( 'ram_property_date_insertPropertiesed', '[Date_Inserted]' ), variable_get( 'ram_property_date_modified', '[Date_Modified]' ) ); //Get the properties that have already been imported
-    $propertyKey        = (string) token_replace( variable_get( 'ram_property_property_key', '[Mls_Num]' ), 'property', 'Property Suite' );
+    $importedProperties = propertyTrans::_getImportedProperties(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_date_insertPropertiesed', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]')); //Get the properties that have already been imported
+    $propertyKey        = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite');
     $nid                = $importedProperties[$data[$propertyKey]]['nid'];
     
-    if ( is_numeric( $nid ) && $nid > 0 ) { //Double check to make sure the nid is valid
+    if (is_numeric($nid) && $nid > 0) { //Double check to make sure the nid is valid
       
-      $node = node_load( $nid );
+      $node = node_load($nid);
       
     }
     
     //get agent user id @ todo make this into one function for both update and insert for all this stuff
-    $agentToken = token_replace( variable_get( 'ram_property_broker_key', '[Agent_ID]' ), 'property', 'Property Suite' );
+    $agentToken = token_replace(variable_get('ram_property_broker_key', '[Agent_ID]'), 'property', 'Property Suite');
     $agentID    = $data[$agentToken]; //Agent token is the proper field to query from the data
-    $agent      = null;
-    $agent      = propertyTrans::_loadBroker( $agentID );//take the broker id, and make the author of this node the, returns a valid user object
+    $agent      = NULL;
+    $agent      = propertyTrans::_loadBroker($agentID);//take the broker id, and make the author of this node the, returns a valid user object
 
     //prepare node with title
-    $fieldNames    = variable_get( 'property_content_type_field_names', null );
-    $contentFields = content_fields( null, variable_get( 'property_content_type', null ) ); //This is kinda unreliable, but I don't have another option
+    $fieldNames    = variable_get('property_content_type_field_names', NULL);
+    $contentFields = content_fields(NULL, variable_get('property_content_type', NULL)); //This is kinda unreliable, but I don't have another option
 
-    $titleTokens = variable_get( $fieldNames[0], null );
-    $replacement = ( variable_get( 'property_content_type_token_ascii_replacement', null ) == '#UNDERSCORE' ) ? '_' : '-';
-    $titleTokens = token_replace( $titleTokens, 'property', 'Property Suite' );
-    foreach ( $data as $key => $value ) { //change out the values for the tokens with the values of the keys, this means any token can be used here from the property list
+    $titleTokens = variable_get($fieldNames[0], NULL);
+    $replacement = (variable_get('property_content_type_token_ascii_replacement', NULL) == '#UNDERSCORE') ? '_' : '-';
+    $titleTokens = token_replace($titleTokens, 'property', 'Property Suite');
+    foreach ($data as $key => $value) { //change out the values for the tokens with the values of the keys, this means any token can be used here from the property list
       
-      $titleTokens = str_replace( $key, urldecode( $value ), $titleTokens );
+      $titleTokens = str_replace($key, urldecode($value), $titleTokens);
       
     }
     
     //Prepare Node Fields && Location
-    //-> leave this alone for right now, converting psaces $titleTokens = str_replace( " ", $replacement, $titleTokens );
-    $title = preg_replace( '/[^(\x20-\x7F)\x0A]*/', '', $titleTokens ); //strip out non-ascii
-    $title = str_replace( '&', 'And', $title ); //Unforntunately, you can't have ampersands in node titles, ;(
+    //-> leave this alone for right now, converting psaces $titleTokens = str_replace(" ", $replacement, $titleTokens);
+    $title = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $titleTokens); //strip out non-ascii
+    $title = str_replace('&', 'And', $title); //Unforntunately, you can't have ampersands in node titles, ;(
     
-    $propertyKey      = (string) token_replace( variable_get( 'ram_property_property_key', '[Mls_Num]' ), 'property', 'Property Suite' ); //Why do I need this?
+    $propertyKey      = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite'); //Why do I need this?
     $propertyKeyValue = $data[$propertyKey]; //This is the value that needs to get passed to the _nodeSave, so we can identify it later for re-cache
     
-    if ( !empty( $title ) && is_object( $node ) ) { //If we do not have a title and the node is not an object, kill the import
+    if (!empty($title) && is_object($node)) { //If we do not have a title and the node is not an object, kill the import
       
       $node->title = $title;
       
       /**
        * Unset Unwanted Fields that do not have a token associated with them - this will keep any un-tokened fields from running through the next loop
        */
-      unset( $fieldNames[0] ); //Kill off the Node Title
+      unset($fieldNames[0]); //Kill off the Node Title
       
-      foreach ( $fieldNames as $key => $field ) {
+      foreach ($fieldNames as $key => $field) {
         
-        $token = variable_get( $field, null );
+        $token = variable_get($field, NULL);
         
-        if ( $token == 'NULL' ) { //If we have a NULL value, then we don't want to have the field, just unset it
+        if ($token == 'NULL') { //If we have a NULL value, then we don't want to have the field, just unset it
           
-          unset( $fieldNames[$key] );
+          unset($fieldNames[$key]);
           
         }
         
       }
       
-      foreach ( $fieldNames as $field ) {
+      foreach ($fieldNames as $field) {
         
-        $key = "[" .variable_get( $field, null ) ."]";
-        $key = (string) token_replace( $key, 'property', 'Property Suite' );
+        $key = "[" .variable_get($field, NULL) ."]";
+        $key = (string) token_replace($key, 'property', 'Property Suite');
         
         $value = (string) $data[$key];
-        $value = trim ( urldecode( $value ) );
-        $value = preg_replace( '/[^(\x20-\x7F)\x0A]*/', '', $value ); //strip out non-ascii
+        $value = trim (urldecode($value));
+        $value = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $value); //strip out non-ascii
         
-        $field = str_replace( 'property_content_type_' .variable_get( 'property_content_type', null ) .'_', '', $field ); //Turn the field into a form that the node recognizes
+        $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field); //Turn the field into a form that the node recognizes
         
-        if ( strstr( $field, "location" ) ) { //if it is a location field, put into the node save differently
+        if (strstr($field, "location")) { //if it is a location field, put into the node save differently
           
-          if ( !empty( $value ) ) {
+          if (!empty($value)) {
             
-            $location[$field] = trim( $value );
+            $location[$field] = trim($value);
           
           }
           
-        } else if ( strstr( $key, variable_get( 'ram_property_image_key', 'imagesavailable' ) ) ) { //If the key matches the image field map, set the image field
+        } else if (strstr($key, variable_get('ram_property_image_key', 'imagesavailable'))) { //If the key matches the image field map, set the image field
           
           $imageField = $field;
           
         } else { // else it's a cck field, and we use a diffrerent parser
           
-          if ( !empty( $value ) ) { //If there is a value, use it - images should ignore this, there is a lot more we can do with CCK in the future, this is really simple eval right now
+          if (!empty($value)) { //If there is a value, use it - images should ignore this, there is a lot more we can do with CCK in the future, this is really simple eval right now
             
             //if the field has either a ; or a , then convert it to an array, if this cck field has anything more than 1 set as the number of values
             $cck = $contentFields[$field];
             
-            if ( $cck['multiple'] == 1 ) { //If the cck field is multiple, break up the values by either ; or ,
+            if ($cck['multiple'] == 1) { //If the cck field is multiple, break up the values by either ; or ,
               
-              $value = ( strstr( $value, ";" ) ) ? explode( ";", $value ) : explode( ",", $value ) ;
+              $value = (strstr($value, ";")) ? explode(";", $value) : explode(",", $value) ;
               
             }
             
-            if ( is_array( $value ) ) { //If there is a value and it is not empty, then do it
+            if (is_array($value)) { //If there is a value and it is not empty, then do it
               
               $node->$field = array(); //clear the array
               
-              foreach ( $value as $multiple => $allowed ) {
+              foreach ($value as $multiple => $allowed) {
                   
-                array_push( $node->$field, array( 'value' => t( trim( $allowed  ) ) ) ); //unset the original value for this field, then push it to the end
+                array_push($node->$field, array('value' => t(trim($allowed )))); //unset the original value for this field, then push it to the end
                 
               }
               
             } else { //If it is not multiple
                 
               $node->$field = array();
-              array_push( $node->$field, array( 'value' => t( trim( $value ) ) ) ); //make sure this is a string when it becomes a node
+              array_push($node->$field, array('value' => t(trim($value)))); //make sure this is a string when it becomes a node
               
             }
   
@@ -371,26 +371,26 @@ class ramManager extends propertyManager {
         
       }
       
-      if ( $location ) { //If we have a location, set it
+      if ($location) { //If we have a location, set it
         
-        unset( $node->locations );
-        $node = propertyTrans::_nodeLocation( $node, $location );
+        unset($node->locations);
+        $node = propertyTrans::_nodeLocation($node, $location);
         
       }
     
       //Prepare Images for Insertion into the node
-      $imageKEY = variable_get( 'ram_property_image_key', 'imagesavailable' );
-      $images   = explode( "-", $data[$imageKEY] );
-      if ( is_array( $images ) && !empty( $images ) ) { //We have to compare the images, so they re-order properly.
+      $imageKEY = variable_get('ram_property_image_key', 'imagesavailable');
+      $images   = explode("-", $data[$imageKEY]);
+      if (is_array($images) && !empty($images)) { //We have to compare the images, so they re-order properly.
         
         //Remove Orphaned Images here first
-        if ( is_array( $node->$imageField ) ) { //We have to take the node field to get the proper name from the CCK field
+        if (is_array($node->$imageField)) { //We have to take the node field to get the proper name from the CCK field
           
-          foreach ( $node->$imageField as $key => $image ) { //get the images from the image field, and run the update
+          foreach ($node->$imageField as $key => $image) { //get the images from the image field, and run the update
   
-            if ( !in_array( $image['filename'], $images ) ) { //If we are not in the array, get rid of this image!
+            if (!in_array($image['filename'], $images)) { //If we are not in the array, get rid of this image!
               
-              field_file_delete( $image, TRUE ); //Delete the file from the system entirely, force this!
+              field_file_delete($image, TRUE); //Delete the file from the system entirely, force this!
               
               //It's so simple, just make the image have no FID to delete, since this is a $variable, we have to tranlsate
               $parents = $node->$imageField;
@@ -403,20 +403,20 @@ class ramManager extends propertyManager {
 
         }
         
-        foreach ( $images as $image ) { //blow out images, and store them
+        foreach ($images as $image) { //blow out images, and store them
           
-          $node = propertyTrans::_nodeImage( $node, $imageField, $image );
+          $node = propertyTrans::_nodeImage($node, $imageField, $image);
          
         }
         
       }
       
       //save node, with agent ID, and evaluate if it needs to be updated, unpublished, or deleted
-      if ( is_object( $node ) ) {
+      if (is_object($node)) {
 
         $node->status = 1; //publish me and save, since we may have been unpublished
         
-        propertyTrans::_nodeSave( $node, $agent, $propertyKeyValue, 'Update' );
+        propertyTrans::_nodeSave($node, $agent, $propertyKeyValue, 'Update');
         
       }
       
@@ -437,48 +437,40 @@ class ramCache extends propertyCache {
   
   /**
    * @name _retrieveNewCache()
-   * return boolean true false new cache created
+   * return boolean true FALSE new cache created
    */
   public static function _retrieveNewCache() { //commit that xml query to the $manager
     
-    $areas = explode( "\n", variable_get( 'ram_property_areas', null ) );
-    $areaStr = array();
-    foreach ( $areas as $key=> $value ) {
-      
-      $areaStr[] = urlencode( trim( $value ) );
-      
-    }
-    
     $query = array(
-      'numresults'  => variable_get( 'property_cache_maximum_limit', 9999 ),
-      'offset'      => 0,
-      'orderby'     => variable_get( 'ram_property_orderby', 'Area ASC' )
+      'numresults' => variable_get('RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT', RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT),
+      'offset'     => 0,
+      'orderby'    => variable_get('ram_property_orderby', 'Area ASC'),
     );
     
     $manager = new ramManager;
-    $manager->qry = ramTrans::_query( $query );
+    $manager->qry = ramTrans::_query($query);
     
-    $newCache = propertyTrans::_commit( 'runtime', $manager );
+    $newCache = propertyTrans::_commit('runtime', $manager);
     
-    if ( !$newCache ) {
+    if (!$newCache) {
       
       $watchdogMsg = array(
-        '!msg' => t( 'RAM Property Module could not update the cache with new data from the RAM API Server.' ),
-      );
-      watchdog( t( 'RAM Property' ), t( '!msg', $watchdogMsg ), array(), WATCHDOG_CRITICAL, 'Cache' ); //watchdog log
+        '!msg' => t('RAM Property Module could not update the cache with new data from the RAM API Server.'),
+     );
+      watchdog(t('RAM Property'), t('!msg', $watchdogMsg), array(), WATCHDOG_CRITICAL, 'Cache'); //watchdog log
         
-      return false;
+      return FALSE;
     
-    } //If for some reason this bails out, then return false
+    } //If for some reason this bails out, then return FALSE
     
-    variable_set( 'ram_property_connect_log', $newCache['log'] );
+    variable_set('ram_property_connect_log', $newCache['log']);
     
     $watchdogMsg = array(
-      '!msg' => t( 'RAM Property Module sucessfully updated the cache with new data from the RAM API Server.' ),
-    );
-    watchdog( t( 'RAM Property' ), t( '!msg', $watchdogMsg ), array(), WATCHDOG_INFO, 'Cache' ); //watchdog log
+      '!msg' => t('RAM Property Module sucessfully updated the cache with new data from the RAM API Server.'),
+   );
+    watchdog(t('RAM Property'), t('!msg', $watchdogMsg), array(), WATCHDOG_INFO, 'Cache'); //watchdog log
   
-    propertyCache::_setCache( 'property_cache_new_cache', $newCache['data'] );
+    propertyCache::_setCache('property_cache_new_cache', $newCache['data']);
     
     return true;
     
@@ -486,16 +478,16 @@ class ramCache extends propertyCache {
   
   /**
    * @name _analyzeNewCache()
-   * return boolean true false analyze new cache
+   * return boolean true FALSE analyze new cache
    */
   public static function _analyzeNewCache() { //retool the xml object into a new array, using the last insert, update, modified data to see what is out of range
       
-    propertyTrans::_analyzeCache( variable_get( 'ram_property_property_key', '[Mls_Num]' ), variable_get( 'ram_property_image_key', 'imagesavailable' ), variable_get( 'ram_property_image_path', null ), variable_get( 'ram_property_date_insertPropertiesed', '[Date_Inserted]' ), variable_get( 'ram_property_date_modified', '[Date_Modified]' ) );
+    propertyTrans::_analyzeCache(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_insertPropertiesed', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
       
-    if ( variable_get( 'ram_property_setup', null ) == 'cache' ) {
+    if (variable_get('ram_property_setup', NULL) == 'cache') {
       
-      variable_set( 'ram_property_setup', 'content' );
-      variable_set( 'ram_property_connection_cached', true );
+      variable_set('ram_property_setup', 'content');
+      variable_set('ram_property_connection_cached', true);
       
     }
     
@@ -505,11 +497,11 @@ class ramCache extends propertyCache {
   
   /**
    * @name _analyzeNewCacheImages()
-   * return boolean true false analyze new cache
+   * return boolean true FALSE analyze new cache
    */
   public static function _analyzeNewCacheImages() { //retool the xml object into a new array, using the last insert, update, modified data to see what is out of range
       
-    propertyTrans::_analyzeCacheImages( variable_get( 'ram_property_property_key', '[Mls_Num]' ), variable_get( 'ram_property_image_key', 'imagesavailable' ), variable_get( 'ram_property_image_path', null ), variable_get( 'ram_property_date_insertPropertiesed', '[Date_Inserted]' ), variable_get( 'ram_property_date_modified', '[Date_Modified]' ) );
+    propertyTrans::_analyzeCacheImages(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_insertPropertiesed', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
     
     return true;
     
@@ -527,14 +519,14 @@ class ramTrans extends propertyTrans {
    * @param array $query = a compiled array that is translated into a search function that RAM accepts
    * @return xml returns a valid XML object
    */
-  public static function _query( $query = array() ) {
+  public static function _query($query = array()) {
     
     $header = array(
-      'website'   => variable_get( 'ram_property_website', null ),
-      'ipaddress' => variable_get( 'ram_property_ipaddress', null ),
-    );
+      'website'   => variable_get('ram_property_website', NULL),
+      'ipaddress' => variable_get('ram_property_ipaddress', NULL),
+   );
     
-    $queries = array_merge( $header, $query );
+    $queries = array_merge($header, $query);
     
     $xml = new DOMDocument();
     $xml->formatOutput = true;
@@ -543,17 +535,17 @@ class ramTrans extends propertyTrans {
     $rss->setAttribute('version', '2.0');
     $xml->appendChild($rss); 
     
-    $search = $xml->createElement( "search" );
-    $xml->appendChild( $search );
+    $search = $xml->createElement("search");
+    $xml->appendChild($search);
     
-    foreach ( $queries as $key => $value ) {
+    foreach ($queries as $key => $value) {
       
-      $key = $xml->createElement( (string) token_replace( $key, 'property', 'Property Suite' ) ); //replace token values with original values
+      $key = $xml->createElement((string) token_replace($key, 'property', 'Property Suite')); //replace token values with original values
       $key->appendChild(
-        $xml->createTextNode( $value )
-      );
+        $xml->createTextNode($value)
+     );
       
-      $search->appendChild( $key );
+      $search->appendChild($key);
       
     }
     
@@ -576,25 +568,25 @@ class ramAdmin extends propertyAdmin {
   public static function _runCron() {
     
     date_default_timezone_set('America/Denver'); //Because RAM Runs in the Denver MST Time Zone, this has to get set here to America/Denver
-    $semaphore   = variable_get( 'ram_property_cron_run_semaphore', 'recache' ); //What stage of cron are we running?
-    $currentTime = date( "H:00", strtotime( "now" ) ); //find out the current time
-    $cronTime    = variable_get( 'ram_property_batch_cron_start_time', '00:00' );
-    $timeExclude = variable_get( 'ram_property_batch_cron_time_of_day_exclude', array() );
-    $insertBatch = propertyCache::_getCache( 'property_cache_insert_items' );
-    $updateBatch = propertyCache::_getCache( 'property_cache_update_items' );
-    $insertBatchImages = propertyCache::_getCache( 'property_cache_insert_images' );
-    $updateBatchImages = propertyCache::_getCache( 'property_cache_update_images' );
+    $semaphore   = variable_get('ram_property_cron_run_semaphore', 'recache'); //What stage of cron are we running?
+    $currentTime = date("H:00", strtotime("now")); //find out the current time
+    $cronTime    = variable_get('ram_property_batch_cron_start_time', '00:00');
+    $timeExclude = variable_get('ram_property_batch_cron_time_of_day_exclude', array());
+    $insertBatch = propertyCache::_getCache('property_cache_insert_items');
+    $updateBatch = propertyCache::_getCache('property_cache_update_items');
+    $insertBatchImages = propertyCache::_getCache('property_cache_insert_images');
+    $updateBatchImages = propertyCache::_getCache('property_cache_update_images');
     
-    if ( empty( $insertBatch ) && empty( $updateBatch ) ) { //Sanity check for the semaphore
+    if (empty($insertBatch) && empty($updateBatch)) { //Sanity check for the semaphore
       
-      variable_set( 'ram_property_cron_run_semaphore', 'recache' );
+      variable_set('ram_property_cron_run_semaphore', 'recache');
       
     }
     
     //If we are not in disallowed times, && the start time is less than or equal to now
-    if ( !in_array( $currentTime, $timeExclude ) && $cronTime <= date( "H:i", strtotime( "now" ) ) ) {
+    if (!in_array($currentTime, $timeExclude) && $cronTime <= date("H:i", strtotime("now"))) {
       
-      if ( $semaphore == 'recache' ) { //If we are re-caching, make sure it doesn't fall in disallowed times, and the time is later than the start time, run it and change the semaphore
+      if ($semaphore == 'recache') { //If we are re-caching, make sure it doesn't fall in disallowed times, and the time is later than the start time, run it and change the semaphore
         
         //print "Retrieving Cache\n";
         ramCache::_retrieveNewCache();
@@ -604,47 +596,47 @@ class ramAdmin extends propertyAdmin {
         ramCache::_analyzeNewCacheImages();
         //print "Images Analyzed, Exiting\n";
         
-        variable_set( 'ram_property_cron_run_semaphore', 'batch' );
+        variable_set('ram_property_cron_run_semaphore', 'batch');
         
-      } else if ( ( $semaphore == 'batch' && !empty( $insertBatchImages ) ) || ( $semaphore == 'batch' && !empty( $updateBatchImages ) ) ) { //else if we are batching images...
-        
-        $manager = new ramManager;
-        propertyTrans::_createShellBatchImages( $manager, variable_get( 'ram_property_batch_cron_limit', 10 ) );
-        
-        watchdog( t( 'RAM Property' ), t( 'Batching Images' ), array(), WATCHDOG_INFO, 'Cron Run' ); //watchdog log
-        
-      } else if ( ( $semaphore == 'batch' && !empty( $insertBatch ) ) || ( $semaphore == 'batch' && !empty( $updateBatch ) ) ) { //else if we are batching properties...
+      } else if (($semaphore == 'batch' && !empty($insertBatchImages)) || ($semaphore == 'batch' && !empty($updateBatchImages))) { //else if we are batching images...
         
         $manager = new ramManager;
-        propertyTrans::_createShellBatchProperties( $manager, variable_get( 'ram_property_batch_cron_limit', 10 ) );
+        propertyTrans::_createShellBatchImages($manager, variable_get('ram_property_batch_cron_limit', 10));
         
-        watchdog( t( 'RAM Property' ), t( 'Batching Properties' ), array(), WATCHDOG_INFO, 'Cron Run' ); //watchdog log
+        watchdog(t('RAM Property'), t('Batching Images'), array(), WATCHDOG_INFO, 'Cron Run'); //watchdog log
         
-      } else if ( $semaphore == 'batch' && empty( $insertBatch ) && empty( $updateBatch ) ) { //else if there are no batches to be inserted, set to re-cache
+      } else if (($semaphore == 'batch' && !empty($insertBatch)) || ($semaphore == 'batch' && !empty($updateBatch))) { //else if we are batching properties...
         
-        variable_set( 'ram_property_cron_run_semaphore', 'recache' );
+        $manager = new ramManager;
+        propertyTrans::_createShellBatchProperties($manager, variable_get('ram_property_batch_cron_limit', 10));
+        
+        watchdog(t('RAM Property'), t('Batching Properties'), array(), WATCHDOG_INFO, 'Cron Run'); //watchdog log
+        
+      } else if ($semaphore == 'batch' && empty($insertBatch) && empty($updateBatch)) { //else if there are no batches to be inserted, set to re-cache
+        
+        variable_set('ram_property_cron_run_semaphore', 'recache');
         
       }
       
       $watchdogMsg = array(
-        '!msg' => t( 'The RAM Property Module ran the !sempahore cron stage at !runtime. You may check the logs for any additional information.', array( '!sempahore' => $semaphore, '!runtime' => date( "H:i", strtotime( "now" ) ) ) ),
-      );
+        '!msg' => t('The RAM Property Module ran the !sempahore cron stage at !runtime. You may check the logs for any additional information.', array('!sempahore' => $semaphore, '!runtime' => date("H:i", strtotime("now")))),
+     );
       
-      watchdog( t( 'RAM Property' ), t( '!msg', $watchdogMsg ), array(), WATCHDOG_INFO, 'Cron Run' ); //watchdog log
+      watchdog(t('RAM Property'), t('!msg', $watchdogMsg), array(), WATCHDOG_INFO, 'Cron Run'); //watchdog log
       
       return true;
       
     } else { //Make a watchdog log, just someone can debug slow updates
       
       $watchdogMsg = array(
-        '!msg'         => t( 'The RAM Property Module could not run cron because of time restrictions entered by this module.' ),
+        '!msg'         => t('The RAM Property Module could not run cron because of time restrictions entered by this module.'),
         '!startTime'   => $cronTime,
         '!currentTime' => $currentTime,
-      );
+     );
       
-      watchdog( t( 'RAM Property' ), t( '!msg - Start Time !startTime : Current Time !currentTime', $watchdogMsg ), array(), WATCHDOG_INFO, 'Cron Run' ); //watchdog log
+      watchdog(t('RAM Property'), t('!msg - Start Time !startTime : Current Time !currentTime', $watchdogMsg), array(), WATCHDOG_INFO, 'Cron Run'); //watchdog log
       
-      return false;
+      return FALSE;
       
     }
     
@@ -658,186 +650,186 @@ class ramAdmin extends propertyAdmin {
     $requirements = array();
     
     //First Step, this is the connection string, without thism everything else breaks
-    $connection = variable_get( 'ram_property_connection_string', null );
-    $severity   = ( empty( $connection ) || $connection == false ) ? WATCHDOG_CRITICAL : WATCHDOG_OK;
-    $value      = ( empty( $connection ) || $connection == false ) ? 'No Connection String Established.' : variable_get( 'ram_property_connection_string', null );
-    $descr      = ( empty( $connection ) || $connection == false ) ? 'Please enter the host name and API file you wish to use for this RAM module. After you enter in a valid connection string, the system will automatically continue to the next step.' : null;
+    $connection = variable_get('ram_property_connection_string', NULL);
+    $severity   = (empty($connection) || $connection == FALSE) ? WATCHDOG_CRITICAL : WATCHDOG_OK;
+    $value      = (empty($connection) || $connection == FALSE) ? 'No Connection String Established.' : variable_get('ram_property_connection_string', NULL);
+    $descr      = (empty($connection) || $connection == FALSE) ? 'Please enter the host name and API file you wish to use for this RAM module. After you enter in a valid connection string, the system will automatically continue to the next step.' : NULL;
     
     $requirements['connection']['connection_string'] = array(
-      'title'       => t( 'API Connection String' ),
-      'value'       => t( $value ),
-      'description' => t( $descr ),
+      'title'       => t('API Connection String'),
+      'value'       => t($value),
+      'description' => t($descr),
       'severity'    => $severity
-    );
+   );
     
     //Connection Test
-    $tested   = variable_get( 'ram_property_connection_tested', null );
-    $severity = ( empty( $tested ) || $tested == false ) ? WATCHDOG_CRITICAL : WATCHDOG_OK;
-    $value    = ( empty( $tested ) || $tested == false ) ? 'Connection NOT established.' : 'Connection established.';
-    $descr    = ( empty( $tested ) || $tested == false ) ? null : null;
+    $tested   = variable_get('ram_property_connection_tested', NULL);
+    $severity = (empty($tested) || $tested == FALSE) ? WATCHDOG_CRITICAL : WATCHDOG_OK;
+    $value    = (empty($tested) || $tested == FALSE) ? 'Connection NOT established.' : 'Connection established.';
+    $descr    = (empty($tested) || $tested == FALSE) ? NULL : NULL;
     
     $requirements['connection']['test_connection'] = array(
-      'title'       => t( 'Server Connection Test' ),
-      'value'       => t( $value ),
-      'description' => t( $descr ),
+      'title'       => t('Server Connection Test'),
+      'value'       => t($value),
+      'description' => t($descr),
       'severity'    => $severity
-    );
+   );
     
     //Tokens
-    $tokenize = variable_get( 'property_connection_tokenized', null );
-    $severity = ( empty( $tokenize ) || $tokenize == false ) ? WATCHDOG_ALERT : WATCHDOG_OK;
-    $value    = ( empty( $tokenize ) || $tokenize == false ) ? 'Tokens Not Generated.' : 'Tokens Generated.';
-    $descr    = ( empty( $tokenize ) || $tokenize == false ) ? 'Please press generate tokens to re-cache the tokens. You will then be able to map an association to a content type. Regenterating tokens resets this section, so you will have to update your content type after this.' : null;
+    $tokenize = variable_get('property_connection_tokenized', NULL);
+    $severity = (empty($tokenize) || $tokenize == FALSE) ? WATCHDOG_ALERT : WATCHDOG_OK;
+    $value    = (empty($tokenize) || $tokenize == FALSE) ? 'Tokens Not Generated.' : 'Tokens Generated.';
+    $descr    = (empty($tokenize) || $tokenize == FALSE) ? 'Please press generate tokens to re-cache the tokens. You will then be able to map an association to a content type. Regenterating tokens resets this section, so you will have to update your content type after this.' : NULL;
     
     $requirements['setup']['tokens'] = array(
-      'title'       => t( 'Tokens' ),
-      'value'       => t( $value ),
-      'description' => t( $descr ),
+      'title'       => t('Tokens'),
+      'value'       => t($value),
+      'description' => t($descr),
       'severity'    => $severity
-    );
+   );
     
     //filters
-    $filters  = variable_get( 'ram_property_connection_filtered', null );
-    $severity = ( empty( $filters ) || $filters != 'complete' ) ? WATCHDOG_ALERT : WATCHDOG_OK;
-    $value    = ( empty( $filters ) || $filters != 'complete' ) ? 'Filters not created.' : 'Filters Created.';
-    $descr    = ( empty( $filters ) || $filters != 'complete' ) ? 'Please add a set of area filters (at the very least) so you can filter ther results by area.' : null;
+    $filters  = variable_get('ram_property_connection_filtered', NULL);
+    $severity = (empty($filters) || $filters != 'complete') ? WATCHDOG_ALERT : WATCHDOG_OK;
+    $value    = (empty($filters) || $filters != 'complete') ? 'Filters not created.' : 'Filters Created.';
+    $descr    = (empty($filters) || $filters != 'complete') ? 'Please add a set of area filters (at the very least) so you can filter ther results by area.' : NULL;
     
     $requirements['setup']['filters'] = array(
-      'title'       => t( 'Filters' ),
-      'value'       => t( $value ),
-      'description' => t( $descr ),
+      'title'       => t('Filters'),
+      'value'       => t($value),
+      'description' => t($descr),
       'severity'    => $severity
-    );
+   );
     
     //Cache
-    $cached  = variable_get( 'ram_property_connection_cached', null );
-    $severity = ( empty( $cached ) || $cached != 'complete' ) ? WATCHDOG_ALERT : WATCHDOG_OK;
-    $value    = ( empty( $cached ) || $cached != 'complete' ) ? 'First Cache Not Completed' : 'First Cache Compeleted.';
-    $descr    = ( empty( $cached ) || $cached != 'complete' ) ? 'Please set the first cache for the site, since this is most likely a large import, we want to run this manually the first time so we can see how long and how many records are produced.' : null;
+    $cached  = variable_get('ram_property_connection_cached', NULL);
+    $severity = (empty($cached) || $cached != 'complete') ? WATCHDOG_ALERT : WATCHDOG_OK;
+    $value    = (empty($cached) || $cached != 'complete') ? 'First Cache Not Completed' : 'First Cache Compeleted.';
+    $descr    = (empty($cached) || $cached != 'complete') ? 'Please set the first cache for the site, since this is most likely a large import, we want to run this manually the first time so we can see how long and how many records are produced.' : NULL;
     
     $requirements['setup']['runtime_cache'] = array(
-      'title'       => t( 'First Run: Cache All' ),
-      'value'       => t( $value ),
-      'description' => t( $descr ),
+      'title'       => t('First Run: Cache All'),
+      'value'       => t($value),
+      'description' => t($descr),
       'severity'    => $severity
-    );
+   );
     
     //content types
-    $content  = variable_get( 'ram_property_setup', null );
-    $severity = ( empty( $content ) || $content != 'complete' ) ? WATCHDOG_ALERT : WATCHDOG_OK;
-    $value    = ( empty( $content ) || $content != 'complete' ) ? 'Content Mapping Not Completed' : 'Content Mapping Completed.';
-    $descr    = ( empty( $content ) || $content != 'complete' ) ? 'Please select a content type to import, and then complete the mapping process by assigning tokens to the fields and pressing save configuration.' : null;
+    $content  = variable_get('ram_property_setup', NULL);
+    $severity = (empty($content) || $content != 'complete') ? WATCHDOG_ALERT : WATCHDOG_OK;
+    $value    = (empty($content) || $content != 'complete') ? 'Content Mapping Not Completed' : 'Content Mapping Completed.';
+    $descr    = (empty($content) || $content != 'complete') ? 'Please select a content type to import, and then complete the mapping process by assigning tokens to the fields and pressing save configuration.' : NULL;
     
     $requirements['setup']['content'] = array(
-      'title'       => t( 'Mapping' ),
-      'value'       => t( $value ),
-      'description' => t( $descr ),
+      'title'       => t('Mapping'),
+      'value'       => t($value),
+      'description' => t($descr),
       'severity'    => $severity
-    );
+   );
 
     //first run - import
-    $firstrun   = variable_get( 'property_firstrun_imported', null );
-    $severity = ( empty( $firstrun ) || $firstrun == false ) ? WATCHDOG_ALERT : WATCHDOG_OK;
-    $value    = ( empty( $firstrun ) || $firstrun == false ) ? 'First Batch Import Not Completed' : 'First Batch Import Compeleted.';
-    $descr    = ( empty( $firstrun ) || $firstrun == false ) ? 'Please import the first batch and make adjustments to your import. You can adjust the number of batches you wish to run ( Default: 1 batch ), This will complete the setup process.' : null;
+    $firstrun   = variable_get('property_firstrun_imported', NULL);
+    $severity = (empty($firstrun) || $firstrun == FALSE) ? WATCHDOG_ALERT : WATCHDOG_OK;
+    $value    = (empty($firstrun) || $firstrun == FALSE) ? 'First Batch Import Not Completed' : 'First Batch Import Compeleted.';
+    $descr    = (empty($firstrun) || $firstrun == FALSE) ? 'Please import the first batch and make adjustments to your import. You can adjust the number of batches you wish to run (Default: 1 batch), This will complete the setup process.' : NULL;
     
     $requirements['setup']['runtime_import'] = array(
-      'title'       => t( 'First Run: First Import Batch' ),
-      'value'       => t( $value ),
-      'description' => t( $descr ),
+      'title'       => t('First Run: First Import Batch'),
+      'value'       => t($value),
+      'description' => t($descr),
       'severity'    => $severity
-    );
+   );
     
     //runtime
     $totals = propertyTrans::_getTotals(); //Get the totals from the last cache call
-    if ( $totals['chunks'] > 0 ) {
+    if ($totals['chunks'] > 0) {
       
       $msg = array(
         '!total' => $totals['total'],
         '!count' => $totals['chunks']
-      );
+     );
       
       $requirements['runtime']['items'] = array(
-        'title'       => t( 'Total Items' ),
-        'value'       => t( '!total records, in !count chunks.', $msg ),
+        'title'       => t('Total Items'),
+        'value'       => t('!total records, in !count chunks.', $msg),
         'severity'    => REQUIREMENT_INFO
-      );
+     );
       
       $msg = array(
         '!count' => $totals['insert']
-      );
+     );
       
       $requirements['runtime']['inserts'] = array(
-        'title'       => t( 'Total Items to insert' ),
-        'value'       => t( '!count batches to insert.', $msg ),
+        'title'       => t('Total Items to insert'),
+        'value'       => t('!count batches to insert.', $msg),
         'severity'    => REQUIREMENT_INFO
-      );
+     );
       
       $msg = array(
         '!count' => $totals['update']
-      );
+     );
       
       $requirements['runtime']['updates'] = array(
-        'title'       => t( 'Total Items to update' ),
-        'value'       => t( '!count batches to update.', $msg ),
+        'title'       => t('Total Items to update'),
+        'value'       => t('!count batches to update.', $msg),
         'severity'    => REQUIREMENT_INFO
-      );
+     );
       
     } else {
       
       $requirements['runtime']['no_cache'] = array(
-        'title'       => t( 'No Cache Created.' ),
-        'value'       => t( 'Sorry, there is no cache created, please recreate the cache. This may take a few moments to complete. NOTE: If All Property batches have completed, you will also see this message.' ),
+        'title'       => t('No Cache Created.'),
+        'value'       => t('Sorry, there is no cache created, please recreate the cache. This may take a few moments to complete. NOTE: If All Property batches have completed, you will also see this message.'),
         'severity'    => REQUIREMENT_WARNING
-      );
+     );
       
-      variable_set( 'ram_property_cron_run_semaphore', 'recache' );
+      variable_set('ram_property_cron_run_semaphore', 'recache');
       
     }
     
     //Image Totals
     $totals = propertyTrans::_getTotalsImages(); //Get the totals from the last cache call
-    //krumo( $totals );
-    if ( $totals['chunks'] > 0 ) {
+    //krumo($totals);
+    if ($totals['chunks'] > 0) {
       
       $msg = array(
         '!total' => $totals['total'],
         '!count' => $totals['chunks']
-      );
+     );
       
       $requirements['runtime']['images'] = array(
-        'title'       => t( 'Total Images' ),
-        'value'       => t( '!total images, in !count chunks.', $msg ),
+        'title'       => t('Total Images'),
+        'value'       => t('!total images, in !count chunks.', $msg),
         'severity'    => REQUIREMENT_INFO
-      );
+     );
       
       $msg = array(
         '!count' => $totals['insert']
-      );
+     );
       
       $requirements['runtime']['image_inserts'] = array(
-        'title'       => t( 'Total Images to insert' ),
-        'value'       => t( '!count batches to insert.', $msg ),
+        'title'       => t('Total Images to insert'),
+        'value'       => t('!count batches to insert.', $msg),
         'severity'    => REQUIREMENT_INFO
-      );
+     );
       
       $msg = array(
         '!count' => $totals['update']
-      );
+     );
       
       $requirements['runtime']['image_updates'] = array(
-        'title'       => t( 'Total Images to update' ),
-        'value'       => t( '!count batches to update.', $msg ),
+        'title'       => t('Total Images to update'),
+        'value'       => t('!count batches to update.', $msg),
         'severity'    => REQUIREMENT_INFO
-      );
+     );
       
     } else {
       
       $requirements['runtime']['image_no_cache'] = array(
-        'title'       => t( 'No Image Caches Created.' ),
-        'value'       => t( 'Sorry, there is no image cache created, please recreate the cache. This may take a few moments to complete. NOTE: If All Image batches have completed, you will also see this message.' ),
+        'title'       => t('No Image Caches Created.'),
+        'value'       => t('Sorry, there is no image cache created, please recreate the cache. This may take a few moments to complete. NOTE: If All Image batches have completed, you will also see this message.'),
         'severity'    => REQUIREMENT_WARNING
-      );
+     );
       
     }
 

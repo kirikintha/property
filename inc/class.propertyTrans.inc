@@ -1254,6 +1254,10 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
   public static function _propertyRecordset( $propertyKey = null, $dateModified = null ) {
     
     $fieldNames    = variable_get( 'property_content_type_field_names', null );
+    //If we don't have a set of field names, return false;
+    if (empty($fieldNames)) { return false; }
+
+    //Run the property Type.
     $propertyType  = variable_get( 'property_content_type', null );
     
     foreach ( $fieldNames as $field ) {

@@ -16,7 +16,8 @@
  */
 
 //module definitions
-define( "RAM_PROPERTY_MODULE_PATH", drupal_get_path('module', 'ram_property') );
+define("RAM_PROPERTY_MODULE_PATH", drupal_get_path('module', 'ram_property'));
+define("RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT", 500);
 
 /**
  * Hook Menu
@@ -58,11 +59,11 @@ function ram_property_menu() {
  */
 function ram_property_init() {
     
-  if ( arg(0) == 'admin' && arg(2) == 'property_suite' || arg( 0 ) == 'batch' ) { //if we are in admin && in the property suite, include the admin form
+  if (arg(0) == 'admin' && arg(2) == 'property_suite' || arg(0) == 'batch') { //if we are in admin && in the property suite, include the admin form
     
-    include_once( RAM_PROPERTY_MODULE_PATH .'/inc/class.ram_property.inc' ); //class goes first
-    include_once( RAM_PROPERTY_MODULE_PATH .'/inc/admin.ram_property.inc' );
-    drupal_add_js( RAM_PROPERTY_MODULE_PATH .'/js/jquery.functions.js' ,'module', 'footer' );
+    include_once(RAM_PROPERTY_MODULE_PATH .'/inc/class.ram_property.inc'); //class goes first
+    include_once(RAM_PROPERTY_MODULE_PATH .'/inc/admin.ram_property.inc');
+    drupal_add_js(RAM_PROPERTY_MODULE_PATH .'/js/jquery.functions.js' ,'module', 'footer');
     
   }
   
@@ -77,22 +78,22 @@ function ram_property_init() {
  */
 function ram_property_cron_sh() { //Check to see if cron ran successfully, or has not run
   
-  include_once( RAM_PROPERTY_MODULE_PATH .'/inc/class.ram_property.inc' ); //class goes first, don't know why cron exactly needs this...
+  include_once(RAM_PROPERTY_MODULE_PATH .'/inc/class.ram_property.inc'); //class goes first, don't know why cron exactly needs this...
   
   $success = ramAdmin::_runCron();
   
-  $value = format_date( variable_get( 'cron_last', null ) );
+  $value = format_date(variable_get('cron_last', null));
   
-  $severity = ( $success == true ) ? REQUIREMENT_OK : REQUIREMENT_WARNING; 
+  $severity = ($success == true) ? REQUIREMENT_OK : REQUIREMENT_WARNING;
   
   $cronStat = array(
     'name'        => 'ram_property_cron_run',
-    'title'       => t( 'RAM Property Cron Run' ),
+    'title'       => t('RAM Property Cron Run'),
     'value'       => $value,
-    'description' => t( 'The RAM Property Module last ran cron on: !time', array( '!time' => $value ) ),
+    'description' => t('The RAM Property Module last ran cron on: !time', array('!time' => $value)),
     'severity'    => $severity
-  );
+);
   
-  propertyAdmin::_setCronStatus( $cronStat );
+  propertyAdmin::_setCronStatus($cronStat);
   
 }
