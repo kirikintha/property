@@ -11,6 +11,10 @@ class ramManager extends propertyManager {
     $this->batchProcessPath = 'admin/settings/property_suite/ram_property';
     
   }
+
+  public function __destruct() {
+    unset($this);
+  }
   
   /**
    * @name _connect
@@ -22,13 +26,15 @@ class ramManager extends propertyManager {
     $query['input'] = $this->qry;
     
     $this->ch  = curl_init($this->url);
-    
-    curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($this->ch, CURLOPT_POST, 1);
-    curl_setopt($this->ch, CURLOPT_POSTFIELDS, $query);
-    
+    //Set our CURL options to ensure a proper transfer.
+    curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 30); //If the connection times out in 30 seconds, then bail out.
+    curl_setopt($this->ch, CURLOPT_TIMEOUT, 60); //If the connection is longer than 60 seconds, bail.
+    curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1); //Set the curl data to return data.
+    curl_setopt($this->ch, CURLOPT_POST, 1); //Set this to post the data to RAM.
+    curl_setopt($this->ch, CURLOPT_POSTFIELDS, $query); //Set the fields that we are posting, this is the query we are applying to RAM.
+    //Run our curl request.
     $data = curl_exec($this->ch);
-    
+    //Return Data.
     return $data;
     
   }
@@ -254,7 +260,7 @@ class ramManager extends propertyManager {
     $data = (array) $data; //convert object to array, easier to play with this way
     
     //Get node ID from imported nids and create node
-    $importedProperties = propertyTrans::_getImportedProperties(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_date_insertPropertiesed', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]')); //Get the properties that have already been imported
+    $importedProperties = propertyTrans::_getImportedProperties(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]')); //Get the properties that have already been imported
     $propertyKey        = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite');
     $nid                = $importedProperties[$data[$propertyKey]]['nid'];
     
@@ -437,21 +443,23 @@ class ramCache extends propertyCache {
   
   /**
    * @name _retrieveNewCache()
-   * return boolean true FALSE new cache created
+   * return boolean TRUE FALSE new cache created
    */
   public static function _retrieveNewCache() { //commit that xml query to the $manager
-    
+
+    //Create our RAM query.
     $query = array(
-      'numresults' => variable_get('RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT', RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT),
+      'numresults' => variable_get('ram_property_query_maximum_limit_default', RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT),
       'offset'     => 0,
       'orderby'    => variable_get('ram_property_orderby', 'Area ASC'),
     );
-    
+    //Create our manager, and parse the query into valid RAM XML.
     $manager = new ramManager;
     $manager->qry = ramTrans::_query($query);
-    
+    //Set our newCache information.
     $newCache = propertyTrans::_commit('runtime', $manager);
-    
+
+    //If for some reason this bails out, then return FALSE
     if (!$newCache) {
       
       $watchdogMsg = array(
@@ -461,49 +469,50 @@ class ramCache extends propertyCache {
         
       return FALSE;
     
-    } //If for some reason this bails out, then return FALSE
-    
+    }
+
+    //If we have a new Cache, then we record the new cache.
     variable_set('ram_property_connect_log', $newCache['log']);
-    
+
     $watchdogMsg = array(
       '!msg' => t('RAM Property Module sucessfully updated the cache with new data from the RAM API Server.'),
-   );
+    );
     watchdog(t('RAM Property'), t('!msg', $watchdogMsg), array(), WATCHDOG_INFO, 'Cache'); //watchdog log
-  
+
     propertyCache::_setCache('property_cache_new_cache', $newCache['data']);
-    
-    return true;
+
+    return TRUE;
     
   }
   
   /**
    * @name _analyzeNewCache()
-   * return boolean true FALSE analyze new cache
+   * return boolean TRUE FALSE analyze new cache
    */
   public static function _analyzeNewCache() { //retool the xml object into a new array, using the last insert, update, modified data to see what is out of range
       
-    propertyTrans::_analyzeCache(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_insertPropertiesed', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
+    propertyTrans::_analyzeCache(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
       
     if (variable_get('ram_property_setup', NULL) == 'cache') {
       
       variable_set('ram_property_setup', 'content');
-      variable_set('ram_property_connection_cached', true);
+      variable_set('ram_property_connection_cached', TRUE);
       
     }
     
-    return true;
+    return TRUE;
     
   }
   
   /**
    * @name _analyzeNewCacheImages()
-   * return boolean true FALSE analyze new cache
+   * return boolean TRUE FALSE analyze new cache
    */
   public static function _analyzeNewCacheImages() { //retool the xml object into a new array, using the last insert, update, modified data to see what is out of range
       
-    propertyTrans::_analyzeCacheImages(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_insertPropertiesed', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
+    propertyTrans::_analyzeCacheImages(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
     
-    return true;
+    return TRUE;
     
   }
   
@@ -524,12 +533,12 @@ class ramTrans extends propertyTrans {
     $header = array(
       'website'   => variable_get('ram_property_website', NULL),
       'ipaddress' => variable_get('ram_property_ipaddress', NULL),
-   );
+    );
     
     $queries = array_merge($header, $query);
     
     $xml = new DOMDocument();
-    $xml->formatOutput = true;
+    $xml->formatOutput = TRUE;
     
     $rss = $xml->createElement('rss');
     $rss->setAttribute('version', '2.0');
@@ -624,7 +633,7 @@ class ramAdmin extends propertyAdmin {
       
       watchdog(t('RAM Property'), t('!msg', $watchdogMsg), array(), WATCHDOG_INFO, 'Cron Run'); //watchdog log
       
-      return true;
+      return TRUE;
       
     } else { //Make a watchdog log, just someone can debug slow updates
       
@@ -715,12 +724,27 @@ class ramAdmin extends propertyAdmin {
    );
     
     //content types
+
+    //If we have no content type selected, then flag that as an error
+    $content  = variable_get( 'property_content_type', NULL );
+    $severity = (empty($content)) ? WATCHDOG_ALERT : WATCHDOG_OK;
+    $value    = (empty($content)) ? 'No Content Type Selected' : 'Content Type Selected';
+    $descr    = (empty($content)) ? 'Please select a content type to use from the list provided, and press save configuration, then continue mapping your content type.' : NULL;
+
+    $requirements['setup']['content_type'] = array(
+      'title'       => t('Property Content Type'),
+      'value'       => t($value),
+      'description' => t($descr),
+      'severity'    => $severity
+    );
+
+    //If we have a property content type, and we need to map flag this oprion.
     $content  = variable_get('ram_property_setup', NULL);
     $severity = (empty($content) || $content != 'complete') ? WATCHDOG_ALERT : WATCHDOG_OK;
     $value    = (empty($content) || $content != 'complete') ? 'Content Mapping Not Completed' : 'Content Mapping Completed.';
     $descr    = (empty($content) || $content != 'complete') ? 'Please select a content type to import, and then complete the mapping process by assigning tokens to the fields and pressing save configuration.' : NULL;
-    
-    $requirements['setup']['content'] = array(
+
+    $requirements['setup']['content_mapping'] = array(
       'title'       => t('Mapping'),
       'value'       => t($value),
       'description' => t($descr),

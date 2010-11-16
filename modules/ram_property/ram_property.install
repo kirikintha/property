@@ -163,7 +163,7 @@ function ram_property_uninstall() {
   //delete variables
   variable_del('property_batch_chunk_maximum_limit');
   variable_del('ram_property_connection_filtered');
-  variable_del('RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT');
+  variable_del('ram_property_query_maximum_limit_default');
   variable_del('property_content_type');
   variable_del('ram_property_connection_string');
   variable_del('ram_property_website');

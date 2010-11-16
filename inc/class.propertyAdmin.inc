@@ -306,7 +306,7 @@ class propertyAdmin {
     
     if ( variable_get( 'property_content_type_last', null ) != variable_get( 'property_content_type', null ) ) {
       
-      //start by destroying all the variables set
+      //start by destroying all the variables set if we have no property type, or we have changed our property content type.
       foreach ( variable_get( 'property_content_type_field_names', array() ) as $variable ) {
         
         variable_del( $variable );

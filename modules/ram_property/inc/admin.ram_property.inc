@@ -29,7 +29,7 @@ function _ram_property_admin() { //Main Admin settings
     
     case 'complete';
       
-      if (variable_get('property_firstrun_imported', NULL) == true) { //If we have a first run, then show cron options
+      if (variable_get('property_firstrun_imported', NULL) == TRUE) { //If we have a first run, then show cron options
       
         $admin = _ram_property_setup_complete();
         $form  = array_merge($form, $admin);
@@ -50,9 +50,11 @@ function _ram_property_admin() { //Main Admin settings
       $form    = array_merge($form, $content);
       
     case 'cache':
-      
-      $cache = _ram_property_setup_cached();
-      $form  = array_merge($form, $cache);
+      //If we are not in the property content type stage, then show this. We want to stop re-caching when assigning a proprty content type, but want to keep it in the desired setup stage order.
+      if (variable_get('ram_property_setup', NULL) != 'content') {
+        $cache = _ram_property_setup_cached();
+        $form  = array_merge($form, $cache);
+      }
       
     case 'filters':
       
@@ -126,7 +128,7 @@ function _ram_property_admin_validate(&$form_state, $form_values) {
     
     variable_del('property_batch_chunk_maximum_limit');
     variable_set('ram_property_connection_filtered', FALSE);
-    variable_del('RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT');
+    variable_del('ram_property_query_maximum_limit_default');
     variable_del('property_content_type');
     variable_del('ram_property_connection_string'); //delete the connection string
     variable_del('ram_property_website');
@@ -234,7 +236,7 @@ function _ram_property_admin_validate(&$form_state, $form_values) {
 
   if (strstr(strtolower($form_values['values']['op']), 'save')) { //validate on save
     
-    if (variable_get('property_content_type', NULL) != NULL && variable_get('ram_property_connection_tested', FALSE) === true && variable_get('property_connection_tokenized', NULL) === true) {
+    if (variable_get('property_content_type', NULL) != NULL && variable_get('ram_property_connection_tested', FALSE) === TRUE && variable_get('property_connection_tokenized', NULL) === TRUE) {
       
       variable_set('ram_property_setup', 'complete');
       
@@ -247,9 +249,9 @@ function _ram_property_admin_validate(&$form_state, $form_values) {
         
       case 'filters': //This is not the greatest validation
         
-        (empty($form_values['values']['ram_property_orderby'])) ? form_set_error('ram_property_orderby', t('Please add a valid string to order by.')) : variable_set('ram_property_connection_filtered', true);
-        (variable_get('ram_property_connection_orderby', NULL) == true && variable_get('ram_property_setup', NULL) == 'filters') ? variable_set('ram_property_setup', 'cache') : NULL ;
-        (variable_get('ram_property_connection_filtered', NULL) == true && variable_get('ram_property_setup', NULL) == 'filters') ? variable_set('ram_property_setup', 'cache') : NULL ;
+        (empty($form_values['values']['ram_property_orderby'])) ? form_set_error('ram_property_orderby', t('Please add a valid string to order by.')) : variable_set('ram_property_connection_filtered', TRUE);
+        (variable_get('ram_property_connection_orderby', NULL) == TRUE && variable_get('ram_property_setup', NULL) == 'filters') ? variable_set('ram_property_setup', 'cache') : NULL ;
+        (variable_get('ram_property_connection_filtered', NULL) == TRUE && variable_get('ram_property_setup', NULL) == 'filters') ? variable_set('ram_property_setup', 'cache') : NULL ;
          
       case 'tokens':
         
@@ -321,26 +323,20 @@ function _ram_property_last_cache() {
  * Current Quick Pull from RAM
  */
 function _ram_property_quick_pull() {
-  
-  $areas = explode("\n", variable_get('ram_property_areas', NULL));
-  $areaStr = array();
-  foreach ($areas as $key=> $value) {
-    
-    $areaStr[] = urlencode(trim($value));
-    
-  }
-  
-  $query = array(
-    'numresults'  => variable_get('RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT', RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT),
-    'offset'      => 0,
-    'orderby'     => variable_get('ram_property_orderby', 'Area ASC'),
- );
-  
+
   $manager = new ramManager;
+    
+  $query = array(
+    'numresults' => variable_get('ram_property_query_maximum_limit_default', RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT),
+    'offset'     => 0,
+    'orderby'    => variable_get('ram_property_orderby', 'Area ASC'),
+  );
+  
   $manager->qry = ramTrans::_query($query);
   
   $new = propertyTrans::_commit('runtime', $manager);
-  
+
+  //Get our Merged XML and validate it and if it is valid, rock it.
   $xml = propertyTrans::_validateData($new['data']);
   
   if (is_object($xml)) { //If we have valid XML
@@ -358,7 +354,7 @@ function _ram_property_quick_pull() {
     print t('There is an XML error from RAM, could parse the XML feed.');
     
     print '<pre>';
-      print_r($new['data']);
+      print_r($new);
     print '</pre>';
     
   }
@@ -379,14 +375,19 @@ function _ram_property_test_connection($data = NULL) {
   $connect = propertyTrans::_commit('test_connection', $manager);
   
   $xml = propertyTrans::_validateData($connect['data']);
-  $tested = (is_object($xml)) ? true : FALSE;
+  $tested = (is_object($xml)) ? TRUE : FALSE;
   variable_set('ram_property_connection_tested', $tested); //set the tested variable
   
-  if ($tested === true) {
-    
+  if ($tested === TRUE) {
+
+    //Add to our connection log.
     variable_set('ram_property_connect_log', $connect['log']);
+    //Change our setup step if necessary.
     (variable_get('ram_property_setup', NULL) == 'test_connection' && variable_get('property_connection_tokenized', FALSE) === FALSE) ? variable_set('ram_property_setup', 'tokens') : variable_set('ram_property_setup', variable_get('ram_property_setup', 'tokens')) ;
-    
+
+    //Find the values returned by the query, and set a variable defining what the query limit is.
+    variable_set('ram_property_query_items_total', (int) $xml->itemsTotal);
+
   }
   
   return $connect['data'];
@@ -398,11 +399,11 @@ function _ram_property_test_connection($data = NULL) {
  */
 function _ram_property_generate_tokens($data = NULL) {
     
-  if (variable_get('ram_property_connection_tested', NULL) === true && !empty($data)) {
+  if (variable_get('ram_property_connection_tested', NULL) === TRUE && !empty($data)) {
     
     variable_set('property_tokens', $data);
     (variable_get('ram_property_setup', NULL) == 'tokens') ? variable_set('ram_property_setup', 'filters') : NULL;
-    variable_set('property_connection_tokenized', true);
+    variable_set('property_connection_tokenized', TRUE);
     
   } else {
     
@@ -504,7 +505,7 @@ function _ram_property_setup_init() {
     '#title'          => t('Host'),
     '#description'    => t('Please enter in the host name for this RAM API. ex: http://vail.interactiveproperties.com/ <em>Please include the protocol for your connection, and trailing slash.</em>'),
     '#default_value'  => variable_get('ram_property_api_host', NULL),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -49,
     '#group'          => 'admin_main'
  );
@@ -514,7 +515,7 @@ function _ram_property_setup_init() {
     '#title'          => t('Host File Name'),
     '#description'    => t('Please enter in the file name of the API file for this host. ex: vailAPI.php <em>Do not include preceding or trailing slashes!</em>'),
     '#default_value'  => variable_get('ram_property_api_host_filename', NULL),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -49,
     '#group'          => 'admin_main'
  );
@@ -545,7 +546,7 @@ function _ram_property_setup_test_connection() {
     '#description'    => t('Please enter this website\'s url, if the system has not automatically entered it for you, or if it is different than the one reported here.'),
     '#prefix'         => '<p>'. variable_get('ram_property_connect_log', NULL) .'</p>',
     '#default_value'  => variable_get('ram_property_website', $_SERVER['HTTP_HOST']),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -49,
     '#group'          => 'auth_info'
  );
@@ -555,7 +556,7 @@ function _ram_property_setup_test_connection() {
     '#title'          => t('IP Address'),
     '#description'    => t('Please enter the ip address for this website. If you are on a virtual server you may have to check with your host for the proper ip address.'),
     '#default_value'  => variable_get('ram_property_ipaddress', $_SERVER['SERVER_ADDR']),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -48,
     '#group'          => 'auth_info'
  );
@@ -565,7 +566,7 @@ function _ram_property_setup_test_connection() {
 		'#value'        => t('Test Connection'),
     '#prefix'       => '<div id="test-progress"></div><p>',
     '#suffix'       => t('Test the connection right now, you need to do this once, to ensure that we are connecting to the server.') .'</p>',
-    '#required'     => true,
+    '#required'     => TRUE,
     '#weight'       => -47,
     '#group'        => 'auth_info'
  );
@@ -627,7 +628,7 @@ function _ram_property_setup_filters() {
     '#title'          => t('Broker Key'),
     '#description'    => t('This is the token you wish to use to identify the Broker or Agent ID to the system. ex: [Agent_ID]'),
     '#default_value'  => variable_get('ram_property_broker_key', '[Agent_ID]'),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -50,
     '#group'          => 'filters'
  );
@@ -637,7 +638,7 @@ function _ram_property_setup_filters() {
     '#title'          => t('Image Key'),
     '#description'    => t('The import key to use for the image key. Usually this key is: imagesavailable, but you may have another key to use.'),
     '#default_value'  => variable_get('ram_property_image_key', 'imagesavailable'),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -49,
     '#group'          => 'filters'
  );
@@ -647,7 +648,7 @@ function _ram_property_setup_filters() {
     '#title'          => t('Image Path'),
     '#description'    => t('Please set the image path to import images from. ex: http://www.vail.interactiveproperties.com/images/listings/'),
     '#default_value'  => variable_get('ram_property_image_path', NULL),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -48,
     '#group'          => 'filters'
  );
@@ -657,7 +658,7 @@ function _ram_property_setup_filters() {
     '#title'          => t('Property Key'),
     '#description'    => t('The property key is the token that identifies the unique ID for each property. This is usually the property ID or the MLS number, if unsure use the MLS number.'),
     '#default_value'  => variable_get('ram_property_property_key', '[Mls_Num]'),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -47,
     '#group'          => 'filters'
  );
@@ -666,18 +667,18 @@ function _ram_property_setup_filters() {
     '#type'           => 'textfield',
     '#title'          => t('Order By'),
     '#description'    => t('Set a valid string to order this query by. Use the token list you created to chose, use the normal form from mySQL ex: Area ASC,Date_insertPropertiesed DESC separated by commas'),
-    '#default_value'  => variable_get('ram_property_orderby', NULL),
-    '#required'       => true,
+    '#default_value'  => variable_get('ram_property_orderby', 'Area ASC'),
+    '#required'       => TRUE,
     '#weight'         => -46,
     '#group'          => 'filters'
  );
   
-  $form['filters']['ram_property_date_insertPropertiesed'] = array(
+  $form['filters']['ram_property_date_inserted'] = array(
     '#type'           => 'textfield',
     '#title'          => t('Date Inserted Key'),
     '#description'    => t('This is the token you wish to use to identify the key that stores the Date Inserted Data into to the system. ex: [Date_Inserted]'),
-    '#default_value'  => variable_get('ram_property_date_insertPropertiesed', '[Date_Inserted]'),
-    '#required'       => true,
+    '#default_value'  => variable_get('ram_property_date_inserted', '[Date_Inserted]'),
+    '#required'       => TRUE,
     '#weight'         => -45,
     '#group'          => 'filters'
  );
@@ -687,7 +688,7 @@ function _ram_property_setup_filters() {
     '#title'          => t('Date Modified Key'),
     '#description'    => t('This is the token you wish to use to identify the key that stores the Date Updated Data into to the system. ex: [Date_updatePropertiesd]'),
     '#default_value'  => variable_get('ram_property_date_modified', '[Date_Modified]'),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -44,
     '#group'          => 'filters'
  );
@@ -773,14 +774,14 @@ function _ram_property_setup_complete() {
     '#options'        => $options,
     '#description'    => t('What time of the day should cron start batching? It is best to set this when there is little to no traffic on your site, or non-peak hours.'),
     '#default_value'  => variable_get('ram_property_batch_cron_start_time', '00:00'),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -49,
     '#group'          => 'cron'
  );
   
   $form['cron']['ram_property_batch_cron_time_of_day_exclude'] = array(
     '#type'           => 'select',
-    '#multiple'       => true,
+    '#multiple'       => TRUE,
     '#title'          => t('Do Not Run Batches at this/these times'),
     '#options'        => $options,
     '#description'    => t('If you need times that cron should not run, you may select from these times to keep cron from running at peak hours.'),
@@ -803,7 +804,7 @@ function _ram_property_setup_complete() {
     '#options'        => $options,
     '#description'    => t('How many batches should run per cron run? This can take a little trial and error to get the batches to run throughout the day.'),
     '#default_value'  => variable_get('ram_property_batch_cron_limit', 10),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -47,
     '#group'          => 'cron'
  );
@@ -823,7 +824,7 @@ function _ram_property_setup_complete() {
     '#options'        => $options,
     '#description'    => t('How long should a node/property remain unpublished until it is permanently deleted?'),
     '#default_value'  => variable_get('property_property_staleness', '90 days'),
-    '#required'       => true,
+    '#required'       => TRUE,
     '#weight'         => -46,
     '#group'          => 'cron'
  );
