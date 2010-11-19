@@ -363,8 +363,9 @@ class propertyAdmin {
       $form['property_content_type']['setup'][0][ $name ] = array( //set up the node title, since this is always there
         '#type'           => 'textfield',
         '#title'          => t( 'Node Title' ),
-        '#default_value'  => variable_get( $name, 'NULL' ),
-        '#description'    => t( 'You can add any tokens together to create a title for this node, all spaces and non-ascii characters will automatically replace with the replacement character you select below. ex: [Address]_[City]_[State]_[Zip]' ),
+        '#default_value'  => variable_get( $name, NULL ),
+        '#description'    => t( 'You can add any tokens together to create a title for this node, all spaces and non-ascii characters will automatically replace with the replacement character you select above. ex: [Address]_[City]_[State]_[Zip]' ),
+        '#required'       => TRUE,
         '#weight'         => -48,
         '#group'          => 'property_content_type'
       );
@@ -379,17 +380,17 @@ class propertyAdmin {
         '#description'    => t( 'You may chose from a hyphen (-) or underscore (_) as these are the best for SEO purposes.' ),
         '#options'        => $options,
         '#default_value'  => variable_get( 'property_content_type_token_ascii_replacement', '#HYPHEN' ),
-        '#required'       => true,
+        '#required'       => TRUE,
         '#weight'         => -47,
         '#group'          => 'property_content_type'
       );
       
       $form['property_content_type']['setup'][0]['token'] = array(
         '#type' 				=> 'fieldset',
-        '#title' 				=> t('Node Title Tokens'),
+        '#title' 				=> t('Property Node Tokens'),
         '#collapsible' 	=> TRUE,
         '#collapsed' 		=> TRUE,
-        '#weight'				=> 50,
+        '#weight'				=> -100,
         '#group'        => 'property_content_type'
       );
       
@@ -403,7 +404,9 @@ class propertyAdmin {
       if ( module_exists( 'location' ) ) {
         
         $location_tokens = variable_get( 'location_settings_node_' .variable_get( 'property_content_type', null ), array() ); //location fields enabled
-        unset( $location_tokens['form']['fields']['name'] ); //uset the name fields, since it is hard to support
+        
+        unset( $location_tokens['form']['fields']['name'] ); //Unset the name fields, since it is hard to support.
+        unset( $location_tokens['form']['fields']['locpick'] ); //Unset the locpick option, because it is not necessary here.
         
         if ( !empty( $location_tokens ) ) {
           
@@ -413,15 +416,29 @@ class propertyAdmin {
               
               $name = 'property_content_type_' . variable_get( 'property_content_type', null ) .'_location_' .$key;
               $variable[] = $name;
-              
-              $form['property_content_type']['setup'][1][ $name ] = array(
-                '#type'           => 'select',
-                '#title'          => t( 'Location !name', array( '!name' => ucwords( $key ) ) ),
-                '#options'        => $tokens,
-                '#default_value'  => variable_get( $name, 'NULL' ),
-                '#weight'         => $value['weight'],
-                '#group'          => 'property_content_type'
-              );
+
+              $exclude = array('street','additional');
+              if (!in_array($key,$exclude)) {
+                $form['property_content_type']['setup'][1][ $name ] = array(
+                  '#type'           => 'select',
+                  '#title'          => t( 'Location !name', array( '!name' => ucwords( $key ) ) ),
+                  '#options'        => $tokens,
+                  '#default_value'  => variable_get( $name, 'NULL' ),
+                  '#required'       => TRUE,
+                  '#weight'         => $value['weight'],
+                  '#group'          => 'property_content_type',
+                );
+              } else {
+                $form['property_content_type']['setup'][1][ $name ] = array(
+                  '#type'           => 'textfield',
+                  '#title'          => t( 'Location !name', array( '!name' => ucwords( $key ) ) ),
+                  '#default_value'  => variable_get( $name, NULL ),
+                  '#description'    => t('You can add any tokens together to create a geocodable address for this node, ex: [Address]'),
+                  '#required'       => TRUE,
+                  '#weight'         => $value['weight'],
+                  '#group'          => 'property_content_type',
+                );
+              }
               
             }
             

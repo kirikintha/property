@@ -28,7 +28,7 @@ class ramManager extends propertyManager {
     $this->ch  = curl_init($this->url);
     //Set our CURL options to ensure a proper transfer.
     curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 30); //If the connection times out in 30 seconds, then bail out.
-    curl_setopt($this->ch, CURLOPT_TIMEOUT, 60); //If the connection is longer than 60 seconds, bail.
+    curl_setopt($this->ch, CURLOPT_TIMEOUT, 60); //If the response is longer than 60 seconds, bail.
     curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1); //Set the curl data to return data.
     curl_setopt($this->ch, CURLOPT_POST, 1); //Set this to post the data to RAM.
     curl_setopt($this->ch, CURLOPT_POSTFIELDS, $query); //Set the fields that we are posting, this is the query we are applying to RAM.
@@ -127,54 +127,44 @@ class ramManager extends propertyManager {
    */
   public function _insertProperties($data = NULL) {
     
-    //$data = propertyCache::_getCache('property_cache_batch_property_insert_0');
-    //$data = $data[319690];
     $data = (array) $data; //convert object to array, easier to play with this way
-    
-    //get agent user id @ todo make this into one function for both update and insert for all this stuff
-    $agentToken = token_replace(variable_get('ram_property_broker_key', '[Agent_ID]'), 'property', 'Property Suite');
-    $agentID    = $data[$agentToken]; //Agent token is the proper field to query from the data
-    $agent      = NULL;
-    $agent      = propertyTrans::_loadBroker($agentID);//take the broker id, and make the author of this node the, returns a valid user object
 
-    //prepare node with title
-    $fieldNames    = variable_get('property_content_type_field_names', NULL);
-    $contentFields = content_fields(NULL, variable_get('property_content_type', NULL)); //This is kinda unreliable, but I don't have another option
+    //Get our pieces from the common parser.
+    $pieces = self::_getPropertyPieces($data);
+    //Get all our pieces we need to run our node update.
+    $nid              = $pieces['nid'];
+    $fieldNames       = $pieces['fieldNames'];
+    $contentFields    = $pieces['contentFields'];
+    $agent            = $pieces['agent'];
+    $propertyKeyValue = $pieces['propertyKeyValue'];
+    $title            = $pieces['title'];
 
-    $titleTokens = variable_get($fieldNames[0], NULL);
-    $replacement = (variable_get('property_content_type_token_ascii_replacement', NULL) == '#UNDERSCORE') ? '_' : '-';
-    $titleTokens = token_replace($titleTokens, 'property', 'Property Suite');
-    foreach ($data as $key => $value) { //change out the values for the tokens with the values of the keys, this means any token can be used here from the property list
-      
-      $titleTokens = str_replace($key, urldecode($value), $titleTokens);
-      
-    }
-    
-    //Prepare Node Fields && Location
-    //-> leave this alone for right now, converting spaces $titleTokens = str_replace(" ", $replacement, $titleTokens);
-    $title = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $titleTokens); //strip out non-ascii
-    $title = str_replace('&', 'And', $title); //Unforntunately, you can't have ampersands in node titles, ;(
-    
-    $propertyKey      = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite');
-    $propertyKeyValue = $data[$propertyKey]; //This is the value that needs to get passed to the _nodeSave, so we can identify it later for re-cache
-    
-    if (!empty($title)) { //If we do not have a title, kill the import
-      
-      $node = propertyTrans::_nodePrepare(trim (ucwords(strtolower (urldecode($title))))); // 0 should always be the node title, prepare the node object
-          
-      unset($fieldNames[0]); //Kill off the Node Title
+    //If we do not have a title, kill the import.
+    if (!empty($title)) {
+      // 0 should always be the node title, prepare the node object, and add the title here.
+      $node = propertyTrans::_nodePrepare(trim (ucwords(strtolower (urldecode($title)))));
+      //Kill off the Node Title, we do not need it now.
+      unset($fieldNames[0]);
+      //Run through the rest of the fields for this node object and apply the proper values to the proper pieces of the node object.
       foreach ($fieldNames as $field) {
-        
-        $key = "[" .variable_get($field, NULL) ."]";
-        $key = (string) token_replace($key, 'property', 'Property Suite');
-        
-        $value = (string) $data[$key];
+        //Repace token with proper key value, which is key%
+        //If we have a location, then we need to process the value differenltly, so multiple tokens are accepted.
+        if (strstr($field, "location_street") || strstr($field, "location_additional")) {
+          $value = self::_tokensValues($data, variable_get($field, NULL));
+        } else {
+          //After sanitizing, then make into a real token value.
+          $key = "[" .variable_get($field, NULL) ."]";
+          $key = (string) token_replace($key, 'property', 'Property Suite');
+          //Get the data using the key value.
+          $value = (string) $data[$key];
+        }
+        //Sanitize the value.
         $value = trim (urldecode($value));
-        $value = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $value); //strip out non-ascii
-        
-        $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field); //Turn the field into a form that the node recognizes
-        
-        if (strstr($field, "location")) { //if it is a location field, put into the node save differently
+        $value = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $value);
+        //After we get the value, convert our field value into a string that corresponds to the node object.
+        $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field);
+        //If it is a location field, it does not follow CCK API.
+        if (strstr($field, "location")) {
           
           if (!empty($value)) {
             
@@ -249,7 +239,7 @@ class ramManager extends propertyManager {
     }
 
   }
-  
+
   /**
    * @name _updateProperties
    * @category Module Batch
@@ -257,45 +247,21 @@ class ramManager extends propertyManager {
    */
   public function _updateProperties($data = NULL) {
  
-    $data = (array) $data; //convert object to array, easier to play with this way
-    
-    //Get node ID from imported nids and create node
-    $importedProperties = propertyTrans::_getImportedProperties(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]')); //Get the properties that have already been imported
-    $propertyKey        = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite');
-    $nid                = $importedProperties[$data[$propertyKey]]['nid'];
-    
+    $data = (array) $data; //convert object to array, easier to play with this way.
+    //Get our pieces from the common parser.
+    $pieces = self::_getPropertyPieces($data);
+    //Get all our pieces we need to run our node update.
+    $nid              = $pieces['nid'];
+    $fieldNames       = $pieces['fieldNames'];
+    $contentFields    = $pieces['contentFields'];
+    $agent            = $pieces['agent'];
+    $propertyKeyValue = $pieces['propertyKeyValue'];
+    $title            = $pieces['title'];
+
+    //Update is just subtly different from insert. @todo - try and get this a little more uniform.
     if (is_numeric($nid) && $nid > 0) { //Double check to make sure the nid is valid
-      
       $node = node_load($nid);
-      
     }
-    
-    //get agent user id @ todo make this into one function for both update and insert for all this stuff
-    $agentToken = token_replace(variable_get('ram_property_broker_key', '[Agent_ID]'), 'property', 'Property Suite');
-    $agentID    = $data[$agentToken]; //Agent token is the proper field to query from the data
-    $agent      = NULL;
-    $agent      = propertyTrans::_loadBroker($agentID);//take the broker id, and make the author of this node the, returns a valid user object
-
-    //prepare node with title
-    $fieldNames    = variable_get('property_content_type_field_names', NULL);
-    $contentFields = content_fields(NULL, variable_get('property_content_type', NULL)); //This is kinda unreliable, but I don't have another option
-
-    $titleTokens = variable_get($fieldNames[0], NULL);
-    $replacement = (variable_get('property_content_type_token_ascii_replacement', NULL) == '#UNDERSCORE') ? '_' : '-';
-    $titleTokens = token_replace($titleTokens, 'property', 'Property Suite');
-    foreach ($data as $key => $value) { //change out the values for the tokens with the values of the keys, this means any token can be used here from the property list
-      
-      $titleTokens = str_replace($key, urldecode($value), $titleTokens);
-      
-    }
-    
-    //Prepare Node Fields && Location
-    //-> leave this alone for right now, converting psaces $titleTokens = str_replace(" ", $replacement, $titleTokens);
-    $title = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $titleTokens); //strip out non-ascii
-    $title = str_replace('&', 'And', $title); //Unforntunately, you can't have ampersands in node titles, ;(
-    
-    $propertyKey      = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite'); //Why do I need this?
-    $propertyKeyValue = $data[$propertyKey]; //This is the value that needs to get passed to the _nodeSave, so we can identify it later for re-cache
     
     if (!empty($title) && is_object($node)) { //If we do not have a title and the node is not an object, kill the import
       
@@ -320,15 +286,22 @@ class ramManager extends propertyManager {
       
       foreach ($fieldNames as $field) {
         
-        $key = "[" .variable_get($field, NULL) ."]";
-        $key = (string) token_replace($key, 'property', 'Property Suite');
-        
-        $value = (string) $data[$key];
+        //If we have a location, then we need to process the value differenltly, so multiple tokens are accepted.
+        if (strstr($field, "location_street") || strstr($field, "location_additional")) {
+          $value = self::_tokensValues($data, variable_get($field, NULL));
+        } else {
+          //After sanitizing, then make into a real token value.
+          $key = "[" .variable_get($field, NULL) ."]";
+          $key = (string) token_replace($key, 'property', 'Property Suite');
+          //Get the data using the key value.
+          $value = (string) $data[$key];
+        }
+        //Sanitize the value.
         $value = trim (urldecode($value));
-        $value = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $value); //strip out non-ascii
-        
-        $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field); //Turn the field into a form that the node recognizes
-        
+        $value = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $value);
+        //After we get the value, convert our field value into a string that corresponds to the node object.
+        $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field);
+        //If it is a location field, it does not follow CCK API.
         if (strstr($field, "location")) { //if it is a location field, put into the node save differently
           
           if (!empty($value)) {
@@ -431,6 +404,66 @@ class ramManager extends propertyManager {
       
     }
 
+  }
+
+  /**
+   * @name _tokensValues()
+   * Converts token values from the data source, into a value string to use in node fields.
+   * @param array $data = the data array you are passing to the function
+   * @param string $tokens = the token(s) string you are passing to the function
+   * @return string $value = the converted value(s) we to use in a particular node field.
+   */
+  public static function _tokensValues($data = NULL, $tokens = NULL) {
+    //Turn the values of the tokens back into their key% xml form.
+    $keys = token_replace($tokens, 'property', 'Property Suite');
+    foreach ($data as $key => $value) {
+      //change out the values for the tokens with the values of the keys, this means any token can be used here from the property list
+      $values = str_replace($key, urldecode($value), $keys);
+    }
+    return $values;
+  }
+
+  /**
+   * @name _getPropertyPieces()
+   * Assemble the pieces of the array to return to use in your functions.
+   * @return array $pieces = the array of pieces to use in your insert/update schema.
+   *  $pieces['nid']
+   *  $pieces['fieldNames']
+   *  $pieces['contentFields']
+   *  $pieces['agent']
+   *  $pieces['propertyKeyValue']
+   *  $pieces['title']
+   */
+  public static function _getPropertyPieces($data = NULL) {
+    //Set the pieces array.
+    $pieces = array();
+
+    //Get node ID from imported nids and create node
+    $importedProperties = propertyTrans::_getImportedProperties(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]')); //Get the properties that have already been imported
+    $pieces['nid']      = $importedProperties[$data[$propertyKey]]['nid'];
+
+    //Get the fields that have been mapped from the proeprty API.
+    $pieces['fieldNames']    = variable_get('property_content_type_field_names', NULL);
+    //Get all the fields for this content type.
+    $pieces['contentFields'] = content_fields(NULL, variable_get('property_content_type', NULL)); //This is kinda unreliable, but I don't have another option
+
+    //get agent user id @ todo make this into one function for both update and insert for all this stuff
+    $agentToken      = token_replace(variable_get('ram_property_broker_key', '[Agent_ID]'), 'property', 'Property Suite');
+    $agentID         = $data[$agentToken]; //Agent token is the proper field to query from the data
+    $agent           = NULL;
+    $pieces['agent'] = propertyTrans::_loadBroker($agentID);//take the broker id, and make the author of this node the, returns a valid user object
+
+    $propertyKey                = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite'); //Why do I need this?
+    $pieces['propertyKeyValue'] = $data[$propertyKey]; //This is the value that needs to get passed to the _nodeSave, so we can identify it later for re-cache
+
+    //$fieldNames[0] = the node title.
+    //Get the values for each token returned with tokensValues and use that string as the title.
+    $title = self::_tokensValues($data, variable_get($fieldNames[0], NULL));
+    //Explicitely sanitize the title string.
+    $title = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $title); //strip out non-ascii
+    $pieces['title'] = str_replace('&', 'And', $title); //Unforntunately, you can't have ampersands in node titles, ;(
+
+    return $pieces;
   }
   
 }
