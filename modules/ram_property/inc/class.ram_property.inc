@@ -27,8 +27,8 @@ class ramManager extends propertyManager {
     
     $this->ch  = curl_init($this->url);
     //Set our CURL options to ensure a proper transfer.
-    curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 30); //If the connection times out in 30 seconds, then bail out.
-    curl_setopt($this->ch, CURLOPT_TIMEOUT, 60); //If the response is longer than 60 seconds, bail.
+    curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 120); //If the connection times out in 30 seconds, then bail out.
+    curl_setopt($this->ch, CURLOPT_TIMEOUT, 120); //If the response is longer than 60 seconds, bail.
     curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1); //Set the curl data to return data.
     curl_setopt($this->ch, CURLOPT_POST, 1); //Set this to post the data to RAM.
     curl_setopt($this->ch, CURLOPT_POSTFIELDS, $query); //Set the fields that we are posting, this is the query we are applying to RAM.
