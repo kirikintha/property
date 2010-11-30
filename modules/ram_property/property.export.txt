@@ -1,8 +1,8 @@
 $content['type']  = array (
-  'name' => 'Property',
-  'type' => 'property',
-  'description' => 'Properties are what loads from the MLS module, and update automatically on the site.',
-  'title_label' => 'Property Title',
+  'name' => 'RAM Property',
+  'type' => 'ram_property',
+  'description' => 'Automatically updates it\'s information from the RAM API.',
+  'title_label' => 'Title',
   'body_label' => '',
   'min_word_count' => '0',
   'help' => '',
@@ -13,19 +13,29 @@ $content['type']  = array (
     'sticky' => false,
     'revision' => false,
   ),
-  'language_content_type' => '0',
-  'old_type' => 'property',
+  'old_type' => 'ram_property',
   'orig_type' => '',
   'module' => 'node',
   'custom' => '1',
   'modified' => '1',
   'locked' => '0',
+  'xmlsitemap_node_type_priority' => '0.5',
+  'nodewords_edit_metatags' => 1,
+  'nodewords_metatags_generation_method' => '0',
+  'nodewords_metatags_generation_source' => '2',
+  'nodewords_use_alt_attribute' => 1,
+  'nodewords_filter_modules_output' => 
+  array (
+    'imagebrowser' => false,
+    'img_assist' => false,
+  ),
+  'nodewords_filter_regexp' => '',
   'comment' => '0',
   'comment_default_mode' => '4',
   'comment_default_order' => '1',
   'comment_default_per_page' => '50',
   'comment_controls' => '3',
-  'comment_anonymous' => 0,
+  'comment_anonymous' => '0',
   'comment_subject_field' => '1',
   'comment_preview' => '1',
   'comment_form_location' => '0',
@@ -33,20 +43,47 @@ $content['type']  = array (
   array (
     'show_field' => 
     array (
-      'show_field' => true,
+      'show_field' => false,
     ),
     'pattern' => '',
   ),
-  'print_display' => 1,
-  'print_display_comment' => 0,
-  'print_display_urllist' => 1,
-  'print_mail_display' => 1,
-  'print_mail_display_comment' => 0,
-  'print_mail_display_urllist' => 1,
-  'print_pdf_display' => 1,
-  'print_pdf_display_comment' => 0,
-  'print_pdf_display_urllist' => 1,
+  'feedapi' => 
+  array (
+    'enabled' => false,
+    'upload_method' => 'url',
+    'refresh_on_create' => 0,
+    'update_existing' => 1,
+    'refresh_time' => 1800,
+    'items_delete' => 0,
+    'parsers' => 
+    array (
+      'parser_ical' => 
+      array (
+        'enabled' => false,
+        'weight' => 0,
+      ),
+      'parser_common_syndication' => 
+      array (
+        'enabled' => false,
+        'weight' => 0,
+        'accept_invalid_cert' => false,
+      ),
+    ),
+    'processors' => 
+    array (
+      'feedapi_node' => 
+      array (
+        'enabled' => false,
+        'weight' => 0,
+        'content_type' => 'webform',
+        'input_format' => 0,
+        'node_date' => 'feed',
+        'x_dedupe' => 0,
+      ),
+    ),
+  ),
 );
+
 $content['groups']  = array (
   0 => 
   array (
@@ -78,6 +115,21 @@ $content['groups']  = array (
           'exclude' => 0,
         ),
         4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        2 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        3 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'mobile_tools' => 
         array (
           'format' => 'fieldset',
           'exclude' => 0,
@@ -127,6 +179,21 @@ $content['groups']  = array (
           'format' => 'fieldset',
           'exclude' => 0,
         ),
+        2 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        3 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'mobile_tools' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
         'token' => 
         array (
           'format' => 'fieldset',
@@ -168,6 +235,21 @@ $content['groups']  = array (
           'exclude' => 0,
         ),
         4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        2 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        3 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'mobile_tools' => 
         array (
           'format' => 'fieldset',
           'exclude' => 0,
@@ -217,6 +299,21 @@ $content['groups']  = array (
           'format' => 'fieldset',
           'exclude' => 0,
         ),
+        2 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        3 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'mobile_tools' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
         'token' => 
         array (
           'format' => 'fieldset',
@@ -262,6 +359,21 @@ $content['groups']  = array (
           'format' => 'fieldset',
           'exclude' => 0,
         ),
+        2 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        3 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'mobile_tools' => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
         'token' => 
         array (
           'format' => 'fieldset',
@@ -303,6 +415,21 @@ $content['groups']  = array (
           'exclude' => 0,
         ),
         4 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        2 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        3 => 
+        array (
+          'format' => 'fieldset',
+          'exclude' => 0,
+        ),
+        'mobile_tools' => 
         array (
           'format' => 'fieldset',
           'exclude' => 0,
@@ -520,7 +647,8 @@ Land',
     'multiple' => '0',
     'text_processing' => '0',
     'max_length' => '',
-    'allowed_values' => 'Condo
+    'allowed_values' => 'Single Family
+Condo
 Duplex
 Farm/ranch
 Hotel / Motel
@@ -533,7 +661,6 @@ Parking Space
 Restaurant
 Retail
 Sf/mf/acreage
-Single Family
 Time Share
 Townhouse
 Triplex Plus',
@@ -622,7 +749,7 @@ Triplex Plus',
     'multiple' => '1',
     'text_processing' => '0',
     'max_length' => '',
-    'allowed_values' => ' Arrowhead
+    'allowed_values' => 'Arrowhead
 Avon
 Bachelor Gulch
 Beaver Creek
@@ -630,8 +757,7 @@ Bellyache Wolcott Red Canyon
 Berry Creek Ranch
 Booth Creek
 Brush Creek Not Eagle Ranch
-Cascade Village
-Glenlyon
+Glenlyon|Cascade Village, Glenlyon
 Cordillera Cvc Timber Spgs
 Cordillera
 Colorow
@@ -661,8 +787,7 @@ Potato Patch
 Sandstone
 Lionsridge
 Spraddle Creek
-The Valley
-Ridge At Vail
+Ridge At Vail|The Valley, Ridge At Vail
 Vail Golf Course
 Vail Village
 West Vail North
@@ -1021,7 +1146,18 @@ Wildwood',
 6|Six
 7|Seven
 8|Eight
-9|Nine Or More',
+9|Nine
+10|Ten
+11|Eleven
+12|Twelve
+13|Thirteen
+14|Fourteen
+15|Fifteen
+16|Sixteen
+17|Seventeen
+18|Eighteen
+19|Nineteen
+20|Twenty or More',
     'allowed_values_php' => '',
     'op' => 'Save field settings',
     'module' => 'text',
@@ -1073,8 +1209,8 @@ Wildwood',
   ),
   8 => 
   array (
-    'label' => 'Full Baths',
-    'field_name' => 'field_property_full_baths',
+    'label' => 'Three Quarter Baths',
+    'field_name' => 'field_property_thrquar_bath',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
@@ -1087,18 +1223,18 @@ Wildwood',
       0 => 
       array (
         'value' => '',
-        '_error_element' => 'default_value_widget][field_property_full_baths][0][value',
+        '_error_element' => 'default_value_widget][field_property_thrquar_bath][0][value',
       ),
     ),
     'default_value_php' => '',
     'default_value_widget' => 
     array (
-      'field_property_full_baths' => 
+      'field_property_thrquar_bath' => 
       array (
         0 => 
         array (
           'value' => '',
-          '_error_element' => 'default_value_widget][field_property_full_baths][0][value',
+          '_error_element' => 'default_value_widget][field_property_thrquar_bath][0][value',
         ),
       ),
     ),
@@ -1117,7 +1253,8 @@ Wildwood',
 8|Eight
 9|Nine
 10|Ten
-11|Eleven',
+11|Eleven
+12|Twelve',
     'allowed_values_php' => '',
     'op' => 'Save field settings',
     'module' => 'text',
@@ -1169,12 +1306,109 @@ Wildwood',
   ),
   9 => 
   array (
+    'label' => 'Full Baths',
+    'field_name' => 'field_property_full_baths',
+    'type' => 'text',
+    'widget_type' => 'text_textfield',
+    'change' => 'Change basic information',
+    'weight' => '20',
+    'rows' => 5,
+    'size' => '60',
+    'description' => '',
+    'default_value' => 
+    array (
+      0 => 
+      array (
+        'value' => '',
+        '_error_element' => 'default_value_widget][field_property_full_baths][0][value',
+      ),
+    ),
+    'default_value_php' => '',
+    'default_value_widget' => 
+    array (
+      'field_property_full_baths' => 
+      array (
+        0 => 
+        array (
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_property_full_baths][0][value',
+        ),
+      ),
+    ),
+    'group' => 'group_property_info',
+    'required' => 0,
+    'multiple' => '0',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '1|One
+2|Two
+3|Three
+4|Four
+5|Five
+6|Six
+7|Seven
+8|Eight
+9|Nine
+10|Ten
+11|Eleven
+12|Twelve',
+    'allowed_values_php' => '',
+    'op' => 'Save field settings',
+    'module' => 'text',
+    'widget_module' => 'text',
+    'columns' => 
+    array (
+      'value' => 
+      array (
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'sortable' => true,
+        'views' => true,
+      ),
+    ),
+    'display_settings' => 
+    array (
+      'label' => 
+      array (
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      5 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'teaser' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      4 => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => 
+      array (
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+  ),
+  10 => 
+  array (
     'label' => 'Half Baths',
     'field_name' => 'field_property_half_baths',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '20',
+    'weight' => '21',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -1263,14 +1497,14 @@ Wildwood',
       ),
     ),
   ),
-  10 => 
+  11 => 
   array (
     'label' => 'Amenities',
     'field_name' => 'field_property_amenities',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '21',
+    'weight' => '22',
     'rows' => '5',
     'size' => '60',
     'description' => '',
@@ -1317,7 +1551,8 @@ Private Fishing Rights
 Racquetball
 See Remarks
 Tennis
-Zoned For Horses',
+Zoned For Horses
+Skeet And Trap',
     'allowed_values_php' => '',
     'op' => 'Save field settings',
     'module' => 'text',
@@ -1367,14 +1602,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  11 => 
+  12 => 
   array (
     'label' => 'Garage Type',
     'field_name' => 'field_property_garage_type',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '22',
+    'weight' => '23',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -1453,14 +1688,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  12 => 
+  13 => 
   array (
     'label' => 'Garage Size',
     'field_name' => 'field_property_garage_size',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '23',
+    'weight' => '24',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -1539,14 +1774,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  13 => 
+  14 => 
   array (
     'label' => 'Garage Capacity',
     'field_name' => 'field_property_garage_cap',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '24',
+    'weight' => '25',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -1625,14 +1860,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  14 => 
+  15 => 
   array (
     'label' => 'Garage Comments',
     'field_name' => 'field_property_garage_comments',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '25',
+    'weight' => '26',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -1653,7 +1888,7 @@ Zoned For Horses',
         array (
           'value' => '',
           '_error_element' => 'default_value_widget][field_property_garage_comments][0][value',
-          'format' => 1,
+          'format' => '4',
         ),
       ),
     ),
@@ -1719,14 +1954,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  15 => 
+  16 => 
   array (
     'label' => 'Virtual Tour',
     'field_name' => 'field_property_virtual_tour',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '26',
+    'weight' => '27',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -1805,14 +2040,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  16 => 
+  17 => 
   array (
     'label' => 'Number of Levels',
     'field_name' => 'field_property_levels',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '27',
+    'weight' => '28',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -1891,14 +2126,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  17 => 
+  18 => 
   array (
     'label' => 'Basement',
     'field_name' => 'field_property_basement',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '28',
+    'weight' => '29',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -1977,14 +2212,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  18 => 
+  19 => 
   array (
     'label' => 'Condition',
     'field_name' => 'field_property_condition',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '29',
+    'weight' => '30',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2063,14 +2298,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  19 => 
+  20 => 
   array (
     'label' => 'Reservations',
     'field_name' => 'field_property_reservations',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '30',
+    'weight' => '31',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2149,14 +2384,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  20 => 
+  21 => 
   array (
     'label' => 'Number of Acres',
     'field_name' => 'field_property_acres',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '31',
+    'weight' => '32',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2235,14 +2470,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  21 => 
+  22 => 
   array (
     'label' => 'Size Comment',
     'field_name' => 'field_property_size_comment',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '32',
+    'weight' => '33',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2263,7 +2498,7 @@ Zoned For Horses',
         array (
           'value' => '',
           '_error_element' => 'default_value_widget][field_property_size_comment][0][value',
-          'format' => 1,
+          'format' => '4',
         ),
       ),
     ),
@@ -2329,14 +2564,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  22 => 
+  23 => 
   array (
     'label' => 'Price per Acre',
     'field_name' => 'field_property_price_per_acre',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '33',
+    'weight' => '34',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2415,14 +2650,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  23 => 
+  24 => 
   array (
     'label' => 'Number of Units',
     'field_name' => 'field_property_num_units',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '34',
+    'weight' => '35',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2501,14 +2736,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  24 => 
+  25 => 
   array (
     'label' => 'Subdivision',
     'field_name' => 'field_property_subdivision',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '35',
+    'weight' => '36',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2587,14 +2822,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  25 => 
+  26 => 
   array (
     'label' => 'School',
     'field_name' => 'field_proprety_school',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '36',
+    'weight' => '37',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2673,14 +2908,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  26 => 
+  27 => 
   array (
     'label' => 'County',
     'field_name' => 'field_property_county',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '37',
+    'weight' => '38',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2759,14 +2994,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  27 => 
+  28 => 
   array (
     'label' => 'Zone / District',
     'field_name' => 'field_property_zone_district',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '38',
+    'weight' => '39',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2845,14 +3080,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  28 => 
+  29 => 
   array (
     'label' => 'Current Use',
     'field_name' => 'field_property_current_use',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '39',
+    'weight' => '40',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -2931,14 +3166,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  29 => 
+  30 => 
   array (
     'label' => 'Legal',
     'field_name' => 'field_property_legal',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '40',
+    'weight' => '41',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3017,14 +3252,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  30 => 
+  31 => 
   array (
     'label' => 'Year Built',
     'field_name' => 'field_property_year_built',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '41',
+    'weight' => '42',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3103,14 +3338,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  31 => 
+  32 => 
   array (
     'label' => 'Remodeled',
     'field_name' => 'field_property_remodeled',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '42',
+    'weight' => '43',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3189,14 +3424,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  32 => 
+  33 => 
   array (
     'label' => 'Total Square Feet',
     'field_name' => 'field_property_total_sq_feet',
     'type' => 'number_integer',
     'widget_type' => 'number',
     'change' => 'Change basic information',
-    'weight' => '43',
+    'weight' => '44',
     'description' => '',
     'default_value' => 
     array (
@@ -3223,8 +3458,8 @@ Zoned For Horses',
     'multiple' => '0',
     'min' => '0',
     'max' => '100000000',
-    'prefix' => '$',
-    'suffix' => '.00',
+    'prefix' => '',
+    'suffix' => '',
     'allowed_values' => '',
     'allowed_values_php' => '',
     'op' => 'Save field settings',
@@ -3273,14 +3508,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  33 => 
+  34 => 
   array (
     'label' => 'Building 2 Total Sq. Feet',
     'field_name' => 'field_property_bldg_2_sq_feet',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '44',
+    'weight' => '45',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3359,14 +3594,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  34 => 
+  35 => 
   array (
     'label' => 'Building 3 Total Sq. Feet',
     'field_name' => 'field_property_bldg_3_sq_feet',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '45',
+    'weight' => '46',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3445,14 +3680,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  35 => 
+  36 => 
   array (
     'label' => 'Lot Size Rage',
     'field_name' => 'field_property_lot_size_range',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '46',
+    'weight' => '47',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3531,14 +3766,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  36 => 
+  37 => 
   array (
     'label' => 'Lot Size Actual',
     'field_name' => 'field_property_lot_size_actual',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '47',
+    'weight' => '48',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3617,14 +3852,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  37 => 
+  38 => 
   array (
     'label' => 'Finished',
     'field_name' => 'field_property_finished',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '48',
+    'weight' => '49',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3703,14 +3938,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  38 => 
+  39 => 
   array (
     'label' => 'Unfinished',
     'field_name' => 'field_property_unfinished',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '49',
+    'weight' => '50',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3789,14 +4024,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  39 => 
+  40 => 
   array (
     'label' => 'Remarks',
     'field_name' => 'field_property_remarks',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '50',
+    'weight' => '51',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3817,7 +4052,7 @@ Zoned For Horses',
         array (
           'value' => '',
           '_error_element' => 'default_value_widget][field_property_remarks][0][value',
-          'format' => 1,
+          'format' => '4',
         ),
       ),
     ),
@@ -3883,14 +4118,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  40 => 
+  41 => 
   array (
     'label' => 'Water Rights',
     'field_name' => 'field_property_water_rights',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '51',
+    'weight' => '52',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -3969,14 +4204,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  41 => 
+  42 => 
   array (
     'label' => 'Asking Price',
     'field_name' => 'field_property_asking_price',
     'type' => 'number_integer',
     'widget_type' => 'number',
     'change' => 'Change basic information',
-    'weight' => '52',
+    'weight' => '53',
     'description' => '',
     'default_value' => 
     array (
@@ -4004,7 +4239,7 @@ Zoned For Horses',
     'min' => '0',
     'max' => '100000000',
     'prefix' => '$',
-    'suffix' => '.00',
+    'suffix' => '',
     'allowed_values' => '',
     'allowed_values_php' => '',
     'op' => 'Save field settings',
@@ -4053,14 +4288,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  42 => 
+  43 => 
   array (
     'label' => 'Date Inserted',
-    'field_name' => 'field_property_date_insertPropertiesed',
+    'field_name' => 'field_property_date_inserted',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '53',
+    'weight' => '54',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -4069,18 +4304,18 @@ Zoned For Horses',
       0 => 
       array (
         'value' => '',
-        '_error_element' => 'default_value_widget][field_property_date_insertPropertiesed][0][value',
+        '_error_element' => 'default_value_widget][field_property_date_inserted][0][value',
       ),
     ),
     'default_value_php' => '',
     'default_value_widget' => 
     array (
-      'field_property_date_insertPropertiesed' => 
+      'field_property_date_inserted' => 
       array (
         0 => 
         array (
           'value' => '',
-          '_error_element' => 'default_value_widget][field_property_date_insertPropertiesed][0][value',
+          '_error_element' => 'default_value_widget][field_property_date_inserted][0][value',
         ),
       ),
     ),
@@ -4139,14 +4374,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  43 => 
+  44 => 
   array (
     'label' => 'Date Modified',
     'field_name' => 'field_property_date_modified',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '54',
+    'weight' => '55',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -4225,14 +4460,14 @@ Zoned For Horses',
       ),
     ),
   ),
-  44 => 
+  45 => 
   array (
     'label' => 'Status',
     'field_name' => 'field_property_status',
     'type' => 'text',
     'widget_type' => 'text_textfield',
     'change' => 'Change basic information',
-    'weight' => '55',
+    'weight' => '56',
     'rows' => 5,
     'size' => '60',
     'description' => '',
@@ -4311,7 +4546,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  45 => 
+  46 => 
   array (
     'label' => 'Agent ID',
     'field_name' => 'field_property_agent_id',
@@ -4397,7 +4632,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  46 => 
+  47 => 
   array (
     'label' => 'Agent Name',
     'field_name' => 'field_property_agent_name',
@@ -4483,7 +4718,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  47 => 
+  48 => 
   array (
     'label' => 'Agent Phone',
     'field_name' => 'field_property_agent_phone',
@@ -4569,7 +4804,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  48 => 
+  49 => 
   array (
     'label' => 'Agent 2 ID',
     'field_name' => 'field_property_agent_2_id',
@@ -4655,7 +4890,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  49 => 
+  50 => 
   array (
     'label' => 'Agent 2 Name',
     'field_name' => 'field_property_agent_2_name',
@@ -4741,7 +4976,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  50 => 
+  51 => 
   array (
     'label' => 'Agent 2 Phone',
     'field_name' => 'field_property_agent_2_phone',
@@ -4827,7 +5062,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  51 => 
+  52 => 
   array (
     'label' => 'Office ID',
     'field_name' => 'field_property_office_id',
@@ -4913,7 +5148,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  52 => 
+  53 => 
   array (
     'label' => 'Office',
     'field_name' => 'field_property_office',
@@ -4999,7 +5234,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  53 => 
+  54 => 
   array (
     'label' => 'Office Phone',
     'field_name' => 'field_property_office_phone',
@@ -5085,7 +5320,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  54 => 
+  55 => 
   array (
     'label' => 'Office 2 ID',
     'field_name' => 'field_property_office_2_id',
@@ -5171,7 +5406,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  55 => 
+  56 => 
   array (
     'label' => 'Office 2',
     'field_name' => 'field_property_office_2',
@@ -5257,7 +5492,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  56 => 
+  57 => 
   array (
     'label' => 'Tax',
     'field_name' => 'field_property_tax',
@@ -5343,7 +5578,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  57 => 
+  58 => 
   array (
     'label' => 'Tax Year One',
     'field_name' => 'field_property_tax_yr_one',
@@ -5429,7 +5664,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  58 => 
+  59 => 
   array (
     'label' => 'Tax 2',
     'field_name' => 'field_property_tax_two',
@@ -5515,7 +5750,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  59 => 
+  60 => 
   array (
     'label' => 'Tax Year Two',
     'field_name' => 'field_property_tax_yr_two',
@@ -5601,7 +5836,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  60 => 
+  61 => 
   array (
     'label' => 'Taxes Per',
     'field_name' => 'field_property_taxes_per',
@@ -5687,7 +5922,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  61 => 
+  62 => 
   array (
     'label' => 'Property Images',
     'field_name' => 'field_property_images',
@@ -5695,7 +5930,7 @@ Zoned For Horses',
     'widget_type' => 'imagefield_widget',
     'change' => 'Change basic information',
     'weight' => '8',
-    'file_extensions' => 'png gif jpg jpeg',
+    'file_extensions' => 'png,,, gif,,, jpg,,, jpeg',
     'progress_indicator' => 'bar',
     'file_path' => 'property_suite',
     'max_filesize_per_file' => '',
@@ -5718,9 +5953,19 @@ Zoned For Horses',
       'auto' => false,
       'link' => false,
       'image' => false,
-      'imagecache_frontpage_slides' => false,
+      'imagecache_mobile_search_results' => false,
       'imagecache_broker_thumb' => false,
+      'imagecache_frontpage_slides' => false,
+      'imagecache_search_result_image' => false,
+      'imagecache_image_gallery_thumb' => false,
+      'imagecache_mobile_property_image' => false,
+      'imagecache_blogportrait' => false,
+      'imagecache_property_image' => false,
+      'imagecache_blogthumb' => false,
       'imagecache_user_image' => false,
+      'imagecache_image_gallery_thumb_portrait' => false,
+      'imagecache_bloglandscape' => false,
+      'imagecache_mobile_broker_image' => false,
     ),
     'insert_default' => 
     array (
@@ -5794,7 +6039,7 @@ Zoned For Horses',
       ),
     ),
   ),
-  62 => 
+  63 => 
   array (
     'label' => 'Is Property Featured',
     'field_name' => 'field_property_featured',
@@ -5876,12 +6121,14 @@ Zoned For Horses',
   ),
 );
 $content['extra']  = array (
+  'locations' => '-4',
   'title' => '-5',
-  'revision_information' => '6',
-  'comment_settings' => '8',
-  'menu' => '4',
-  'book' => '7',
-  'path' => '3',
-  'page_title' => '-4',
-  'print' => '5',
+  'revision_information' => '3',
+  'author' => '1',
+  'options' => '2',
+  'comment_settings' => '4',
+  'menu' => '0',
+  'path' => '-1',
+  'path_redirect' => '6',
+  'nodewords' => '5',
 );

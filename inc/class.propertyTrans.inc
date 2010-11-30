@@ -21,7 +21,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       
     } else {
       
-      return user_load( 1 ); //Let's make sure everything get's under the super user if it has not broker id.
+      return user_load( 1 ); //If we have no broker, then we need to supply a default user id. @todo - make this a configurable user on the system.
       
     }
     

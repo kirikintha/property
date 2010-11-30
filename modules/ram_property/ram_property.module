@@ -18,6 +18,7 @@
 //module definitions
 define("RAM_PROPERTY_MODULE_PATH", drupal_get_path('module', 'ram_property'));
 define("RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT", 9999);
+define("RAM_PROPERTY_DEFAULT_TIMEZONE", 'America/Denver');
 
 /**
  * Hook Menu

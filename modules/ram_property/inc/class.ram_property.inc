@@ -131,7 +131,7 @@ class ramManager extends propertyManager {
 
     //Get our pieces from the common parser.
     $pieces = self::_getPropertyPieces($data);
-    //Get all our pieces we need to run our node update.
+    //Get all our pieces we need to run our node update. @todo - change from legacy values (below) to $pieces.
     $nid              = $pieces['nid'];
     $fieldNames       = $pieces['fieldNames'];
     $contentFields    = $pieces['contentFields'];
@@ -145,10 +145,12 @@ class ramManager extends propertyManager {
       $node = propertyTrans::_nodePrepare(trim (ucwords(strtolower (urldecode($title)))));
       //Kill off the Node Title, we do not need it now.
       unset($fieldNames[0]);
+      //Reset the location array.
+      $location = array();
       //Run through the rest of the fields for this node object and apply the proper values to the proper pieces of the node object.
       foreach ($fieldNames as $field) {
-        //Repace token with proper key value, which is key%
-        //If we have a location, then we need to process the value differenltly, so multiple tokens are accepted.
+        //Replace token with proper key value, which is key%
+        //If we have a location, then we need to process the value differenltly, so multiple tokens are accepted. Otherwise, all $field values are single tokens.
         if (strstr($field, "location_street") || strstr($field, "location_additional")) {
           $value = self::_tokensValues($data, variable_get($field, NULL));
         } else {
@@ -164,15 +166,15 @@ class ramManager extends propertyManager {
         //After we get the value, convert our field value into a string that corresponds to the node object.
         $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field);
         //If it is a location field, it does not follow CCK API.
-        if (strstr($field, "location")) {
-          
+        if (strstr($field, "location_") && !strstr($field, "field_")) {
+
           if (!empty($value)) {
             
             $location[$field] = trim($value);
           
           }
           
-        } else if (strstr($key, variable_get('ram_property_image_key', 'imagesavailable'))) { //If the ley matches the image field map
+        } else if (strstr($key, variable_get('ram_property_image_key', 'imagesavailable'))) { //If the key matches the image field map.
           
           $imageField = $field;
           
@@ -208,7 +210,7 @@ class ramManager extends propertyManager {
         }
         
       }
-      
+
       if ($location) { //If we have a location, set it
         
         $node = propertyTrans::_nodeLocation($node, $location);
@@ -228,7 +230,7 @@ class ramManager extends propertyManager {
         }
         
       }
-          
+
       //save node, with agent ID
       if (is_object($node)) {
         
@@ -271,7 +273,9 @@ class ramManager extends propertyManager {
        * Unset Unwanted Fields that do not have a token associated with them - this will keep any un-tokened fields from running through the next loop
        */
       unset($fieldNames[0]); //Kill off the Node Title
-      
+      //Reset the location array.
+      $location = array();
+      //Remove any unused fields on update so we don't over-write them.
       foreach ($fieldNames as $key => $field) {
         
         $token = variable_get($field, NULL);
@@ -283,9 +287,8 @@ class ramManager extends propertyManager {
         }
         
       }
-      
+      //Loop through each node field and perform the proper actions.
       foreach ($fieldNames as $field) {
-        
         //If we have a location, then we need to process the value differenltly, so multiple tokens are accepted.
         if (strstr($field, "location_street") || strstr($field, "location_additional")) {
           $value = self::_tokensValues($data, variable_get($field, NULL));
@@ -301,13 +304,13 @@ class ramManager extends propertyManager {
         $value = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $value);
         //After we get the value, convert our field value into a string that corresponds to the node object.
         $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field);
-        //If it is a location field, it does not follow CCK API.
-        if (strstr($field, "location")) { //if it is a location field, put into the node save differently
-          
+        //Location information does not follow the standard CCK API, so we need to change it.
+        if (strstr($field, "location_") && !strstr($field, "field_")) {
+
           if (!empty($value)) {
-            
+
             $location[$field] = trim($value);
-          
+
           }
           
         } else if (strstr($key, variable_get('ram_property_image_key', 'imagesavailable'))) { //If the key matches the image field map, set the image field
@@ -333,7 +336,7 @@ class ramManager extends propertyManager {
               
               foreach ($value as $multiple => $allowed) {
                   
-                array_push($node->$field, array('value' => t(trim($allowed )))); //unset the original value for this field, then push it to the end
+                array_push($node->$field, array('value' => t(trim($allowed)))); //unset the original value for this field, then push it to the end
                 
               }
               
@@ -350,7 +353,7 @@ class ramManager extends propertyManager {
         
       }
       
-      if ($location) { //If we have a location, set it
+      if ($location) { //If we have a location, re-set it
         
         unset($node->locations);
         $node = propertyTrans::_nodeLocation($node, $location);
@@ -371,7 +374,7 @@ class ramManager extends propertyManager {
               
               field_file_delete($image, TRUE); //Delete the file from the system entirely, force this!
               
-              //It's so simple, just make the image have no FID to delete, since this is a $variable, we have to tranlsate
+              //It's so simple in CCK, just make the image have no FID to delete, since this is a $variable, we have to tranlsate.
               $parents = $node->$imageField;
               $parents[$key]['fid'] = NULL;
               $node->$imageField = $parents;
@@ -382,7 +385,7 @@ class ramManager extends propertyManager {
 
         }
         
-        foreach ($images as $image) { //blow out images, and store them
+        foreach ($images as $image) { //Get each new image, loop and process into the node.
           
           $node = propertyTrans::_nodeImage($node, $imageField, $image);
          
@@ -393,7 +396,7 @@ class ramManager extends propertyManager {
       //save node, with agent ID, and evaluate if it needs to be updated, unpublished, or deleted
       if (is_object($node)) {
 
-        $node->status = 1; //publish me and save, since we may have been unpublished
+        $node->status = 1; //publish me and save, since we may have been unpublished.
         
         propertyTrans::_nodeSave($node, $agent, $propertyKeyValue, 'Update');
         
@@ -414,13 +417,18 @@ class ramManager extends propertyManager {
    * @return string $value = the converted value(s) we to use in a particular node field.
    */
   public static function _tokensValues($data = NULL, $tokens = NULL) {
+    $values = '';
     //Turn the values of the tokens back into their key% xml form.
     $keys = token_replace($tokens, 'property', 'Property Suite');
+    //Run through our data, and replace the values for the keys with their $data value.
     foreach ($data as $key => $value) {
-      //change out the values for the tokens with the values of the keys, this means any token can be used here from the property list
-      $values = str_replace($key, urldecode($value), $keys);
+      //If we match a $key in $keys, make the replacement.
+      if (strstr($keys, $key)) {
+        //Replace the keyed values with their data values, this means any token can be used here from the property list.
+        $keys = str_replace($key, urldecode($value), $keys);
+      }
     }
-    return $values;
+    return $keys;
   }
 
   /**
@@ -438,6 +446,9 @@ class ramManager extends propertyManager {
     //Set the pieces array.
     $pieces = array();
 
+    $propertyKey                = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite'); //Why do I need this? Because the property key controls everything.
+    $pieces['propertyKeyValue'] = $data[$propertyKey]; //This is the value that needs to get passed to the _nodeSave, so we can identify it later for re-cache
+
     //Get node ID from imported nids and create node
     $importedProperties = propertyTrans::_getImportedProperties(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]')); //Get the properties that have already been imported
     $pieces['nid']      = $importedProperties[$data[$propertyKey]]['nid'];
@@ -453,12 +464,9 @@ class ramManager extends propertyManager {
     $agent           = NULL;
     $pieces['agent'] = propertyTrans::_loadBroker($agentID);//take the broker id, and make the author of this node the, returns a valid user object
 
-    $propertyKey                = (string) token_replace(variable_get('ram_property_property_key', '[Mls_Num]'), 'property', 'Property Suite'); //Why do I need this?
-    $pieces['propertyKeyValue'] = $data[$propertyKey]; //This is the value that needs to get passed to the _nodeSave, so we can identify it later for re-cache
-
-    //$fieldNames[0] = the node title.
+    //$pieces['fieldNames'][0] = the node title.
     //Get the values for each token returned with tokensValues and use that string as the title.
-    $title = self::_tokensValues($data, variable_get($fieldNames[0], NULL));
+    $title = self::_tokensValues($data, variable_get($pieces['fieldNames'][0], NULL));
     //Explicitely sanitize the title string.
     $title = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $title); //strip out non-ascii
     $pieces['title'] = str_replace('&', 'And', $title); //Unforntunately, you can't have ampersands in node titles, ;(
@@ -609,7 +617,7 @@ class ramAdmin extends propertyAdmin {
    */
   public static function _runCron() {
     
-    date_default_timezone_set('America/Denver'); //Because RAM Runs in the Denver MST Time Zone, this has to get set here to America/Denver
+    date_default_timezone_set(RAM_PROPERTY_DEFAULT_TIMEZONE); //Because RAM Runs in the Denver MST Time Zone, this has to get set here to America/Denver
     $semaphore   = variable_get('ram_property_cron_run_semaphore', 'recache'); //What stage of cron are we running?
     $currentTime = date("H:00", strtotime("now")); //find out the current time
     $cronTime    = variable_get('ram_property_batch_cron_start_time', '00:00');

@@ -118,6 +118,7 @@ function _ram_property_admin() { //Main Admin settings
 
 /**
  * Validate Admin Form
+ * @todo - since I have added more form fields, I need to make sure all the variables clear properly.
  */
 function _ram_property_admin_validate(&$form_state, $form_values) {
   
@@ -296,7 +297,7 @@ function _ram_property_admin_validate(&$form_state, $form_values) {
  */
 function _ram_property_last_cache() {
   
-  $new   = propertyCache::_getCache('property_cache_new_cache');
+  $new = propertyCache::_getCache('property_cache_new_cache');
   $xml = propertyTrans::_validateData($new);
   
   if (is_object($xml)) { //If we have valid XML
