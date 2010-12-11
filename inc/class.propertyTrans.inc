@@ -1185,6 +1185,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
   public static function _setFileTimes() {
     
     propertyCache::_clearCache( 'property_cache_filetimes', 'cache_property_suite', TRUE );
+    propertyCache::_clearCache( 'property_cache_filetimes', 'cache', TRUE );
     
     $fileTime = array();
     

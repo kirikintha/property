@@ -47,20 +47,20 @@ class ramManager extends propertyManager {
     
     $log[] = t('CURL Info: !time', array('!time' => date("M/d/Y - h:m:s a", strtotime("now"))));
     
-    $info = (!curl_errno($this->ch)) ? curl_getinfo($this->ch) : curl_error($this->ch) ;
-    
-    while (list($label, $value) = each($info)) {
-      
-      $msg = array(
-        '!label' => $label,
-        '!value' => $value
-     );
-      
-      $log[] = t('!label : !value', $msg);
-    
-    }
-    
+    $info = (!curl_errno($this->ch)) ? curl_getinfo($this->ch) : curl_error($this->ch);
     curl_close($this->ch);
+    if (!empty($info)) {
+      while (list($label, $value) = each($info)) {
+
+        $msg = array(
+          '!label' => $label,
+          '!value' => $value
+        );
+
+        $log[] = t('!label : !value', $msg);
+
+      }
+    }
     
     return implode("<br />", $log);
     
@@ -557,6 +557,14 @@ class ramCache extends propertyCache {
     
   }
   
+  /**
+   * @name _processOrphans()
+   */
+  public static function _processOrphans() {
+    //Process Orhpans. This should only invoke when we have properties imported into the system.
+    propertyTrans::_processOrphans( variable_get( 'ram_property_property_key', '[Mls_Num]' ), variable_get( 'ram_property_date_modified', '[Date_Modified]' ) );
+    return true;
+}
 }
 
 /**
@@ -638,13 +646,17 @@ class ramAdmin extends propertyAdmin {
       
       if ($semaphore == 'recache') { //If we are re-caching, make sure it doesn't fall in disallowed times, and the time is later than the start time, run it and change the semaphore
         
-        //print "Retrieving Cache\n";
+        print "Retrieving Cache\n";
         ramCache::_retrieveNewCache();
-        //print "Cache Received\nAnalyzing Cache\n";
+        print "Cache Received\nAnalyzing Cache\n";
         ramCache::_analyzeNewCache();
-        //print "Cache Analyzed, Exiting\n";
+        print "Cache Analyzed, Exiting\n";
+        print "Analyzing Images\n";
         ramCache::_analyzeNewCacheImages();
-        //print "Images Analyzed, Exiting\n";
+        print "Images Analyzed, Exiting\n";
+        print "Processing Orphans\n";
+        ramCache::_processOrphans();
+        print "Orphans Processed, Exiting\n";
         
         variable_set('ram_property_cron_run_semaphore', 'batch');
         

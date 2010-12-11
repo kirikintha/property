@@ -37,6 +37,7 @@ class propertyCache {
       cache_set($cid, serialize($data), $table, $expire);
       return true;
     } else {
+      drupal_set_message('cannot set cache.');
       return false;
     }
   }

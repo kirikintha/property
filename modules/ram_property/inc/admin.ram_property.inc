@@ -444,6 +444,15 @@ function _ram_property_analyze_new_images($data = NULL) {
 }
 
 /**
+ * @name = _ram_property_process_orphans
+ */
+function _ram_property_process_orphans( $data = null ) {
+
+  return ramCache::_processOrphans();
+
+}
+
+/**
  * @name = _ram_property_import_first_run
  */
 function _ram_property_import_first_run() {
