@@ -15,15 +15,16 @@ This module creates a directory /property and property/thumbs in your drupal sit
 
 The workflow is to have an administrator/cron
 
-A) import cached data and images in one large upload actions, then
-  
-B) run the drupal node_save script to update the node table. Separating these two actions allows the server to divide it resources into manageable pieces, plus it eliminates server time-outs and memory exhaustion.
+A) Retrieve the current cache from your data source.
+B) Analyze f images need to be imported or updated in the database and physical file location.
+C) Analyze if properties need to be inserted or updated.
+D) Set the number of batches to be processed.
 
-Realistically, the faster your server, the faster the import. This initial cache can take, for... ever... just wait it out, the cache will happen, and after you do this initial import, your node uploads and updates will be a no brainer and takes less than ten minutes to import or update via cron.
+This module has been optimized to separate arrays and optimize efficiency, using node_load as sparingly as possible. Since this module analyzes a lot of nodes and data, the process uses a lot of memory.
 
-Image uploads are huge in this module, so you need a good chunk of server space. Remember, realty these days is all about the pictures. The average pull for images on 2500 records is over 17000, with a MB total at 600MB's of space.
+Image uploads are huge in this module, so you need a good chunk of server space. Remember, realty these days is all about the pictures. The average pull for images on 2500 records is over 17000, with a MB total at 600MB's of space. I've seen some sites have 30,000 images+.
 
-The actual cached node data (XML string) for RAM is very low considering, only 4MB of cached data in total for 2500 properties, so other than the images uploaded in the first cache, the import and update process is not so server intensive. Once you have the first cache of images and data, you need to run the manual update again, or just let cron run as the system will play catch-up.
+The actual cached node data (XML string) for RAM is very low considering, only 4MB of cached data in total for 2500 properties, so other than the images uploaded in the first cache, the import and update process is not so server intensive. Once you have the first cache of images and data, you need to run the manual update again, or just let cron run as the system will play catch-up. Update: Some RAM XMl can be over 15 MB which takes long to upload.
 
 Re-cache, updates and inserts invoke on cron runs, and manual caching/importing is still available. This module favors inserts over updates, so new properties show up quickly, and updates happen second. Since this process is actually pretty stable, you should not notice a difference in inserting vs. updating.
 
@@ -31,10 +32,7 @@ Re-cache, updates and inserts invoke on cron runs, and manual caching/importing 
 
 Max execution time seems to have an effect on caching images. I am finding on my local machine, that the image caching process takes much longer, and that it does not download all the images only half that on the server in one run. NOTE: In the module, I have changed the execution time with ini_set, and this seems to have allowed all the images to import. However, in general practice, you may notice that importing of all images takes a few caches to run, so when you start try running the cache up to five times, or until the "cache" process takes less than a minute to complete, this is unfortunately the only way to ensure you have received all the images, as most third party services do not report back to you total images, etc.
 
-My recommendation is to find the current first site that uses this module, http://sonnenalprealestate.com server config and use that as the base requirements for server use.
-I think that the larger the record set, the higher the max_execution time needs to be. At least 120 seconds. I found that when I changed the execution time, everything cached properly. However, it did take a few caches to get all the images when the max_execution was set to 60 seconds, and as of this writing Apr 2010, I have the php.ini setting to 240 max execution, just like devel.
-
-Memory usage needs to be somewhere in the 128MB, it is very memory intensive to upload and update nodes.
+Memory usage needs to be somewhere in the 128MB-256MB, it is very memory intensive to upload and update nodes.
 
 ##Installation
 
@@ -120,9 +118,9 @@ Link (Can't add titles to url's, or affect the link's _target attributes via nod
 Date (This is just a mess to use with node_save. The array is impossible to decipher reliably) You may use this as an extra imported field though, with a default value.
 User Reference ( Too many crazy problems to mention ) : No alternative solution available, needs patch
 Node Reference ( Inconsistent handling of the node reference array, changes with versions of the content module ) : No alternative solution available, needs patch
+Any CCK field not referenced from above.
 
-You can use the afore mentioned fields on their own, but not for data mapping purposes as of Apr 2010. As soon as those modules are updated, or remove legacy issues (Such as the Date CCK widget)
-then this module will support them.
+You can use the afore mentioned fields on their own, but not for data mapping purposes as of Release Candidate 2. As soon as those modules are updated, or remove legacy issues (Such as the Date CCK widget) then this module will support them.
 
 **Notes on Formatting**
 If you use Allowed values in your CCK field, then you must use plain text, because filtered text automatically adds markup on the node_save process, which adds invalid markup to your field. Also, if you are using allowed values, you need to make sure the field is set to unlimited, so that the form does not error out.
@@ -146,7 +144,7 @@ Import/Update
 
 IF YOU ARE RUNNING YOUR FIRST IMPORT, BACKUP FIRST!!!!!!!
 
-If you do not backup, let the great bird of the galaxy help you. Let me say this once more, for heaven's sake backup before making your first import, or if mannually importing. This is just good practice, don't make a NOOB decision. WARNING: This module does not back up for you, so it is best practice to use the backup/migrate module and set up regular backups so you are not hosed.
+If you do not backup, let the great bird of the galaxy help you. Let me say this once more, for heaven's sake backup before making your first import, or if manually importing. This is just good practice, don't make a NOOB decision. WARNING: This module does not back up for you, so it is best practice to use the backup/migrate module and set up regular backups so you are not hosed.
 
 Lastly, did I mention to backup?!
 
@@ -159,14 +157,11 @@ If you have completed all of this, then you are ready to go and complete your si
 
 ##Property API Map
 
-As of Apr 2010 the Property API is at version RC1. This is a release candidate, and all bugs and feature requests should be sent to paul@bluetent.com
-It is my pledge to have this as an actual release by Late Summer 2010. We'll see how that goes. ;)
+As of Dec 2010 the Property API is at version RC2. This is a release candidate, and all bugs and feature requests should be sent to paul@bluetent.com Release Candidate 2 addresses performance issues in the RAM API and fixes some cURL issues in the property API and extends the propertyAPI to allow for concatenating multiple tokens in multiple fields.
 
 The Property API as it stands has many Classes that are extendible. The API is broken down into:
 
-factoryManager = This is the interface that controls each module's manager class
-
-propertyManager = This is the base implementation of the factoryManager interface. This allows all other classes to expand from the main interface without error. currently this is a blank slate, and as certain functions become "globally" accepted, they will become migrated into this class, which you can invoke in your module by using _parent::_fooFunction() [This is a lot like the views API]
+propertyManager = This is the base implementation of the API's functions, so that they act as a manager for the delegating functions. This allows all other classes to expand from the main interface without error. Currently this is a blank slate, and as certain functions become "globally" accepted, they will become migrated into this class, which you can invoke in your module by using _parent::_fooFunction() [This is a lot like the views API]
 
 propertyAdmin = This public static class controls all admin functions for a module, such as form generation and various administrative scope functions, anything that needed to be standardized.
 
@@ -182,14 +177,14 @@ And, the best thing is you can ignore it all, use what you want in your module a
 
 ##Security
 
-As of Apr 2010 this module has not been tested for security holes, but I have followed the best practices for XML storage and execution. Any help on that would be awesome, especially how to use the xss_filter, if we need to.
+As of RC1 there are no known security issues.
 
 ##Road Map (Todo's)
 
 @todo turn the large amount of variables that are system orientated into a serialized array
-@todo make a quick cache set of radios with the options: cache insert only | cache update only | cache all - in RAM Module
-@todo make the CCK link widget an option
-@todo make the CCK date widget an option
+@todo make the setup process more streamlined: _checkStage _setStage
+@todo turn the "manually cache*" separated options into one field-set with radio buttons: Cache Properties | Cache Images | Cache All
+@todo turn the "manually import*" separated options into one field-set with radio buttons: Import Properties (Only shows if we import images) | Import Images
 @todo allow for user assigned delimiters to translate to array keys for multiple CCK values - not hardcoded, but a variable
-@todo do we need to allow for multiple connectors?
+@todo add support for the date api and CCK date fields
 @todo add help section
