@@ -1127,7 +1127,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
    * Process All orhpaned nodes now, as you process the new cache.
    */
   public static function _processOrphans($propertyKey, $dateModified) {
-
+    
     $importedProperties = self::_getImportedProperties( $propertyKey, $dateModified ); //Get the properties that have already been imported.
     $newCacheProperties = propertyCache::_getCache( 'property_cache_new_cache' );
     
@@ -1136,63 +1136,62 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     //If we have imported properties and newCached properties, then look for orphans.
     
     if (!empty($importedProperties)) {
-    //@todo Turn imported properties into chunks, so we can keep the server load down?
-    //Loop through the property rs and see if we need to unpublish any properties
-    foreach ( $importedProperties as $key => $property ) {
-      //Eval if we need to set a particular node to be published or unpublished. If we match, then the proprety is in the current cache and publish, if not then we need to unpublish or delete.
-      $status = ( preg_match('/'.$key.'/i', $newCacheProperties, $property) ) ? 'publish' : 'unpublish';
-      //Load a node object directly from the DB. This needs to just load the node from the {node} table because node_load is just too darn big memory wise.
-      $node = db_fetch_object(db_query("SELECT * FROM {node} WHERE nid = %d LIMIT 0,1", $property['nid']));
-      //Just unpublish right here, unless the node should be deleted.
-      if ( $status == 'unpublish' ) { 
-        //If we need to unpublish a node that is published, then evaluate it to see if it needs to be deleted.
-        $changed    = date('Y-m-d', $node->changed);
-        $expiration = strtotime( "$changed + $staleness" );
-        //drupal_set_message(t('Imported Property: !mls - Status: !status | Last Changed !changed, Expiration - !expiration | Node Status: !node_status', array('!mls' => $key, '!status' => $status, '!changed' => $changed, '!expiration' => date('m-d-Y', $expiration), '!node_status' => $node->status )));
-        //If we are not past our expiration date, just unpublish - we want this here, because deleting the node means deleting images, which means if something bad happens, then we don't have to go through re-caching a billion images.
-        if ( $node->status == 1 ) {
-            //Set log information.
-            $logs['Orphans'][] = array(
-              'title'       => t( 'Property' ),
-              'description' => t( 'The Property Module unpublished !title at !link, as it has been identified as not on the current property list.', array( '!link' => l( 'View This Node', 'node/' .$node->nid ), '!title' => $node->title ) ),
-              'severity'    => REQUIREMENT_WARNING,
-              'value'       => 'Property Unpublished',
-            );
-            //Unpublish the node here - because there can be so many reasons this fails on node_save, manually update the node entry here - this ensures we unpublish without error on malformed properties
-            db_query("UPDATE {node} SET status = %d WHERE nid = %d", 0, $node->nid);
-          } else if ( $expiration <= strtotime( "now" ) && $node->status == 0 )  {
-            //If we are past expiration, delete me by loading the actual node at this point. Unless there are 1000's of nodes to delete at once, this should be ok.
-            $node = node_load( $property['nid'] );
+      //@todo Turn imported properties into chunks, so we can keep the server load down?
+      //Loop through the property rs and see if we need to unpublish any properties
+      foreach ( $importedProperties as $key => $property ) {
+        //Eval if we need to set a particular node to be published or unpublished. If we match, then the proprety is in the current cache and publish, if not then we need to unpublish or delete.
+        $status = ( preg_match('/'.$key.'/i', $newCacheProperties, $key) ) ? 'publish' : 'unpublish';
+        //Load a node object directly from the DB. This needs to just load the node from the {node} table because node_load is just too darn big memory wise.
+        $node = db_fetch_object(db_query("SELECT * FROM {node} WHERE nid = %d LIMIT 0,1", $property['nid']));
+        //Just unpublish right here, unless the node should be deleted.
+        if ( $status == 'unpublish' ) {
+          //If we need to unpublish a node that is published, then evaluate it to see if it needs to be deleted.
+          $changed    = date('Y-m-d', $node->changed);
+          $expiration = strtotime( "$changed + $staleness" );
+          //drupal_set_message(t('Imported Property: !mls - Status: !status | Last Changed !changed, Expiration - !expiration | Node Status: !node_status', array('!mls' => $key, '!status' => $status, '!changed' => $changed, '!expiration' => date('m-d-Y', $expiration), '!node_status' => $node->status )));
+          //If we are not past our expiration date, just unpublish - we want this here, because deleting the node means deleting images, which means if something bad happens, then we don't have to go through re-caching a billion images.
+          if ( $node->status == 1 ) {
+              //Set log information.
+              $logs['Orphans'][] = array(
+                'title'       => t( 'Property' ),
+                'description' => t( 'The Property Module unpublished !title at !link, as it has been identified as not on the current property list.', array( '!link' => l( 'View This Node', 'node/' .$node->nid ), '!title' => $node->title ) ),
+                'severity'    => REQUIREMENT_WARNING,
+                'value'       => 'Property Unpublished',
+              );
+              //Unpublish the node here - because there can be so many reasons this fails on node_save, manually update the node entry here - this ensures we unpublish without error on malformed properties
+              db_query("UPDATE {node} SET status = %d WHERE nid = %d", 0, $node->nid);
+            } else if ( $expiration <= strtotime( "now" ) && $node->status == 0 )  {
+              //If we are past expiration, delete me by loading the actual node at this point. Unless there are 1000's of nodes to delete at once, this should be ok.
+              $node = node_load( $property['nid'] );
+              //Log Message.
+              $logs['Orphans'][] = array(
+                'title'       => t( 'Property' ),
+                'description' => t( 'The Property Module permanenetly deleted !title.', array( '!title' => $node->title  ) ),
+                'severity'    => REQUIREMENT_INFO,
+                'value'       => 'Property Deleted',
+              );
+              //Delete content and node, in that order so the cck fields delete, images delete from the database and physical location.
+              content_delete( $node );
+              //Delete the node so all revisions, location info and any additional records permanently delete.
+              node_delete( $node->nid );
+          }
+
+        } else if ($status == 'publish') {
+          if ( $node->status == 0 ) {
             //Log Message.
             $logs['Orphans'][] = array(
               'title'       => t( 'Property' ),
-              'description' => t( 'The Property Module permanenetly deleted !title.', array( '!title' => $node->title  ) ),
-              'severity'    => REQUIREMENT_INFO,
-              'value'       => 'Property Deleted',
+              'description' => t( 'The Property Module published !title at !link, as it has been identified as on the current property list and was unpublished.', array( '!link' => l( 'View This Node', 'node/' .$node->nid ), '!title' => $node->title ) ),
+              'severity'    => REQUIREMENT_WARNING,
+              'value'       => 'Property Published',
             );
-            //Delete content and node, in that order so the cck fields delete, images delete from the database and physical location.
-            content_delete( $node );
-            //Delete the node so all revisions, location info and any additional records permanently delete.
-            node_delete( $node->nid );
-
+            //Publish the node here - because there can be so many reasons this fails on node_save, manually update the node entry here - this ensures we publish without error on malformed properties.
+            db_query("UPDATE {node} SET status = %d WHERE nid = %d", 1, $node->nid);
+          }
         }
-        
-      } else if ($status == 'publish') {
-        if ( $node->status == 0 ) {
-          //Log Message.
-          $logs['Orphans'][] = array(
-            'title'       => t( 'Property' ),
-            'description' => t( 'The Property Module published !title at !link, as it has been identified as on the current property list ad was unpublished.', array( '!link' => l( 'View This Node', 'node/' .$node->nid ), '!title' => $node->title ) ),
-            'severity'    => REQUIREMENT_WARNING,
-            'value'       => 'Property Published',
-          );
-          //Publish the node here - because there can be so many reasons this fails on node_save, manually update the node entry here - this ensures we publish without error on malformed properties.
-          db_query("UPDATE {node} SET status = %d WHERE nid = %d", 1, $node->nid);
-        }
-      }
         //Unset our node to free up memory.
-      unset( $node );
-    }
+        unset( $node );
+      }
     }
     
     unset( $importedProperties );
