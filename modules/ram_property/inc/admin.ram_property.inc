@@ -8,7 +8,7 @@ function _ram_property_admin() { //Main Admin settings
   $form = array();
   
   $requirements = ramAdmin::_requirements();
-  
+
   /**
    * @param string variable_get('ram_property_setup', NULL) a string that shows the phase you have completed in the setup
    * init = the initial setup instructions, set up the API first

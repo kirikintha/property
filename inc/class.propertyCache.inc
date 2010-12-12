@@ -37,7 +37,8 @@ class propertyCache {
       cache_set($cid, serialize($data), $table, $expire);
       return true;
     } else {
-      drupal_set_message('cannot set cache.');
+      $MSG = t('<p>!cid</p><p>!data</p>', array('!cid' => $cid, '!data' => print_r($data, TRUE)));
+      drupal_set_message(t('Cannot set Cache, because either there is no Cache ID or Data. !debug',array('!debug' => $MSG)));
       return false;
     }
   }

@@ -842,14 +842,16 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     propertyCache::_clearCache( 'property_cache_update_items', 'cache_property_suite', FALSE );
     
     $properties         = array(); //This is the array we use to make the chunks
-    $newCacheProperties = array(); //This is how we calculate old properties
-    $importedProperties = array(); //This is hoe we evaluate if a property is in the system or not
+    $importedProperties = array(); //This is how we evaluate if a property is in the system or not
     
     $xml = propertyCache::_getCache( 'property_cache_new_cache' );
     
     $xml = propertyTrans::_validateData( $xml );
     
     if ( $xml ) { //if we have an object, then we want to analyze it's pieces and set cache parts
+      
+      $maxExecution = ( ini_get('max_execution_time') > 240 ) ? 240 : ini_get('max_execution_time'); //make sure this doesn't blow out things
+      $threshold    = 5; //The magical number of nodes in one batch seems to be 5, so this is our threshold DO NOT CHANGE!!
       
       $importedProperties = self::_getImportedProperties( $propertyKey, $dateModified ); //Get the properties that have already been imported
       
@@ -880,23 +882,22 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
   
           $properties[$set][$mlsNum] = $value; //prepare the property
           
-        }        
-  
-        $newCacheProperties[$mlsNum] = $value; //This is the array we use to see if there are properties that need to be deleted
+        }
         
       }
-    
-      //Cache $newCacheProperties, so we can remove processOrphans from the chain here, and re-factor to it's own part of the cron process.
-      propertyCache::_setCache( 'property_cache_new_cache_properties', $newCacheProperties );
-      unset($newCacheProperties);
 
+      unset( $xml );
+      
       //Set MLS Numbers, so we have a list of current properties to display, from both the insert and update arrays
       $insertMlsNum = ( count( $properties['insert'] ) > 0 ) ? array_keys( $properties['insert'] ) : array(); 
       $updateMlsNum = ( count( $properties['update'] ) > 0 ) ? array_keys( $properties['update'] ) : array();
 
       //threshold to run batches at, so we don't run into execution problems
       $total = count( $properties['insert'] ) + count( $properties['update'] );
-      
+      //Cache the total items
+      propertyCache::_setCache( 'property_cache_items_total', $total );
+
+      //Log the totals.
       $logs['Cache'][] = array(
         'title'       => t( 'Property' ),
         'description' => t( 'The Property Module parsed !count properties into the system.', array( '!count' => $total ) ),
@@ -904,17 +905,12 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
         'value'       => 'Propreties Parsed',
       );
       
-      //Cache the total items
-      propertyCache::_setCache( 'property_cache_items_total', $total );
-      $maxExecution = ( ini_get('max_execution_time') > 240 ) ? 240 : ini_get('max_execution_time'); //make sure this doesn't blow out things
-      $threshold    = 5; //The magical number of nodes in one batch seems to be 5, so this is our threshold DO NOT CHANGE!!
-      
-      //chunk
-      $insertChunks = ( count( $properties['insert'] ) > 0 ) ? array_chunk( $properties['insert'], $threshold, true ) : array(); //Chunked Insertable properties
-      $updateChunks  = ( count( $properties['update'] ) > 0 ) ? array_chunk( $properties['update'], $threshold, true ) : array(); //Chunked Updateable properties
-  
-      ( count( $insertChunks ) > 0 ) ? propertyCache::_setCache( 'property_cache_insert_items', $insertChunks ) : propertyCache::_clearCache( 'property_cache_insert_items' ); // Cache Chunked Insertable properties
-      ( count( $updateChunks ) > 0 ) ? propertyCache::_setCache( 'property_cache_update_items', $updateChunks ) : propertyCache::_clearCache( 'property_cache_update_items' ); // Cache Chunked Updateable properties
+      //Chunked Insertable properties.
+      $insertChunks = ( count( $properties['insert'] ) > 0 ) ? array_chunk( $properties['insert'], $threshold, true ) : array();
+      unset( $properties['insert'] );
+      //Chunked Updateable properties.
+      $updateChunks  = ( count( $properties['update'] ) > 0 ) ? array_chunk( $properties['update'], $threshold, true ) : array();
+      unset( $properties['update'] );
       
       //total chunks
       $totalChunks  = count( $insertChunks ) + count( $updateChunks );
@@ -925,29 +921,35 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       
       if ( count( $insertChunks ) > 0 && is_array( $insertChunks ) ) {
         
-        foreach ( $insertChunks as $key => $value ) { //get all the batches into the cache
+        foreach ( $insertChunks as $key => $value ) { //Get all the batches into the cache - these are where the node information resides.
           
           propertyCache::_setCache( 'property_cache_batch_property_insert_' .$key, $value );
+
+          //Sanitize the data here, we just need trimmed data here, no node information.
+          $insertChunks[$key] = array();
           
         }
+        
+        propertyCache::_setCache( 'property_cache_insert_items', $insertChunks );
+        unset( $insertChunks );
       
       }
       
       if ( count( $updateChunks ) > 0 && is_array( $updateChunks ) ) {
         
-        foreach ( $updateChunks as $key => $value ) { //get all the update batches into the cache
+        foreach ( $updateChunks as $key => $value ) { //Get all the batches into the cache - these are where the node information resides.
           
           propertyCache::_setCache( 'property_cache_batch_property_update_' .$key, $value );
+
+          //Sanitize the data here, we just need trimmed data here, no node information.
+          $updateChunks[$key] = array();
           
         }
-      
+
+        propertyCache::_setCache( 'property_cache_update_items', $updateChunks );
+
+        unset( $updateChunks );
       }
-      
-      //Unset unused variables.
-      unset( $properties );
-      unset( $insertChunks );
-      unset( $updateChunks );
-      unset( $xml );
       
     } else { //if for some reason we do not have valid xml, kill the re-cache
       
@@ -963,7 +965,6 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     self::_logMessages( $logs ); //Log The messages
     self::_processMessages(); //Since this is the last phase of the logging
     propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache_property_suite', FALSE );
-    
   }
   
   /**
@@ -1126,17 +1127,20 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
    * Process All orhpaned nodes now, as you process the new cache.
    */
   public static function _processOrphans($propertyKey, $dateModified) {
+
     $importedProperties = self::_getImportedProperties( $propertyKey, $dateModified ); //Get the properties that have already been imported.
-    $newCacheProperties = propertyCache::_getCache( 'property_cache_new_cache_properties' ); //Cached properties in the system.
+    $newCacheProperties = propertyCache::_getCache( 'property_cache_new_cache' );
+    
     //Find Orphaned Properties so they can be unpublished or deleted.
     $staleness  = variable_get( 'property_property_staleness', '90 days' );
     //If we have imported properties and newCached properties, then look for orphans.
-    if (!empty($importedProperties) && !empty($newCacheProperties)) {
+    
+    if (!empty($importedProperties)) {
     //@todo Turn imported properties into chunks, so we can keep the server load down?
     //Loop through the property rs and see if we need to unpublish any properties
     foreach ( $importedProperties as $key => $property ) {
-      //Eval if we need to set a particular node to be published or unpublished.
-      $status = ( array_key_exists( $key, $newCacheProperties ) ) ? 'publish' : 'unpublish';
+      //Eval if we need to set a particular node to be published or unpublished. If we match, then the proprety is in the current cache and publish, if not then we need to unpublish or delete.
+      $status = ( preg_match('/'.$key.'/i', $newCacheProperties, $property) ) ? 'publish' : 'unpublish';
       //Load a node object directly from the DB. This needs to just load the node from the {node} table because node_load is just too darn big memory wise.
       $node = db_fetch_object(db_query("SELECT * FROM {node} WHERE nid = %d LIMIT 0,1", $property['nid']));
       //Just unpublish right here, unless the node should be deleted.
@@ -1232,8 +1236,10 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       unset( $rs );
       
     }
-    
-    propertyCache::_setCache( 'property_cache_filetimes', $fileTime );
+
+    if (!empty($fileTime)) {
+      propertyCache::_setCache( 'property_cache_filetimes', $fileTime );
+    }
     
   }
   

@@ -49,7 +49,7 @@ class ramManager extends propertyManager {
     
     $info = (!curl_errno($this->ch)) ? curl_getinfo($this->ch) : curl_error($this->ch);
     curl_close($this->ch);
-    if (!empty($info)) {
+    if (!empty($info) && is_array($info) || !empty($info) && is_object($info)) {
       while (list($label, $value) = each($info)) {
 
         $msg = array(
