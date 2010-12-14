@@ -425,7 +425,12 @@ class ramManager extends propertyManager {
       //If we match a $key in $keys, make the replacement.
       if (strstr($keys, $key)) {
         //Replace the keyed values with their data values, this means any token can be used here from the property list.
-        $keys = str_replace($key, urldecode($value), $keys);
+        if (!empty($value)) {
+          $keys = str_replace($key, urldecode($value), $keys);
+        } else {
+          //If we don't have a value, blank out the key name.
+          $keys = str_replace($key, '', $keys);
+        }
       }
     }
     return $keys;

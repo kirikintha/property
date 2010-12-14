@@ -252,12 +252,12 @@ class propertyAdmin {
   public static function _setupTokenForm() {
     
     $form['tokens_and_keys'] = array(
-      '#type' 				=> 'fieldset',
-      '#title' 				=> t('Tokens'),
-      '#collapsible' 	=> TRUE,
-      '#collapsed' 		=> FALSE,
-      '#weight'				=> 49,
-      '#group'        => 'tokens_and_keys'
+      '#type' 		 => 'fieldset',
+      '#title' 		 => t('Tokens'),
+      '#collapsible' => TRUE,
+      '#collapsed'   => FALSE,
+      '#weight'      => 49,
+      '#group'       => 'tokens_and_keys'
     );
     
     $form['tokens_and_keys']['property_tokens'] = array(
@@ -268,7 +268,8 @@ class propertyAdmin {
       '#default_value'  => variable_get( 'property_tokens', null ),
       '#required'       => true,
       '#weight'         => -49,
-      '#group'          => 'tokens_and_keys'
+      '#group'          => 'tokens_and_keys',
+      '#element_validate' => array('_property_tokens_validate'),
     );
     
     $form['tokens_and_keys']['property_connection_tokenize'] = array(
@@ -550,12 +551,12 @@ class propertyAdmin {
   public static function _setupImagesImportForm( $requirements = null, $function = NULL ) {
     
     $form['runtime_images'] = array(
-      '#type' 				=> 'fieldset',
-      '#title' 				=> t('Manually Import Images'),
-      '#collapsible' 	=> TRUE,
-      '#collapsed' 		=> FALSE,
-      '#weight'				=> -48,
-      '#group'        => 'runtime'
+      '#type' 		 => 'fieldset',
+      '#title' 		 => t('Manually Import Images'),
+      '#collapsible' => TRUE,
+      '#collapsed' 	 => FALSE,
+      '#weight'		 => -48,
+      '#group'       => 'runtime'
     );
     
     $totals = propertyTrans::_getTotalsImages(); //Get the totals from the last cache call

@@ -397,9 +397,13 @@ function _ram_property_test_connection($data = NULL) {
 
 /**
  * Generate Tokens :: From _commit in js
+ * @todo - move this to admin.property
  */
 function _ram_property_generate_tokens($data = NULL) {
-    
+
+  //Remove anything not a pipe or an alphanumeric value.
+  $data = preg_replace("/[\r\n]+[\s\t]*[\r\n]+/","\n", $data);
+
   if (variable_get('ram_property_connection_tested', NULL) === TRUE && !empty($data)) {
     
     variable_set('property_tokens', $data);
@@ -490,7 +494,7 @@ function _ram_property_setup_header($requirements, $stage = 'setup', $weight = -
     '#value'  => propertyAdmin::_themeStatusReport($requirements[$stage]),
     '#weight' => $weight,
     '#group'  => 'admin_main'
- );
+  );
   
   return $form;
   
@@ -502,13 +506,13 @@ function _ram_property_setup_header($requirements, $stage = 'setup', $weight = -
 function _ram_property_setup_init() {
   
   $form['admin_main'] = array(
-		'#type' 				=> 'fieldset',
-		'#title' 				=> t('RAM API Set-up'),
-		'#collapsible' 	=> TRUE,
-		'#collapsed' 		=> FALSE,
-		'#weight'				=> 50,
-    '#group'        => 'admin_main'
-	);
+    '#type' 	   => 'fieldset',
+    '#title' 	   => t('RAM API Set-up'),
+    '#collapsible' => TRUE,
+    '#collapsed'   => FALSE,
+    '#weight'	   => 50,
+    '#group'       => 'admin_main'
+  );
   
   $form['admin_main']['setup']['api']['ram_property_api_host'] = array(
     '#type'           => 'textfield',
@@ -518,7 +522,7 @@ function _ram_property_setup_init() {
     '#required'       => TRUE,
     '#weight'         => -49,
     '#group'          => 'admin_main'
- );
+  );
   
   $form['admin_main']['setup']['api']['ram_property_api_host_filename'] = array(
     '#type'           => 'textfield',
@@ -528,7 +532,7 @@ function _ram_property_setup_init() {
     '#required'       => TRUE,
     '#weight'         => -49,
     '#group'          => 'admin_main'
- );
+  );
   
   $form['#pre_render'][] = 'vertical_tabs_form_pre_render'; //enabled vertical tabs if the module is installed
   
@@ -806,7 +810,7 @@ function _ram_property_setup_complete() {
     10 => t(10),
     20 => t(20),
     30 => t(30),
- );
+  );
   
   $form['cron']['ram_property_batch_cron_limit'] = array(
     '#type'           => 'select',

@@ -7,13 +7,13 @@ function _property_suite_admin_main() { //Main Admin settings
     
   //System Messages - @the cron can be deprecatd, unecessary
   $form['admin_main'] = array(
-		'#type' 				=> 'fieldset',
-		'#title' 				=> t('Property Suite Status'),
-		'#collapsible' 	=> TRUE,
-		'#collapsed' 		=> FALSE,
-		'#weight'				=> -50,
+    '#type' 		=> 'fieldset',
+    '#title' 		=> t('Property Suite Status'),
+    '#collapsible' 	=> TRUE,
+    '#collapsed' 	=> FALSE,
+    '#weight'       => -50,
     '#group'        => 'admin_main'
-	);
+  );
   
   $form['admin_main']['header'] = array(
     '#value'  => propertyAdmin::_getStatus(),
@@ -23,12 +23,12 @@ function _property_suite_admin_main() { //Main Admin settings
   
   //Map API Keys
   $form['map_api_keys'] = array(
-		'#type' 				=> 'fieldset',
-		'#title' 				=> t('Map API Keys'),
-    '#description'    => t( 'You Must enter Map API keys here for Geocoding purposes. You must also enter one Google API key and One Yahoo API Key, so there is a fallback, in case the system hits API limits.' ),
-		'#collapsible' 	=> TRUE,
-		'#collapsed' 		=> FALSE,
-		'#weight'				=> -49,
+    '#type' 		=> 'fieldset',
+    '#title' 		=> t('Map API Keys'),
+    '#description'  => t( 'You Must enter Map API keys here for Geocoding purposes. You must also enter one Google API key and One Yahoo API Key, so there is a fallback, in case the system hits API limits.' ),
+    '#collapsible' 	=> TRUE,
+    '#collapsed' 	=> FALSE,
+    '#weight'		=> -49,
     '#group'        => 'map_api_keys'
 	);
   
@@ -54,11 +54,11 @@ function _property_suite_admin_main() { //Main Admin settings
   
   //Debug options
   $form['debug'] = array(
-		'#type' 				=> 'fieldset',
-		'#title' 				=> t('Debug Options'),
-		'#collapsible' 	=> TRUE,
-		'#collapsed' 		=> FALSE,
-		'#weight'				=> -48,
+    '#type' 		=> 'fieldset',
+    '#title' 		=> t('Debug Options'),
+    '#collapsible' 	=> TRUE,
+    '#collapsed' 	=> FALSE,
+    '#weight'		=> -48,
     '#group'        => 'debug'
 	);
   
@@ -102,4 +102,9 @@ function _property_suite_admin_ajax_commit() { //This runs the catch all callbac
   
   exit(); //This is the only place it should be uncommented, unles you are debugging a process
   
+}
+
+function _property_tokens_validate($form_id, &$form_state) {
+  //Remove anything not a pipe or an alphanumeric value.
+  $form_state['values']['property_tokens'] = preg_replace("/[\r\n]+[\s\t]*[\r\n]+/","\n", $form_state['values']['property_tokens']);
 }
