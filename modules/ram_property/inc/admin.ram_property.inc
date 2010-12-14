@@ -208,7 +208,7 @@ function _ram_property_admin_validate(&$form_state, $form_values) {
       'Const_type',
       'Amenities',
       'virtual_tour',
-      'Date_insertPropertiesed',
+      'Date_inserted',
       'Date_Modified',
       'LotSizeRange',
       'LotSizeActual',

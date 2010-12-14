@@ -161,7 +161,7 @@ class ramManager extends propertyManager {
           $value = (string) $data[$key];
         }
         //Sanitize the value.
-        $value = trim (urldecode($value));
+        $value = trim(urldecode($value));
         $value = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $value);
         //After we get the value, convert our field value into a string that corresponds to the node object.
         $field = str_replace('property_content_type_' .variable_get('property_content_type', NULL) .'_', '', $field);
@@ -185,9 +185,18 @@ class ramManager extends propertyManager {
             //if the field has either a ; or a , then convert it to an array, if this cck field has anything more than 1 set as the number of values
             $cck = $contentFields[$field];
             
-            if ($cck['multiple'] == 1) { //If the cck field is multiple, break up the values by either ; or ,
-              
-              $value = (strstr($value, ";")) ? explode(";", $value) : explode(",", $value) ;
+            if ($cck['multiple'] == 1) { //If the cck field is multiple, break up the values by either ; or , or |
+
+              if (strstr($value, ";")) {
+                $value = explode(";", $value);
+              } else if (strstr($value, ",")) {
+                $value = explode(",", $value);
+              } else if (strstr($value, "|")) {
+                $value = explode("|", $value);
+              } else {
+                //Default to semi-colon
+                $value = explode(";", $value);
+              }
               
             }
             
@@ -423,7 +432,7 @@ class ramManager extends propertyManager {
     //Run through our data, and replace the values for the keys with their $data value.
     foreach ($data as $key => $value) {
       //If we match a $key in $keys, make the replacement.
-      if (strstr($keys, $key)) {
+      if (preg_match("/\b$key\b/",$keys, $matches)) {
         //Replace the keyed values with their data values, this means any token can be used here from the property list.
         if (!empty($value)) {
           $keys = str_replace($key, urldecode($value), $keys);
@@ -433,7 +442,8 @@ class ramManager extends propertyManager {
         }
       }
     }
-    return $keys;
+    $keys = preg_replace("/\bkey[0-9]+\b/", "", $keys);
+    return trim($keys);
   }
 
   /**
