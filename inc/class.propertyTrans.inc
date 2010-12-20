@@ -29,9 +29,10 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
   
   /**
    * @name _nodeImage( $node = null, $field = null, $image = null ) = curls the image to the local server
+   * @todo make this support single and multiple CCK text widgets.
    */
-  public static function _nodeImage( $node = null, $field = null, $image = null ) {
-        
+  public static function _nodeImage( $node = null, $field = null, $image = null) {
+
     $localPath  = PROPERTY_MODULE_UPLOAD_DIRECTORY;
     $localImage = $localPath.$image;
 
@@ -254,7 +255,12 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     return $node;
     
   }
-  
+
+  /**
+   * @name _nodePrepare()
+   * @param string $title
+   * @return object $node
+   */
   public static function _nodePrepare( $title = null ) {
     
     $node           = new stdClass();
@@ -1372,7 +1378,9 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
    * $totals['chunks'] = the total chunks processed
    */
   public static function _getTotalsImages() {
-    
+
+    //IF we can't curl images, just return FALSE.
+    if (variable_get('property_can_curl_images', TRUE) === FALSE) { return FALSE; }
       
     $totals['total'] = (int) propertyCache::_getCache( 'property_cache_images_total' );
     
@@ -1616,8 +1624,11 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
         break;
       
         case 'batchImages':
-          
-          $manager->_batchImages();
+
+          //If we can batch images, do it.
+          if (variable_get('property_can_curl_images', TRUE) === TRUE) {
+            $manager->_batchImages();
+          }
           
         break;
         

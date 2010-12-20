@@ -6,12 +6,11 @@
 // ------------------------------------------------------------
 // The name of your site. Required so that when we bootstrap Drupal in
 // this script, we find the right settings.php file in your sites folder.
-define('SITE_NAME', ''); //NEW WEBENABLED LIVE VARIABLE - TEMP!!!
-
+define('SITE_NAME', 'trd2.btmdev.rescmshost.com'); //Change this for the live server!
 // The root of your Drupal installation, so we can properly bootstrap
 // Drupal. This should be the full path to the directory that holds
 // your index.php file, the "includes" subdirectory, etc.
-define('DRUPAL_ROOT', ''); //NEW WEBENABLED LIVE VARIABLE
+define('DRUPAL_ROOT', '/home/btmtrddv/public_html'); //Change this for the live server!
 
 // ------------------------------------------------------------
 // Initialization

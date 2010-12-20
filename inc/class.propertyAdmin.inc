@@ -497,7 +497,7 @@ class propertyAdmin {
     $insertBatchImages = propertyCache::_getCache( 'property_cache_insert_images' );
     $updateBatchImages = propertyCache::_getCache( 'property_cache_update_images' );
     
-    if ( $totals['chunks'] > 0 && empty( $insertBatchImages ) && empty( $updateBatchImages ) ) {
+    if ( $totals['chunks'] > 0 && empty( $insertBatchImages ) && empty( $updateBatchImages ) || $totals['chunks'] > 0 && variable_get('property_can_curl_images', TRUE) === FALSE) {
       
       $i = 0;
       while ( $i++ < $totals['chunks'] ) {
@@ -549,6 +549,9 @@ class propertyAdmin {
    * return array the form API array for creating first run
    */ 
   public static function _setupImagesImportForm( $requirements = null, $function = NULL ) {
+
+    //IF we can't curl images, just return the form.
+    if (variable_get('property_can_curl_images', TRUE) === FALSE) { return $form; }
     
     $form['runtime_images'] = array(
       '#type' 		 => 'fieldset',

@@ -141,7 +141,7 @@ class ramManager extends propertyManager {
 
     //If we do not have a title, kill the import.
     if (!empty($title)) {
-      // 0 should always be the node title, prepare the node object, and add the title here.
+      //0 should always be the node title, prepare the node object, and add the title here.
       $node = propertyTrans::_nodePrepare(trim (ucwords(strtolower (urldecode($title)))));
       //Kill off the Node Title, we do not need it now.
       unset($fieldNames[0]);
@@ -220,7 +220,7 @@ class ramManager extends propertyManager {
         
       }
 
-      if ($location) { //If we have a location, set it
+      if (!empty($location)) { //If we have a location, set it
         
         $node = propertyTrans::_nodeLocation($node, $location);
         
@@ -228,14 +228,43 @@ class ramManager extends propertyManager {
                
       //Prepare Images for Insertion into the node
       $imageKEY = variable_get('ram_property_image_key', 'imagesavailable');
-      $images   = explode("-", $data[$imageKEY]);
+      //IF we can't curl images, we have to process things differently.
+      if (variable_get('property_can_curl_images', TRUE) === TRUE) {
 
-      if (is_array($images) && !empty($images)) { //If there are images in this array, run em because they have already been cached!
-        
-        foreach ($images as $image) { //blow out images, and store them
-          
-          $node = propertyTrans::_nodeImage($node, $imageField, $image);
-                      
+        $images = explode("-", $data[$imageKEY]);
+
+        if (is_array($images) && !empty($images)) { //If there are images in this array, run em because they have already been cached!
+
+          foreach ($images as $image) { //blow out images, and store them
+
+            $node = propertyTrans::_nodeImage($node, $imageField, $image);
+
+          }
+
+        }
+
+      } else {
+        //if the field has either a ; or a , then convert it to an array, if this cck field has anything more than 1 set as the number of values
+        $cck = $contentFields[$imageField];
+
+        if ($cck['multiple'] == 1) { //If the cck field is multiple, break up the values by either ; or , or |
+
+          $images = explode("-", $data[$imageKEY]);
+
+        }
+
+        if ((is_array($images) && !empty($images)) > 0) { //If there is a value and it is not empty, then do it
+
+          foreach ($images as $multiple => $allowed) {
+
+            array_push($node->$field, array('value' => t(trim($allowed))));
+
+          }
+
+        } else {
+
+          array_push($node->$field, array('value' => t(trim($images)))); //make sure this is a string when it becomes a node
+
         }
         
       }
@@ -565,8 +594,12 @@ class ramCache extends propertyCache {
    * return boolean TRUE FALSE analyze new cache
    */
   public static function _analyzeNewCacheImages() { //retool the xml object into a new array, using the last insert, update, modified data to see what is out of range
-      
-    propertyTrans::_analyzeCacheImages(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
+
+    if (variable_get('property_can_curl_images', TRUE) === TRUE) {
+
+      propertyTrans::_analyzeCacheImages(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
+
+    }
     
     return TRUE;
     
@@ -882,7 +915,7 @@ class ramAdmin extends propertyAdmin {
     //Image Totals
     $totals = propertyTrans::_getTotalsImages(); //Get the totals from the last cache call
     //krumo($totals);
-    if ($totals['chunks'] > 0) {
+    if ($totals['chunks'] > 0 && variable_get('property_can_curl_images', TRUE) === TRUE) {
       
       $msg = array(
         '!total' => $totals['total'],
@@ -916,12 +949,15 @@ class ramAdmin extends propertyAdmin {
      );
       
     } else {
-      
-      $requirements['runtime']['image_no_cache'] = array(
-        'title'       => t('No Image Caches Created.'),
-        'value'       => t('Sorry, there is no image cache created, please recreate the cache. This may take a few moments to complete. NOTE: If All Image batches have completed, you will also see this message.'),
-        'severity'    => REQUIREMENT_WARNING
-     );
+
+      if (variable_get('property_can_curl_images', TRUE) === TRUE) {
+        //If we can curl images, then report the error.
+        $requirements['runtime']['image_no_cache'] = array(
+          'title'       => t('No Image Caches Created.'),
+          'value'       => t('Sorry, there is no image cache created, please recreate the cache. This may take a few moments to complete. NOTE: If All Image batches have completed, you will also see this message.'),
+          'severity'    => REQUIREMENT_WARNING
+         );
+      }
       
     }
 

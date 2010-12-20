@@ -470,9 +470,9 @@ function _ram_property_import_first_run() {
  * @name = _ram_property_import_first_run
  */
 function _ram_property_import_images() {
-  
-  $manager = new ramManager;
-  propertyTrans::_commit('batchImages', $manager); //this commits to $manager->_batch
+
+    $manager = new ramManager;
+    propertyTrans::_commit('batchImages', $manager); //this commits to $manager->_batch
   
 }
 
