@@ -226,7 +226,7 @@ class ramManager extends propertyManager {
         
       }
                
-      //Prepare Images for Insertion into the node
+      //Prepare Images for Insertion into the node @todo separate this out into a better function, get the CCK fields to be separate processing and change to _nodeImages() and nodeImage
       $imageKEY = variable_get('ram_property_image_key', 'imagesavailable');
       //IF we can't curl images, we have to process things differently.
       if (variable_get('property_can_curl_images', TRUE) === TRUE) {
