@@ -282,7 +282,7 @@ class propertyAdmin {
       '#group'        => 'tokens_and_keys'
     );
     
-    if ( variable_get( 'property_connection_tokenized', null ) === true ) {
+    if ( variable_get( 'property_connection_tokenized', null ) == TRUE ) {
         
       $form['tokens_and_keys']['token_help'] = array(
         '#value'  => theme('token_help', 'property' ),
@@ -453,7 +453,8 @@ class propertyAdmin {
       
       foreach ( $fields as $field ) { //for each fields output the fieldname and a select list for them to assign it to
         
-        $name = 'property_content_type_' .variable_get( 'property_content_type', null ) .'_' .$field['field_name'] ;
+        $name = 'property_content_type_' .variable_get( 'property_content_type', null ) .'_' .$field['field_name'];
+        
         $variable[] = $name;
         
         $form['property_content_type']['setup'][2][ $name ] = array(
@@ -464,6 +465,21 @@ class propertyAdmin {
           '#weight'         => $field['widget']['weight'],
           '#group'          => 'property_content_type'
         );
+
+        //If the $name matches the image key, then find out if it is a file field or a text field. If it is a filefield, then allow curling images, if not then no image curling.
+        //@todo This cannot be a ram_property_image_key - it has to be part of the $manager or another property_image_key variable.
+        if (variable_get( $name, 'NULL' ) == variable_get( 'ram_property_image_key', 'imagesavailable' )) {
+          //If our widget is not from the imagefield module, we don't get to curl images.
+          if ($field['widget']['module'] != 'imagefield' && variable_get('property_can_curl_images', TRUE) == TRUE) {
+            variable_set('property_can_curl_images', FALSE);
+            drupal_set_message(t('The Property Module has been set to not CURL images.'));
+            drupal_goto($_REQUEST['q']);
+          } if ($field['widget']['module'] == 'imagefield' && variable_get('property_can_curl_images', TRUE) === FALSE) {
+            variable_set('property_can_curl_images', TRUE);
+            drupal_set_message(t('The Property Module has been set to CURL images.'));
+            drupal_goto($_REQUEST['q']);
+          }
+        }
         
       }
       

@@ -1626,7 +1626,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
         case 'batchImages':
 
           //If we can batch images, do it.
-          if (variable_get('property_can_curl_images', TRUE) === TRUE) {
+          if (variable_get('property_can_curl_images', TRUE) == TRUE) {
             $manager->_batchImages();
           }
           

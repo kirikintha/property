@@ -38,9 +38,11 @@ function _ram_property_admin() { //Main Admin settings
       
       $firstrun = _ram_property_setup_firstrun();
       $form     = array_merge($form, $firstrun);
-      
-      $importImages = _ram_property_setup_import_images();
-      $form     = array_merge($form, $importImages);
+
+      if (variable_get('property_can_curl_images', TRUE) == TRUE) {
+        $importImages = _ram_property_setup_import_images();
+        $form     = array_merge($form, $importImages);
+      }
       
       $header = _ram_property_setup_header($requirements, 'runtime'); //header objects, requirements
 
@@ -237,7 +239,7 @@ function _ram_property_admin_validate(&$form_state, $form_values) {
 
   if (strstr(strtolower($form_values['values']['op']), 'save')) { //validate on save
     
-    if (variable_get('property_content_type', NULL) != NULL && variable_get('ram_property_connection_tested', FALSE) === TRUE && variable_get('property_connection_tokenized', NULL) === TRUE) {
+    if (variable_get('property_content_type', NULL) != NULL && variable_get('ram_property_connection_tested', FALSE) == TRUE && variable_get('property_connection_tokenized', NULL) == TRUE) {
       
       variable_set('ram_property_setup', 'complete');
       
@@ -379,7 +381,7 @@ function _ram_property_test_connection($data = NULL) {
   $tested = (is_object($xml)) ? TRUE : FALSE;
   variable_set('ram_property_connection_tested', $tested); //set the tested variable
   
-  if ($tested === TRUE) {
+  if ($tested == TRUE) {
 
     //Add to our connection log.
     variable_set('ram_property_connect_log', $connect['log']);
@@ -404,7 +406,7 @@ function _ram_property_generate_tokens($data = NULL) {
   //Remove anything not a pipe or an alphanumeric value.
   $data = preg_replace("/[\r\n]+[\s\t]*[\r\n]+/","\n", $data);
 
-  if (variable_get('ram_property_connection_tested', NULL) === TRUE && !empty($data)) {
+  if (variable_get('ram_property_connection_tested', NULL) == TRUE && !empty($data)) {
     
     variable_set('property_tokens', $data);
     (variable_get('ram_property_setup', NULL) == 'tokens') ? variable_set('ram_property_setup', 'filters') : NULL;

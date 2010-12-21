@@ -27,8 +27,8 @@ class ramManager extends propertyManager {
     
     $this->ch  = curl_init($this->url);
     //Set our CURL options to ensure a proper transfer.
-    curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 120); //If the connection times out in 30 seconds, then bail out.
-    curl_setopt($this->ch, CURLOPT_TIMEOUT, 120); //If the response is longer than 60 seconds, bail.
+    curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 120); //If the connection times out in 120 seconds, then bail out.
+    curl_setopt($this->ch, CURLOPT_TIMEOUT, 120); //If the response is longer than 120 seconds, bail.
     curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1); //Set the curl data to return data.
     curl_setopt($this->ch, CURLOPT_POST, 1); //Set this to post the data to RAM.
     curl_setopt($this->ch, CURLOPT_POSTFIELDS, $query); //Set the fields that we are posting, this is the query we are applying to RAM.
@@ -229,7 +229,7 @@ class ramManager extends propertyManager {
       //Prepare Images for Insertion into the node @todo separate this out into a better function, get the CCK fields to be separate processing and change to _nodeImages() and nodeImage
       $imageKEY = variable_get('ram_property_image_key', 'imagesavailable');
       //IF we can't curl images, we have to process things differently.
-      if (variable_get('property_can_curl_images', TRUE) === TRUE) {
+      if (variable_get('property_can_curl_images', TRUE) == TRUE) {
 
         $images = explode("-", $data[$imageKEY]);
 
@@ -252,18 +252,18 @@ class ramManager extends propertyManager {
           $images = explode("-", $data[$imageKEY]);
 
         }
-
-        if ((is_array($images) && !empty($images)) > 0) { //If there is a value and it is not empty, then do it
+        
+        if ((is_array($images) && count($images)) > 0) { //If there is a value and it is not empty, then do it
 
           foreach ($images as $multiple => $allowed) {
 
-            array_push($node->$field, array('value' => t(trim($allowed))));
+            array_push($node->$imageField, array('value' => t(trim(variable_get('ram_property_image_path',NULL).$allowed))));
 
           }
 
         } else {
 
-          array_push($node->$field, array('value' => t(trim($images)))); //make sure this is a string when it becomes a node
+          array_push($node->$imageField, array('value' => t(trim(variable_get('ram_property_image_path',NULL).$images)))); //make sure this is a string when it becomes a node
 
         }
         
@@ -595,7 +595,7 @@ class ramCache extends propertyCache {
    */
   public static function _analyzeNewCacheImages() { //retool the xml object into a new array, using the last insert, update, modified data to see what is out of range
 
-    if (variable_get('property_can_curl_images', TRUE) === TRUE) {
+    if (variable_get('property_can_curl_images', TRUE) == TRUE) {
 
       propertyTrans::_analyzeCacheImages(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
 
@@ -699,9 +699,11 @@ class ramAdmin extends propertyAdmin {
         print "Cache Received\nAnalyzing Cache\n";
         ramCache::_analyzeNewCache();
         print "Cache Analyzed, Exiting\n";
-        print "Analyzing Images\n";
-        ramCache::_analyzeNewCacheImages();
-        print "Images Analyzed, Exiting\n";
+        if (variable_get('property_can_curl_images', TRUE) == TRUE) {
+          print "Analyzing Images\n";
+          ramCache::_analyzeNewCacheImages();
+          print "Images Analyzed, Exiting\n";
+        }
         print "Processing Orphans\n";
         ramCache::_processOrphans();
         print "Orphans Processed, Exiting\n";
@@ -915,7 +917,7 @@ class ramAdmin extends propertyAdmin {
     //Image Totals
     $totals = propertyTrans::_getTotalsImages(); //Get the totals from the last cache call
     //krumo($totals);
-    if ($totals['chunks'] > 0 && variable_get('property_can_curl_images', TRUE) === TRUE) {
+    if ($totals['chunks'] > 0 && variable_get('property_can_curl_images', TRUE) == TRUE) {
       
       $msg = array(
         '!total' => $totals['total'],
@@ -950,7 +952,7 @@ class ramAdmin extends propertyAdmin {
       
     } else {
 
-      if (variable_get('property_can_curl_images', TRUE) === TRUE) {
+      if (variable_get('property_can_curl_images', TRUE) == TRUE) {
         //If we can curl images, then report the error.
         $requirements['runtime']['image_no_cache'] = array(
           'title'       => t('No Image Caches Created.'),
