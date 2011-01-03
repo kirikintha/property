@@ -850,16 +850,17 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     $properties         = array(); //This is the array we use to make the chunks
     $importedProperties = array(); //This is how we evaluate if a property is in the system or not
     
-    $xml = propertyCache::_getCache( 'property_cache_new_cache' );
-    
-    $xml = propertyTrans::_validateData( $xml );
+    $data = propertyCache::_getCache( 'property_cache_new_cache' );
+    $xml  = propertyTrans::_validateData( $data );
     
     if ( $xml ) { //if we have an object, then we want to analyze it's pieces and set cache parts
       
-      $maxExecution = ( ini_get('max_execution_time') > 240 ) ? 240 : ini_get('max_execution_time'); //make sure this doesn't blow out things
-      $threshold    = 5; //The magical number of nodes in one batch seems to be 5, so this is our threshold DO NOT CHANGE!!
+      $maxExecution = ( ini_get('max_execution_time') > 240 ) ? 240 : ini_get('max_execution_time'); //make sure this doesn't blow out things in max execution.
+      $threshold    = PROPERTY_MODULE_CHUNK_THRESHOLD; //The magical number of nodes in one batch seems to be 5, so this is our threshold DO NOT CHANGE!!
       
-      $importedProperties = self::_getImportedProperties( $propertyKey, $dateModified ); //Get the properties that have already been imported
+      $importedProperties = self::_getImportedProperties( $propertyKey, $dateModified ); //Get the properties that have already been imported.
+      $yesterday          = $today = date('m_d_Y', strtotime('now - 1 day'));
+      $yesterDaysCache    = propertyCache::_getCache( 'property_cache_cache_'.$yesterday );
       
       //MLS Number Token from Admin
       $mlsNumKey = token_replace( $propertyKey, 'property', 'Property Suite' );
@@ -880,13 +881,13 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
         
         //we have to see right here if the date Modified is greater than the date inserted, so we can ignore properties that have not been updated
         //The only way we can do that is to load the node here, and compare the last dates.
+
+        //@todo, so I think I can make this even better by
+        $status = self::_checkPropertyStatus($mlsNum, $dateInserted, $dateModified, $importedProperties, $value, $yesterDaysCache);
         
-        $status = array_key_exists( $mlsNum, $importedProperties ) ? true : false ;
-        $set    = ( $status == true ) ? 'update' : 'insert';
-        
-        if ( $status == false || strtotime( $dateModified ) > strtotime( $importedProperties[$mlsNum]['date_modified'] ) ) { //If the RAM Date is higher than the local Update Time, do your thing
+        if ( $status != FALSE ) { //If the RAM Date is higher than the local Update Time, do your thing
   
-          $properties[$set][$mlsNum] = $value; //prepare the property
+          $properties[$status][$mlsNum] = $value; //prepare the property
           
         }
         
@@ -971,6 +972,38 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     self::_logMessages( $logs ); //Log The messages
     self::_processMessages(); //Since this is the last phase of the logging
     propertyCache::_clearCache( 'property_suite_transaction_logs', 'cache_property_suite', FALSE );
+  }
+
+  /**
+   * @name _checkPropertyStatus()
+   * Checks the property status and returns a boolean TRUE/False for analyzing insert and udpate status.
+   * @param string $mlsNum = The unique property number for this property. REQUIRED!
+   * @param string $dateInserted = The date this property was inserted, if any.
+   * @param string $dateModified = The date this property was updated, if any.
+   * @param array $importedProperties = The array of imported properties that have been added to the site. @todo evaluate if this is needed anymore, because we are using a string comparison.
+   * @param object $value = The XML node passed to the function.
+   * @param string $yesterDaysCache = The last cache for the day from the remote server.
+   * @return boolean
+   */
+  public static function _checkPropertyStatus($mlsNum = NULL, $dateInserted = NULL, $dateModified = NULL, $importedProperties = NULL, $value = NULL, $yesterDaysCache = NULL) {
+    //Always set the status to false first in case something goes amiss here.
+    $status = FALSE;
+    //Start by seeing if the property needs to be inserted or updated.
+    $status = array_key_exists( $mlsNum, $importedProperties ) ? 'update' : 'insert';
+    if ($status == 'update') {
+      //IF we have a date modified time, then we use that as our eval.
+      if (!empty($importedProperties[$mlsNum]['date_modified'])) {
+        //If the $dateModified time of the latest call is greater than the imported Properties date_modified time, allow an update.
+        if (strtotime( $dateModified ) <= strtotime( $importedProperties[$mlsNum]['date_modified'] )) {
+          $status = FALSE;
+        }
+      } else {
+        //If we do not have a date_modified time, then we need to do a comparison of the string that we have, against $yesterDaysCache and $value->asXML so we can make an intelligent decision about the imported property.
+        
+      }
+    }
+    //Return status.
+    return $status;
   }
   
   /**
@@ -1146,7 +1179,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       //Loop through the property rs and see if we need to unpublish any properties
       foreach ( $importedProperties as $key => $property ) {
         //Eval if we need to set a particular node to be published or unpublished. If we match, then the proprety is in the current cache and publish, if not then we need to unpublish or delete.
-        $status = ( preg_match('/'.$key.'/i', $newCacheProperties, $key) ) ? 'publish' : 'unpublish';
+        $status = ( preg_match('/\b'.$key.'/i', $newCacheProperties, $matches) ) ? 'publish' : 'unpublish';
         //Load a node object directly from the DB. This needs to just load the node from the {node} table because node_load is just too darn big memory wise.
         $node = db_fetch_object(db_query("SELECT * FROM {node} WHERE nid = %d LIMIT 0,1", $property['nid']));
         //Just unpublish right here, unless the node should be deleted.
@@ -1157,29 +1190,29 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
           //drupal_set_message(t('Imported Property: !mls - Status: !status | Last Changed !changed, Expiration - !expiration | Node Status: !node_status', array('!mls' => $key, '!status' => $status, '!changed' => $changed, '!expiration' => date('m-d-Y', $expiration), '!node_status' => $node->status )));
           //If we are not past our expiration date, just unpublish - we want this here, because deleting the node means deleting images, which means if something bad happens, then we don't have to go through re-caching a billion images.
           if ( $node->status == 1 ) {
-              //Set log information.
-              $logs['Orphans'][] = array(
-                'title'       => t( 'Property' ),
-                'description' => t( 'The Property Module unpublished !title at !link, as it has been identified as not on the current property list.', array( '!link' => l( 'View This Node', 'node/' .$node->nid ), '!title' => $node->title ) ),
-                'severity'    => REQUIREMENT_WARNING,
-                'value'       => 'Property Unpublished',
-              );
-              //Unpublish the node here - because there can be so many reasons this fails on node_save, manually update the node entry here - this ensures we unpublish without error on malformed properties
-              db_query("UPDATE {node} SET status = %d WHERE nid = %d", 0, $node->nid);
-            } else if ( $expiration <= strtotime( "now" ) && $node->status == 0 )  {
-              //If we are past expiration, delete me by loading the actual node at this point. Unless there are 1000's of nodes to delete at once, this should be ok.
-              $node = node_load( $property['nid'] );
-              //Log Message.
-              $logs['Orphans'][] = array(
-                'title'       => t( 'Property' ),
-                'description' => t( 'The Property Module permanenetly deleted !title.', array( '!title' => $node->title  ) ),
-                'severity'    => REQUIREMENT_INFO,
-                'value'       => 'Property Deleted',
-              );
-              //Delete content and node, in that order so the cck fields delete, images delete from the database and physical location.
-              content_delete( $node );
-              //Delete the node so all revisions, location info and any additional records permanently delete.
-              node_delete( $node->nid );
+            //Set log information.
+            $logs['Orphans'][] = array(
+              'title'       => t( 'Property' ),
+              'description' => t( 'The Property Module unpublished !title at !link, as it has been identified as not on the current property list.', array( '!link' => l( 'View This Node', 'node/' .$node->nid ), '!title' => $node->title ) ),
+              'severity'    => REQUIREMENT_WARNING,
+              'value'       => 'Property Unpublished',
+            );
+            //Unpublish the node here - because there can be so many reasons this fails on node_save, manually update the node entry here - this ensures we unpublish without error on malformed properties
+            db_query("UPDATE {node} SET status = %d WHERE nid = %d", 0, $node->nid);
+          } else if ( $expiration <= strtotime( "now" ) && $node->status == 0 )  {
+            //If we are past expiration, delete me by loading the actual node at this point. Unless there are 1000's of nodes to delete at once, this should be ok.
+            $node = node_load( $property['nid'] );
+            //Log Message.
+            $logs['Orphans'][] = array(
+              'title'       => t( 'Property' ),
+              'description' => t( 'The Property Module permanenetly deleted !title.', array( '!title' => $node->title  ) ),
+              'severity'    => REQUIREMENT_INFO,
+              'value'       => 'Property Deleted',
+            );
+            //Delete content and node, in that order so the cck fields delete, images delete from the database and physical location.
+            content_delete( $node );
+            //Delete the node so all revisions, location info and any additional records permanently delete.
+            node_delete( $node->nid );
           }
 
         } else if ($status == 'publish') {
@@ -1475,6 +1508,8 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     if ( $replace == TRUE ) { //If we need to curl or replace the file, do it - this will also add in new images
       
       $ch = curl_init();
+      curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 120); //If the connection times out in 120 seconds, then bail out.
+      curl_setopt($this->ch, CURLOPT_TIMEOUT, 120); //If the response is longer than 120 seconds, bail.
       curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 ); //Set curl to return the data instead of printing it to the browser.
       curl_setopt( $ch, CURLOPT_URL, $imagePath.$image ); //Set the URL for the image
       $data = curl_exec( $ch );

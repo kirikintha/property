@@ -566,6 +566,10 @@ class ramCache extends propertyCache {
 
     propertyCache::_setCache('property_cache_new_cache', $newCache['data']);
 
+    //We want the latest cache to always be labeled as 'new' but we also want a historical cache for the last day, so we just label another cache object for this day and use that.
+    $today = date('m_d_Y', strtotime('now'));
+    propertyCache::_setCache('property_cache_cache_'.$today, $newCache['data']);
+
     return TRUE;
     
   }
