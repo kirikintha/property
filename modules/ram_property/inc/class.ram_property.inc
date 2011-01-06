@@ -873,102 +873,94 @@ class ramAdmin extends propertyAdmin {
     
     //runtime
     $totals = propertyTrans::_getTotals(); //Get the totals from the last cache call
-    if ($totals['chunks'] > 0) {
-      
+    if ($totals['properties']['total_batches'] > 0) {
+      //Gross totals.
       $msg = array(
-        '!total' => $totals['total'],
-        '!count' => $totals['chunks']
-     );
-      
+       '!total' => $totals['properties']['total_properties'],
+       '!count' => $totals['properties']['total_batches'],
+      );
       $requirements['runtime']['items'] = array(
-        'title'       => t('Total Items'),
-        'value'       => t('!total records, in !count chunks.', $msg),
-        'severity'    => REQUIREMENT_INFO
-     );
-      
+       'title'       => t('Total Items'),
+       'value'       => t('!total records, in !count batches.', $msg),
+       'severity'    => REQUIREMENT_INFO,
+      );
+      //Total Insertable Properties.
       $msg = array(
-        '!count' => $totals['insert']
-     );
-      
+       '!total' => $totals['properties']['insert_properties'],
+       '!count' => $totals['properties']['total_insert_batches'],
+      );
       $requirements['runtime']['inserts'] = array(
-        'title'       => t('Total Items to insert'),
-        'value'       => t('!count batches to insert.', $msg),
-        'severity'    => REQUIREMENT_INFO
-     );
-      
+       'title'       => t('Total Items to insert'),
+       'value'       => t('!total records, in !count batches.', $msg),
+       'severity'    => REQUIREMENT_INFO,
+      );
+      //Total Updateable Properties.
       $msg = array(
-        '!count' => $totals['update']
-     );
-      
+       '!total' => $totals['properties']['update_properties'],
+       '!count' => $totals['properties']['total_update_batches'],
+      );
       $requirements['runtime']['updates'] = array(
-        'title'       => t('Total Items to update'),
-        'value'       => t('!count batches to update.', $msg),
-        'severity'    => REQUIREMENT_INFO
-     );
-      
+      'title'       => t('Total Items to update'),
+      'value'       => t('!total records, in !count batches.', $msg),
+      'severity'    => REQUIREMENT_INFO,
+      );
     } else {
-      
+      //We have no batches, report back a warning.
       $requirements['runtime']['no_cache'] = array(
-        'title'       => t('No Cache Created.'),
-        'value'       => t('Sorry, there is no cache created, please recreate the cache. This may take a few moments to complete. NOTE: If All Property batches have completed, you will also see this message.'),
-        'severity'    => REQUIREMENT_WARNING
-     );
-      
+        'title'    => t('No Property Cache Created.'),
+        'value'    => t('All Property Batches Have Completed.'),
+        'severity' => REQUIREMENT_WARNING,
+      );
       variable_set('ram_property_cron_run_semaphore', 'recache');
-      
     }
     
     //Image Totals
-    $totals = propertyTrans::_getTotalsImages(); //Get the totals from the last cache call
-    //krumo($totals);
-    if ($totals['chunks'] > 0 && variable_get('property_can_curl_images', TRUE) == TRUE) {
-      
+    $totals = propertyTrans::_getTotalsImages(); //Get the totals from the last cache call.
+    //kpr($totals);
+    if ($totals['images']['total_batches'] > 0 && variable_get('property_can_curl_images', TRUE) == TRUE) {
+      //Gross totals.
       $msg = array(
-        '!total' => $totals['total'],
-        '!count' => $totals['chunks']
-     );
-      
+       '!total' => $totals['images']['total_images'],
+       '!count' => $totals['images']['total_batches'],
+      );
       $requirements['runtime']['images'] = array(
-        'title'       => t('Total Images'),
-        'value'       => t('!total images, in !count chunks.', $msg),
-        'severity'    => REQUIREMENT_INFO
-     );
-      
+       'title'       => t('Total Images'),
+       'value'       => t('!total records, in !count batches.', $msg),
+       'severity'    => REQUIREMENT_INFO,
+      );
+      //Total Insertable Images.
       $msg = array(
-        '!count' => $totals['insert']
-     );
-      
+        '!total' => $totals['images']['insert_images'],
+        '!count' => $totals['images']['total_insert_batches'],
+      );
       $requirements['runtime']['image_inserts'] = array(
-        'title'       => t('Total Images to insert'),
-        'value'       => t('!count batches to insert.', $msg),
-        'severity'    => REQUIREMENT_INFO
-     );
-      
+       'title'       => t('Total Images to insert'),
+       'value'       => t('!total records, in !count batches.', $msg),
+       'severity'    => REQUIREMENT_INFO,
+      );
+      //Total Updateable Images.
       $msg = array(
-        '!count' => $totals['update']
-     );
-      
+       '!total' => $totals['images']['update_images'],
+       '!count' => $totals['images']['total_update_batches'],
+      );
       $requirements['runtime']['image_updates'] = array(
         'title'       => t('Total Images to update'),
-        'value'       => t('!count batches to update.', $msg),
-        'severity'    => REQUIREMENT_INFO
-     );
-      
+        'value'       => t('!total records, in !count batches.', $msg),
+        'severity'    => REQUIREMENT_INFO,
+      );
     } else {
-
+      //We have no batches, report back a warning.
       if (variable_get('property_can_curl_images', TRUE) == TRUE) {
         //If we can curl images, then report the error.
         $requirements['runtime']['image_no_cache'] = array(
-          'title'       => t('No Image Caches Created.'),
-          'value'       => t('Sorry, there is no image cache created, please recreate the cache. This may take a few moments to complete. NOTE: If All Image batches have completed, you will also see this message.'),
-          'severity'    => REQUIREMENT_WARNING
-         );
+          'title'    => t('No Image Cache Created.'),
+          'value'    => t('All image batches have completed.'),
+          'severity' => REQUIREMENT_WARNING,
+        );
       }
-      
     }
-
+    //Return the requirements array to the processor.
     return $requirements; 
-    
   }
   
 }
