@@ -513,10 +513,10 @@ class propertyAdmin {
     $insertBatchImages = propertyCache::_getCache( 'property_cache_insert_images' );
     $updateBatchImages = propertyCache::_getCache( 'property_cache_update_images' );
     
-    if ( $totals['chunks'] > 0 && empty( $insertBatchImages ) && empty( $updateBatchImages ) || $totals['chunks'] > 0 && variable_get('property_can_curl_images', TRUE) === FALSE) {
+    if ( $totals['properties']['total_batches'] > 0 && empty( $insertBatchImages ) && empty( $updateBatchImages ) || $totals['properties']['total_batches'] > 0 && variable_get('property_can_curl_images', TRUE) === FALSE) {
       
       $i = 0;
-      while ( $i++ < $totals['chunks'] ) {
+      while ( $i++ < $totals['properties']['total_batches'] ) {
         
         $options[$i] = $i;
         
@@ -579,11 +579,10 @@ class propertyAdmin {
     );
     
     $totals = propertyTrans::_getTotalsImages(); //Get the totals from the last cache call
-    
-    if ( $totals['chunks'] > 0 ) { //if we have chunks, allow for manual import. '_ram_property_import_images'
+    if ( $totals['images']['total_batches'] > 0 ) { //if we have chunks, allow for manual import. '_ram_property_import_images'
       
       $i = 0;
-      while ( $i++ < $totals['chunks'] ) {
+      while ( $i++ < $totals['images']['total_batches'] ) {
         
         $options[$i] = $i;
         

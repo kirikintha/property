@@ -29,6 +29,7 @@ define("PROPERTY_MODULE_PATH", drupal_get_path('module', 'property'));
 define("PROPERTY_MODULE_BATCH_FILE_PATH", PROPERTY_MODULE_PATH .'/inc/batch.property.inc');
 define("PROPERTY_MODULE_UPLOAD_DIRECTORY", file_directory_path() .'/property_suite/');
 define("PROPERTY_MODULE_CHUNK_THRESHOLD", 5);
+define("PROPERTY_MODULE_IMAGE_CHUNK_THRESHOLD", 100);
 
 /**
  * Hook Menu
