@@ -46,7 +46,7 @@ if (Drupal.jsEnabled) {
       async: false,
       success: function( msg ) {
         
-        Drupal.theme( 'propertySuiteAdminProgress', target, 100, total, startMessage, endMessage, false );
+        Drupal.theme( 'propertySuiteAdminProgress', target, 100, total, startMessage, Drupal.t(msg.responseText), false );
         
         if ( total == 100 ) {
           
@@ -59,8 +59,8 @@ if (Drupal.jsEnabled) {
         
       },
       error: function( errorMSG ) {
-        
-        Drupal.theme( 'propertySuiteAdminProgress', target, 100, total, startMessage, endMessage, false );
+
+        Drupal.theme( 'propertySuiteAdminProgress', target, 100, total, startMessage, Drupal.t(errorMSG.responseText), false );
         
         if ( total == 100 ) {
           

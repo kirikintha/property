@@ -855,7 +855,8 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     //If we have an object, then we want to analyze it's pieces and set cache parts.
     if ($xml) {
       //Set the max execution to 240 seconds, this will stop any unwanted server timeouts if you have access to that part of the ini.
-      $maxExecution = (ini_get('max_execution_time') > 240) ? 240 : ini_get('max_execution_time');
+      $maxExecution = (ini_get('max_execution_time') < 240) ? 240 : ini_get('max_execution_time');
+      ini_set('max_execution_time', $maxExecution);
       //The magical number of nodes in one batch seems to be 5, so this is our threshold DO NOT CHANGE!!
       $threshold    = PROPERTY_MODULE_CHUNK_THRESHOLD;
       //Get the properties that have already been imported into Drupal.
@@ -961,7 +962,6 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
         }
 
         propertyCache::_setCache('property_cache_update_items', $updateChunks);
-
         unset($updateChunks);
       }
       
