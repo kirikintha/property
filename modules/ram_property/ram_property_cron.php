@@ -114,7 +114,7 @@ if ( function_exists( 'ram_property_cron_sh' ) ) {
       watchdog( t( 'RAM Property' ), t( '!msg', $watchdogMsg ), array(), WATCHDOG_DEBUG, 'Cron SH - VARIABLES LOG' ); //watchdog log
       
       $totals = propertyTrans::_getTotals(); //Get the totals from the last cache call
-      if ( $totals['chunks'] == 0 ) { //Sempahore Sanity Check
+      if ( $totals['properties']['total_batches'] == 0 ) { //Sempahore Sanity Check
         
         variable_set( 'ram_property_cron_run_semaphore', 'recache' );
         

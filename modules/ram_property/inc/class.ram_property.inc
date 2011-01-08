@@ -687,12 +687,6 @@ class ramAdmin extends propertyAdmin {
     $insertBatchImages = propertyCache::_getCache('property_cache_insert_images');
     $updateBatchImages = propertyCache::_getCache('property_cache_update_images');
     
-    if (empty($insertBatch) && empty($updateBatch)) { //Sanity check for the semaphore
-      
-      variable_set('ram_property_cron_run_semaphore', 'recache');
-      
-    }
-    
     //If we are not in disallowed times, && the start time is less than or equal to now
     if (!in_array($currentTime, $timeExclude) && $cronTime <= date("H:i", strtotime("now"))) {
       
@@ -711,7 +705,7 @@ class ramAdmin extends propertyAdmin {
         print "Processing Orphans\n";
         ramCache::_processOrphans();
         print "Orphans Processed, Exiting\n";
-        
+        print "Setting semaphor to batch.\n";
         variable_set('ram_property_cron_run_semaphore', 'batch');
         
       } else if (($semaphore == 'batch' && !empty($insertBatchImages)) || ($semaphore == 'batch' && !empty($updateBatchImages))) { //else if we are batching images...

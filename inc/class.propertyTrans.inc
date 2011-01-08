@@ -1093,7 +1093,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       //threshold to run batches at, so we don't run into execution problems
       $total = count($newCacheImages['insert']) + count($newCacheImages['update']);
       
-      $threshold = 100; //The amount of images per batch - this is a hard coded number because there can be so many images at one time
+      $threshold = PROPERTY_MODULE_IMAGE_CHUNK_THRESHOLD; //The amount of images per batch - this is a hard coded number because there can be so many images at one time
       
       //chunk
       $insertChunks = (count($newCacheImages['insert']) > 0) ? array_chunk($newCacheImages['insert'], $threshold, true) : array(); //Chunked Insertable properties
@@ -1380,32 +1380,75 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
   
   /**
    * @name _getTotals() - This fixes many problems with cache not reporting back the correct sum of imports, updates and batch results
-   * return array $totals an array of the total values returned by a cache
-   * $totals['inserted'] = the total inserted items
-   * $totals['updated'] = the total updated items
-   * $totals['chunks'] = the total chunks processed
+      //Cache the total items.
+      $totals = array(
+        'properties' => array(
+          'total_properties'     => (int) $total,
+          'insert_properties'    => (int) count($properties['insert']),
+          'update_properties'    => (int) count($properties['update']),
+          'total_batches'        => (int) $totalChunks,
+          'total_insert_batches' => (int) count($insertChunks),
+          'total_update_batches' => (int) count($updateChunks),
+       ),
+     );
    */
   public static function _getTotals() {
+    //Get new totals after the update process.
     $totals = propertyCache::_getCache('property_cache_items_totals');
+    //Insert Totals.
+    $batches = propertyCache::_getCache('property_cache_insert_items');
+    $batches = (empty($batches)) ? 0 : count($batches);
+    $totals['properties']['total_insert_batches'] = $batches;
+    $insertMod = ($batches == 0) ? 0 : $totals['properties']['insert_properties'] / $totals['properties']['total_insert_batches'];
+    $totals['properties']['insert_properties'] = ($totals['properties']['total_insert_batches'] * $insertMod);
+    //Update Totals.
+    $batches = propertyCache::_getCache('property_cache_update_items');
+    $batches = (empty($batches)) ? 0 : count($batches);
+    $totals['properties']['total_update_batches'] = $batches;
+    $updateMod = ($batches == 0) ? 0 : $totals['properties']['update_properties'] / $totals['properties']['total_update_batches'];
+    $totals['properties']['update_properties'] = ($totals['properties']['total_update_batches'] * $updateMod);
+    //Gross Totals.
+    $totals['properties']['total_properties'] = ($totals['properties']['insert_properties'] + $totals['properties']['update_properties']);
+    $totals['properties']['total_batches'] = ($totals['properties']['total_insert_batches'] + $totals['properties']['total_update_batches']);
+    //Return new totals.
     return $totals;
   }
   
   /**
    * @name _getTotalsImages() - This fixes many problems with cache not reporting back the correct sum of imports, updates and batch results
-   * return array $totals an array of the total values returned by a cache
-   * $totals['inserted'] = the total inserted items
-   * $totals['updated'] = the total updated items
-   * $totals['chunks'] = the total chunks processed
+      $totals = array(
+        'images' => array(
+          'total_images'         => (int) $total,
+          'insert_images'        => (int) count($newCacheImages['insert']),
+          'update_images'        => (int) count($newCacheImages['update']),
+          'total_batches'        => (int) $totalChunks,
+          'total_insert_batches' => (int) count($insertChunks),
+          'total_update_batches' => (int) count($updateChunks),
+       ),
+     );
    */
   public static function _getTotalsImages() {
-
     //IF we can't curl images, just return FALSE.
     if (variable_get('property_can_curl_images', TRUE) === FALSE) { return FALSE; }
-      
+    //If we can curl images, then we need to get the original values and re-calc the totals.
     $totals = propertyCache::_getCache('property_cache_images_totals');
-    
+    //Insert Totals.
+    $batches = propertyCache::_getCache('property_cache_insert_images');
+    $batches = (empty($batches)) ? 0 : count($batches);
+    $totals['images']['total_insert_batches'] = $batches;
+    $insertMod = ($batches == 0) ? 0 : ($totals['images']['insert_images'] / $totals['images']['total_insert_batches']);
+    $totals['images']['insert_images'] = ($totals['images']['total_insert_batches'] * $insertMod);
+    //Update Totals.
+    $batches = propertyCache::_getCache('property_cache_update_images');
+    $batches = (empty($batches)) ? 0 : count($batches);
+    $totals['images']['total_update_batches'] = $batches;
+    $updateMod = ($batches == 0) ? 0 : $totals['images']['update_images'] / $totals['images']['total_update_batches'];
+    $totals['images']['update_images'] = ($totals['images']['total_update_batches'] * $updateMod);
+    //Gross Totals.
+    $totals['images']['total_images'] = ($totals['images']['insert_images'] + $totals['images']['update_images']);
+    $totals['images']['total_batches'] = ($totals['images']['total_insert_batches'] + $totals['images']['total_update_batches']);
+    //Return new totals.
     return $totals;
-    
   }
   
   /**
@@ -1470,8 +1513,8 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     if ($replace == TRUE) { //If we need to curl or replace the file, do it - this will also add in new images
       
       $ch = curl_init();
-      curl_setopt($ch->ch, CURLOPT_CONNECTTIMEOUT, 120); //If the connection times out in 120 seconds, then bail out.
-      curl_setopt($ch->ch, CURLOPT_TIMEOUT, 120); //If the response is longer than 120 seconds, bail.
+      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120); //If the connection times out in 120 seconds, then bail out.
+      curl_setopt($ch, CURLOPT_TIMEOUT, 120); //If the response is longer than 120 seconds, bail.
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Set curl to return the data instead of printing it to the browser.
       curl_setopt($ch, CURLOPT_URL, $imagePath.$image); //Set the URL for the image
       $data = curl_exec($ch);
