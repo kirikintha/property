@@ -157,7 +157,7 @@ If you have completed all of this, then you are ready to go and complete your si
 
 ##Property API Map
 
-As of Dec 2010 the Property API is at version RC2. This is a release candidate, and all bugs and feature requests should be sent to paul@bluetent.com Release Candidate 2 addresses performance issues in the RAM API and fixes some cURL issues in the property API and extends the propertyAPI to allow for concatenating multiple tokens in multiple fields.
+As of Dec 2010 the Property API is at version RC3. This is a release candidate, and all bugs and feature requests should be sent to paul@bluetent.com Release Candidate 2 addresses performance issues in the RAM API and fixes some cURL issues in the property API and extends the propertyAPI to allow for concatenating multiple tokens in multiple fields.
 
 The Property API as it stands has many Classes that are extendible. The API is broken down into:
 
