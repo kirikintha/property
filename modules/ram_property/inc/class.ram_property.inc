@@ -185,19 +185,24 @@ class ramManager extends propertyManager {
             //if the field has either a ; or a , then convert it to an array, if this cck field has anything more than 1 set as the number of values
             $cck = $contentFields[$field];
             
-            if ($cck['multiple'] == 1) { //If the cck field is multiple, break up the values by either ; or , or |
-
-              if (strstr($value, ";")) {
-                $value = explode(";", $value);
-              } else if (strstr($value, ",")) {
-                $value = explode(",", $value);
-              } else if (strstr($value, "|")) {
-                $value = explode("|", $value);
-              } else {
-                //Default to semi-colon
-                $value = explode(";", $value);
+            if ($cck['multiple'] == 1) { 
+              /**
+               * If the cck field is multiple, explode the delimited values by the common delimeters - Don't change this order, as it will affect more complex matches.
+               *
+               * Common Delimeters - These are ordered by precedence, so if there is a mix of delimieters this will choose only one.
+               *
+               * \r - carriage return
+               * \n - new line
+               * \t - horizontal tab
+               * \| - pipe
+               * ; - semi-colon
+               * , - comma
+               */
+              $delimeters = array("\r","\n","\t","\|",";",",");
+              preg_match("/(".implode("|", $delimeters).")/", $value, $matches);
+              if (!empty($matches[0])) {
+                $value = explode($matches[0], $value);
               }
-              
             }
             
             if (is_array($value) && count($value) > 0) { //If there is a value and it is not empty, then do it
@@ -230,7 +235,7 @@ class ramManager extends propertyManager {
       $imageKEY = variable_get('ram_property_image_key', 'imagesavailable');
       //IF we can't curl images, we have to process things differently.
       if (variable_get('property_can_curl_images', TRUE) == TRUE) {
-
+        //If we can cURL images, then we run everything through the nodeImage processor.
         $images = explode("-", $data[$imageKEY]);
 
         if (is_array($images) && !empty($images)) { //If there are images in this array, run em because they have already been cached!
@@ -247,24 +252,28 @@ class ramManager extends propertyManager {
         //if the field has either a ; or a , then convert it to an array, if this cck field has anything more than 1 set as the number of values
         $cck = $contentFields[$imageField];
 
-        if ($cck['multiple'] == 1) { //If the cck field is multiple, break up the values by either ; or , or |
+        if ($cck['multiple'] == 1) { //If the cck field is multiple, break up the values by the "-"
 
           $images = explode("-", $data[$imageKEY]);
 
         }
         
-        if ((is_array($images) && count($images)) > 0) { //If there is a value and it is not empty, then do it
-
+        if ((is_array($images) && count($images)) > 0) {
+          //If there is a value and it is not empty, then loop.
           foreach ($images as $multiple => $allowed) {
-
-            array_push($node->$imageField, array('value' => t(trim(variable_get('ram_property_image_path',NULL).$allowed))));
-
+            //If we have a valid filename, then add it to the array.
+            $filename = trim(variable_get('ram_property_image_path',NULL).$allowed);
+            if (propertyTrans::_validateFileName($filename)) {
+              array_push($node->$imageField, array('value' => t($filename)));
+            }
           }
 
         } else {
-
-          array_push($node->$imageField, array('value' => t(trim(variable_get('ram_property_image_path',NULL).$images)))); //make sure this is a string when it becomes a node
-
+          //If we have a valid filename, then add it to the array.
+          $filename = trim(variable_get('ram_property_image_path',NULL).$allowed);
+          if (propertyTrans::_validateFileName($filename)) {
+            array_push($node->$imageField, array('value' => t($filename)));
+          }
         }
         
       }
@@ -531,7 +540,7 @@ class ramCache extends propertyCache {
    * return boolean TRUE FALSE new cache created
    */
   public static function _retrieveNewCache() { //commit that xml query to the $manager
-
+    self::_setMaxExecution();
     //Create our RAM query.
     $query = array(
       'numresults' => variable_get('ram_property_query_maximum_limit_default', RAM_PROPERTY_QUERY_MAXIMUM_LIMIT_DEFAULT),
@@ -579,18 +588,13 @@ class ramCache extends propertyCache {
    * return boolean TRUE FALSE analyze new cache
    */
   public static function _analyzeNewCache() { //retool the xml object into a new array, using the last insert, update, modified data to see what is out of range
-      
+    self::_setMaxExecution();
     propertyTrans::_analyzeCache(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
-      
     if (variable_get('ram_property_setup', NULL) == 'cache') {
-      
       variable_set('ram_property_setup', 'content');
       variable_set('ram_property_connection_cached', TRUE);
-      
     }
-    
-    return TRUE;
-    
+    return TRUE; 
   }
   
   /**
@@ -598,25 +602,32 @@ class ramCache extends propertyCache {
    * return boolean TRUE FALSE analyze new cache
    */
   public static function _analyzeNewCacheImages() { //retool the xml object into a new array, using the last insert, update, modified data to see what is out of range
-
+    self::_setMaxExecution();
     if (variable_get('property_can_curl_images', TRUE) == TRUE) {
-
       propertyTrans::_analyzeCacheImages(variable_get('ram_property_property_key', '[Mls_Num]'), variable_get('ram_property_image_key', 'imagesavailable'), variable_get('ram_property_image_path', NULL), variable_get('ram_property_date_inserted', '[Date_Inserted]'), variable_get('ram_property_date_modified', '[Date_Modified]'));
-
     }
-    
     return TRUE;
-    
   }
   
   /**
    * @name _processOrphans()
    */
   public static function _processOrphans() {
+    self::_setMaxExecution();
     //Process Orhpans. This should only invoke when we have properties imported into the system.
     propertyTrans::_processOrphans( variable_get( 'ram_property_property_key', '[Mls_Num]' ), variable_get( 'ram_property_date_modified', '[Date_Modified]' ) );
     return true;
-}
+  }
+
+  /**
+   * @name _setMaxExecution()
+   * Sets the max execution time for cache functions.
+   */
+  public static function _setMaxExecution() {
+    //Set the max execution to 240 seconds, this will stop any unwanted server timeouts if you have access to that part of the ini.
+    $maxExecution = (ini_get('max_execution_time') < 240) ? 240 : ini_get('max_execution_time');
+    ini_set('max_execution_time', $maxExecution);
+  }
 }
 
 /**

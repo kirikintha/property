@@ -854,11 +854,8 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     $xml  = propertyTrans::_validateData($data);
     //If we have an object, then we want to analyze it's pieces and set cache parts.
     if ($xml) {
-      //Set the max execution to 240 seconds, this will stop any unwanted server timeouts if you have access to that part of the ini.
-      $maxExecution = (ini_get('max_execution_time') < 240) ? 240 : ini_get('max_execution_time');
-      ini_set('max_execution_time', $maxExecution);
       //The magical number of nodes in one batch seems to be 5, so this is our threshold DO NOT CHANGE!!
-      $threshold    = PROPERTY_MODULE_CHUNK_THRESHOLD;
+      $threshold = PROPERTY_MODULE_CHUNK_THRESHOLD;
       //Get the properties that have already been imported into Drupal.
       $importedProperties = self::_getImportedProperties($propertyKey, $dateModified);
       //Get yesterdays cache, so we can make a better evaluation if the property is out of date or not.
@@ -1639,9 +1636,16 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
    * @return mixed returns either boolean false or the xml object, so you can check for success
    */
   public static function _validateURL($url = null) {
-    
     return (valid_url($url, true)) ? $url : false;
-    
+  }
+
+  /**
+   * Mimics file_validate_extensions without returning form errors.
+   * @param string $filename = the filename you wish to validate
+   * @return mixed returns either boolean false or the file, so you can check for success
+   */
+  public static function _validateFileName($filename = null) {
+    (preg_match('/\.(png|gif|jpe?g)$/i', $filename, $filematches)) ? TRUE : FALSE;
   }
   
   /**
