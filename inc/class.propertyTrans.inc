@@ -1008,7 +1008,9 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     $yesterday       = date('m_d_Y', strtotime('now - 1 day'));
     $yesterdaysData  = propertyCache::_getCache('property_cache_cache_'.$yesterday);
     $yesterDaysCache = propertyTrans::_validateData($yesterdaysData);
-    $yesterDaysCache = preg_replace("/(\n|\r)/", "", $yesterDaysCache->asXML());
+    if (is_object($yesterDaysCache)) {
+      $yesterDaysCache = preg_replace("/(\n|\r)/", "", $yesterDaysCache->asXML());
+    }
     return $yesterDaysCache;
   }
   
