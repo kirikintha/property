@@ -859,10 +859,7 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
       //Get the properties that have already been imported into Drupal.
       $importedProperties = self::_getImportedProperties($propertyKey, $dateModified);
       //Get yesterdays cache, so we can make a better evaluation if the property is out of date or not.
-      $yesterday       = $today = date('m_d_Y', strtotime('now - 1 day'));
-      $yesterdaysData  = propertyCache::_getCache('property_cache_cache_'.$yesterday);
-      $yesterDaysCache = propertyTrans::_validateData($yesterdaysData);
-      $yesterDaysCache = preg_replace("/(\n|\r)/", "", $yesterDaysCache->asXML());
+      $yesterDaysCache = self::_getYesterdaysCache();
       //MLS Token.
       $mlsNumKey = token_replace($propertyKey, 'property', 'Property Suite');
       //Date Inserted Token, used to check if images need to be replaced.
@@ -1005,6 +1002,15 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     //Return status.
     return $status;
   }
+
+  public static function _getYesterdaysCache() {
+    //Get yesterdays cache, so we can make a better evaluation if the property is out of date or not.
+    $yesterday       = date('m_d_Y', strtotime('now - 1 day'));
+    $yesterdaysData  = propertyCache::_getCache('property_cache_cache_'.$yesterday);
+    $yesterDaysCache = propertyTrans::_validateData($yesterdaysData);
+    $yesterDaysCache = preg_replace("/(\n|\r)/", "", $yesterDaysCache->asXML());
+    return $yesterDaysCache;
+  }
   
   /**
    * @name _analyzeCacheImages
@@ -1027,6 +1033,9 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     if ($xml) { //if we have an object, then we want to analyze it's pieces and set cache parts
       
       $importedProperties = self::_getImportedProperties($propertyKey, $dateModified); //Get the properties that have already been imported
+
+      //Get yesterdays cache, so we can make a better evaluation if the property is out of date or not.
+      $yesterDaysCache = self::_getYesterdaysCache();
       
       //MLS Number Token from Admin
       $mlsNumKey = token_replace($propertyKey, 'property', 'Property Suite');

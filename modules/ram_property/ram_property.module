@@ -27,29 +27,37 @@ function ram_property_menu() {
   
   $items = array();
   
-	$items['admin/settings/property_suite/ram_property'] = array(
-		'title' 			      => t('RAM Properties'),
-		'page callback' 	  => 'drupal_get_form',
-		'page arguments' 	  => array('_ram_property_admin'),
-		'type'				      => MENU_LOCAL_TASK,
-		'access arguments'  => array('administer site configuration')
-	);
-  
+  $items['admin/settings/property_suite/ram_property'] = array(
+    'title' 		   => t('RAM Properties'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('_ram_property_admin'),
+    'type'             => MENU_LOCAL_TASK,
+    'access arguments' => array('administer site configuration')
+  );
+
   $items['admin/settings/property_suite/ram_property/last_cache'] = array(
-		'title' 			      => t('RAM Properties Last Cache'),
-		'page callback' 	  => 'drupal_get_form',
-		'page arguments' 	  => array('_ram_property_last_cache'),
-		'type'				      => MENU_LOCAL_TASK,
-		'access arguments'  => array('administer site configuration')
-	);
-  
+    'title' 		   => t('RAM Properties Last Cache'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('_ram_property_last_cache'),
+    'type'			   => MENU_LOCAL_TASK,
+    'access arguments' => array('administer site configuration')
+  );
+
+  $items['admin/settings/property_suite/ram_property/yesterdays_cache'] = array(
+    'title' 		   => t('RAM Properties Yesterdays Cache'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('_ram_property_yesterdays_cache'),
+    'type'			   => MENU_LOCAL_TASK,
+    'access arguments' => array('administer site configuration')
+  );
+
   $items['admin/settings/property_suite/ram_property/quick_pull'] = array(
-		'title' 			      => t('Quick Pull'),
-		'page callback' 	  => 'drupal_get_form',
-		'page arguments' 	  => array('_ram_property_quick_pull'),
-		'type'				      => MENU_LOCAL_TASK,
-		'access arguments'  => array('administer site configuration')
-	);
+    'title' 		   => t('Live Pull From Remote Server'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('_ram_property_quick_pull'),
+    'type'             => MENU_LOCAL_TASK,
+    'access arguments' => array('administer site configuration')
+  );
   
   return $items;
   

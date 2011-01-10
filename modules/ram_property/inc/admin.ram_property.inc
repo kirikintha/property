@@ -9,6 +9,8 @@ function _ram_property_admin() { //Main Admin settings
   
   $requirements = ramAdmin::_requirements();
 
+  propertyTrans::_analyzeCacheImages();
+
   /**
    * @param string variable_get('ram_property_setup', NULL) a string that shows the phase you have completed in the setup
    * init = the initial setup instructions, set up the API first
@@ -298,12 +300,13 @@ function _ram_property_admin_validate(&$form_state, $form_values) {
  * Last Cache from RAM, for debugging the last call from RAM
  */
 function _ram_property_last_cache() {
-  
-  $new = propertyCache::_getCache('property_cache_new_cache');
-  $xml = propertyTrans::_validateData($new);
+
+  $today = date('m_d_Y', strtotime('now'));
+  $new   = propertyCache::_getCache('property_cache_new_cache');
+  $xml   = propertyTrans::_validateData($new);
   
   if (is_object($xml)) { //If we have valid XML
-    
+    print t('!MSG', array('!MSG' => "<h2>Cache Data for: $today</h2>"));
     foreach ($xml as $item) { //go through each object, and show us the last cache
         
       print '<pre>';
@@ -320,6 +323,37 @@ function _ram_property_last_cache() {
   
   exit();
   
+}
+
+/**
+ * Last Cache from RAM, for debugging the last call from RAM
+ */
+function _ram_property_yesterdays_cache() {
+
+  $yesterday       = date('m_d_Y', strtotime('now - 1 day'));
+  $yesterdaysData  = propertyCache::_getCache('property_cache_cache_'.$yesterday);
+  $yesterDaysCache = propertyTrans::_validateData($yesterdaysData);
+
+  if (is_object($yesterDaysCache)) { //If we have valid XML
+
+    print t('!MSG', array('!MSG' => "<h2>Cache Data for: $yesterday</h2>"));
+
+    foreach ($yesterDaysCache as $item) { //go through each object, and show us the last cache
+
+      print '<pre>';
+        print_r($item);
+      print '</pre>';
+
+    }
+
+  } else { //No New Cache
+
+    print t('There is no new cached data for yesterday, at this time.');
+
+  }
+
+  exit();
+
 }
 
 /**
