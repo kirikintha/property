@@ -1224,14 +1224,14 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
             db_query("UPDATE {node} SET status = %d WHERE nid = %d", 0, $node->nid);
           } else if ($expiration <= strtotime("now") && $node->status == 0)  {
             //If we are past expiration, delete me by loading the actual node at this point. Unless there are 1000's of nodes to delete at once, this should be ok.
-            $node = node_load($property['nid']);
+            $node = node_load($property['nid'], NULL, TRUE);
             //Log Message.
             $logs['Orphans'][] = array(
               'title'       => t('Property'),
               'description' => t('The Property Module permanenetly deleted !title.', array('!title' => $node->title )),
               'severity'    => REQUIREMENT_INFO,
               'value'       => 'Property Deleted',
-           );
+            );
             //Delete content and node, in that order so the cck fields delete, images delete from the database and physical location.
             content_delete($node);
             //Delete the node so all revisions, location info and any additional records permanently delete.

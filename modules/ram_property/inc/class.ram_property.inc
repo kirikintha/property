@@ -309,7 +309,7 @@ class ramManager extends propertyManager {
 
     //Update is just subtly different from insert. @todo - try and get this a little more uniform.
     if (is_numeric($nid) && $nid > 0) { //Double check to make sure the nid is valid
-      $node = node_load($nid);
+      $node = node_load($nid, NULL, TRUE);
     }
     
     if (!empty($title) && is_object($node)) { //If we do not have a title and the node is not an object, kill the import
