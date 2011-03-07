@@ -9,8 +9,6 @@ function _ram_property_admin() { //Main Admin settings
   
   $requirements = ramAdmin::_requirements();
 
-  propertyTrans::_analyzeCacheImages();
-
   /**
    * @param string variable_get('ram_property_setup', NULL) a string that shows the phase you have completed in the setup
    * init = the initial setup instructions, set up the API first
