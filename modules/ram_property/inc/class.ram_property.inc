@@ -579,7 +579,7 @@ class ramCache extends propertyCache {
     $today = date('m_d_Y', strtotime('now'));
     propertyCache::_setCache('property_cache_cache_'.$today, $newCache['data']);
 
-    return TRUE;
+    return TRUE; 
     
   }
   
@@ -690,6 +690,8 @@ class ramAdmin extends propertyAdmin {
     
     date_default_timezone_set(RAM_PROPERTY_DEFAULT_TIMEZONE); //Because RAM Runs in the Denver MST Time Zone, this has to get set here to America/Denver
     $semaphore   = variable_get('ram_property_cron_run_semaphore', 'recache'); //What stage of cron are we running?
+    //Check to see if we have locked the system to not-recache by forcing all properties to update.
+    $lock        = variable_get('ram_property_cron_run_lock', FALSE);
     $currentTime = date("H:00", strtotime("now")); //find out the current time
     $cronTime    = variable_get('ram_property_batch_cron_start_time', '00:00');
     $timeExclude = variable_get('ram_property_batch_cron_time_of_day_exclude', array());
@@ -702,39 +704,56 @@ class ramAdmin extends propertyAdmin {
     if (!in_array($currentTime, $timeExclude) && $cronTime <= date("H:i", strtotime("now"))) {
       
       if ($semaphore == 'recache') { //If we are re-caching, make sure it doesn't fall in disallowed times, and the time is later than the start time, run it and change the semaphore
-        
-        print "Retrieving Cache\n";
-        ramCache::_retrieveNewCache();
-        print "Cache Received\nAnalyzing Cache\n";
-        ramCache::_analyzeNewCache();
-        print "Cache Analyzed, Exiting\n";
-        if (variable_get('property_can_curl_images', TRUE) == TRUE) {
-          print "Analyzing Images\n";
-          ramCache::_analyzeNewCacheImages();
-          print "Images Analyzed, Exiting\n";
+        //If we are locked out from re-caching, we have to let the updated properties update themselves.
+        if ($lock == FALSE) {
+          //Get new Cache.
+          print "Retrieving Cache\n";
+          ramCache::_retrieveNewCache();
+          //Analyze new Cache.
+          print "Cache Received\nAnalyzing Cache\n";
+          ramCache::_analyzeNewCache();
+          print "Cache Analyzed, Exiting\n";
+          //If we can CURL Images, do so.
+          if (variable_get('property_can_curl_images', TRUE) == TRUE) {
+            print "Analyzing Images\n";
+            ramCache::_analyzeNewCacheImages();
+            print "Images Analyzed, Exiting\n";
+          }
+          //Process Orphans.
+          print "Processing Orphans\n";
+          ramCache::_processOrphans();
+          print "Orphans Processed, Exiting\n";
+          print "Setting semaphor to batch.\n";
         }
-        print "Processing Orphans\n";
-        ramCache::_processOrphans();
-        print "Orphans Processed, Exiting\n";
-        print "Setting semaphor to batch.\n";
+        //Set our sempahor to batch, just in case something is not setting properly, we can lock everything.
         variable_set('ram_property_cron_run_semaphore', 'batch');
+        //Lock anymore caches from being run until this one completes.
+        variable_set('ram_property_cron_run_lock', TRUE);
         
       } else if (($semaphore == 'batch' && !empty($insertBatchImages)) || ($semaphore == 'batch' && !empty($updateBatchImages))) { //else if we are batching images...
-        
+        //Batching Images.
+        print "Batching Images\n";
+        //Get our manager, and then batch images.
         $manager = new ramManager;
         propertyTrans::_createShellBatchImages($manager, variable_get('ram_property_batch_cron_limit', 10));
-        
+        //Log to watchdog.
         watchdog(t('RAM Property'), t('Batching Images'), array(), WATCHDOG_INFO, 'Cron Run'); //watchdog log
-        
+        //Exit.
+        print "Images Batched, Exiting\n";
       } else if (($semaphore == 'batch' && !empty($insertBatch)) || ($semaphore == 'batch' && !empty($updateBatch))) { //else if we are batching properties...
-        
+        //Batching Properties.
+        print "Batching properties\n";
         $manager = new ramManager;
         propertyTrans::_createShellBatchProperties($manager, variable_get('ram_property_batch_cron_limit', 10));
-        
+        //Log To watchdog.
         watchdog(t('RAM Property'), t('Batching Properties'), array(), WATCHDOG_INFO, 'Cron Run'); //watchdog log
-        
+        //Exit.
+        print "Properties Batched, Exiting\n";
       } else if ($semaphore == 'batch' && empty($insertBatch) && empty($updateBatch)) { //else if there are no batches to be inserted, set to re-cache
-        
+
+        //Break the lock if we have everything completed.
+        variable_set('ram_property_cron_run_lock', FALSE);
+        //Set the sempaphor to re-cache.
         variable_set('ram_property_cron_run_semaphore', 'recache');
         
       }

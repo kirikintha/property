@@ -220,22 +220,33 @@ class propertyAdmin {
   public static function _setupCacheForm( $requirements = null ) {
     
     $form['cache'] = array(
-      '#type' 				=> 'fieldset',
-      '#title' 				=> t('Manually Cache'),
-      '#collapsible' 	=> TRUE,
-      '#collapsed' 		=> FALSE,
-      '#weight'				=> -47,
-      '#group'        => 'runtime'
+      '#type' 		 => 'fieldset',
+      '#title' 		 => t('Manually Cache'),
+      '#collapsible' => TRUE,
+      '#collapsed' 	 => FALSE,
+      '#weight'		 => -47,
+      '#group'       => 'runtime'
     );
     
     $form['cache']['property_cache_all'] = array(
-      '#type'         => 'submit',
-      '#value'        => t( 'Cache All' ),
-      '#prefix'       => '<p><div id="cache-progress"></div></p><p>',
-      '#suffix'       => t( 'Press this button to manually cache all data to the site.' ) .'</p>',
-      '#required'     => true,
-      '#weight'       => -49,
-      '#group'        => 'runtime'
+      '#type'     => 'submit',
+      '#value'    => t( 'Retrieve New Cache' ),
+      '#prefix'   => '<p><div id="cache-progress"></div></p><p>',
+      '#suffix'   => t( 'Press this button to manually cache all data to the site.' ) .'</p>',
+      '#required' => true,
+      '#weight'   => -49,
+      '#group'    => 'runtime'
+    );
+
+    //For all properties to update.
+    $form['cache']['property_cache_all_force'] = array(
+      '#type'         => 'checkbox',
+      '#title'        => t('Force All Properties To Update'),
+      '#description'  => t('Check this box to force all properties to update'),
+      '#return_value' => 'FORCE_UPDATE',
+      '#weight'       => -48,
+      '#group'        => 'runtime',
+      '#attributes'   => array('class' => 'form-hide-me'),
     );
   
     $form['#pre_render'][] = 'vertical_tabs_form_pre_render'; //enabled vertical tabs if the module is installed

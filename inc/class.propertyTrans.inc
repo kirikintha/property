@@ -83,7 +83,13 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
     }
     
   }
-  
+
+  /**
+   * @name _nodeLocation($node, $location)
+   * @param <type> $node
+   * @param <type> $location
+   * @return <type> 
+   */
   public static function _nodeLocation($node, $location) { //@todo There is a way to make this add multiple locations, I'm just missing this right now
     
     $settings = variable_get('location_settings_node_' .variable_get('property_content_type', null), null);
@@ -840,11 +846,13 @@ class propertyTrans { //propertyTrans handles all transactions in the Property S
    * This analyzes a cache source and turn the results into meaningful data that the Property Suite Module can parse in a batch or by cron
    */
   public static function _analyzeCache($propertyKey = '[Mls_Num]', $imageID = 'imagesavailable', $imagePath = NULL, $dateInserted = '[Date_Inserted]', $dateModified = '[Date_Modified]') {
-    //Clear all cached data
+    //Clear all cached property and batch data.
     propertyCache::_clearCache('property_cache_batch_property_insert_', 'cache_property_suite', TRUE);
     propertyCache::_clearCache('property_cache_batch_property_update_', 'cache_property_suite', TRUE);
     propertyCache::_clearCache('property_cache_insert_items', 'cache_property_suite', FALSE);
     propertyCache::_clearCache('property_cache_update_items', 'cache_property_suite', FALSE);
+    //Reset the history, and delete the history to keep the rows from exploding.
+    propertyCache::_clearCacheHistory();
     //Reset the properties array.
     $properties         = array();
     //Reset the imported properties array.

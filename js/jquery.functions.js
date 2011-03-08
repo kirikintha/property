@@ -9,7 +9,7 @@ if (Drupal.jsEnabled) {
   
   $(document).ready( function() {
     
-    $('select#edit-property-batch-chunk-maximum-limit, select#edit-ram-property-batch-cron-limit').bind( 'change', function() {
+    $('select#edit-property-batch-chunk-maximum-limit, select#edit-ram-property-batch-cron-limit, edit-property-batch-chunk-maximum-limit-images').bind( 'change', function() {
       alert('You have changed the maximum number of batches to run, please press: Save Configuration');
     });
 
@@ -34,7 +34,7 @@ if (Drupal.jsEnabled) {
     
     Drupal.theme( 'propertySuiteAdminProgress', target, i, total, startMessage, endMessage, false );
 
-    $( ".form-submit").hide(); //hide the other submit buttons
+    $( ".form-submit, .form-hide-me").hide(); //hide the other submit buttons
     
     $.ajax( { //This is a synchronous request to and from the server
       

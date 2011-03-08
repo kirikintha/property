@@ -467,6 +467,21 @@ function _ram_property_retrieve_new_cache($data = NULL) {
  * @name = _ram_property_analyze_new_cache
  */
 function _ram_property_analyze_new_cache($data = NULL) {
+
+  //If we are forcing an update, then make yesterdays cache into a _bak row, delete the original one and then re-instate yesterdays cache on _process_orphans.
+  if ($data == 'FORCE_UPDATE') {
+    //Set a message saying we are analyzing all properties.
+    drupal_set_message('All Properties Have Been Updated.');
+    //set update flag, so cron does not update the cache by accident.
+    variable_set('ram_property_cron_run_lock', TRUE);
+    //get params.
+    $yesterday      = date('m_d_Y', strtotime('now - 1 day'));
+    $yesterdaysData = propertyCache::_getCache('property_cache_cache_'.$yesterday);
+    //Back-up yesterdays cache.
+    propertyCache::_setCache('property_cache_cache_'.$yesterday.'_backup', $yesterdaysData, CACHE_PERMANENT, 'cache_property_suite');
+    //Clear out yesterdays cache for analysis - re-instate the original at property orphans.
+    propertyCache::_clearCache('property_cache_cache_'.$yesterday, 'cache_property_suite', FALSE);
+  }
   
   return ramCache::_analyzeNewCache();
   
@@ -476,6 +491,16 @@ function _ram_property_analyze_new_cache($data = NULL) {
  * @name = _ram_property_analyze_new_cache
  */
 function _ram_property_analyze_new_images($data = NULL) {
+
+  //If we are forcing an update, then make yesterdays cache into a _bak row, delete the original one and then re-instate yesterdays cache for images.
+  if ($data == 'FORCE_UPDATE') {
+    $yesterday       = date('m_d_Y', strtotime('now - 1 day'));
+    $yesterdaysData  = propertyCache::_getCache('property_cache_cache_'.$yesterday.'_backup');
+    //Re-in-state yesterdays cache.
+    propertyCache::_setCache('property_cache_cache_'.$yesterday, $yesterdaysData, CACHE_PERMANENT, 'cache_property_suite');
+    //Clear out yesterdays cache for analysis - re-instate the original at property orphans.
+    propertyCache::_clearCache('property_cache_cache_'.$yesterday.'_backup', 'cache_property_suite', FALSE);
+  }
   
   return ramCache::_analyzeNewCacheImages();
   
@@ -663,11 +688,11 @@ function _ram_property_setup_cached() {
 function _ram_property_setup_filters() {
   
   $form['filters'] = array(
-		'#type' 				=> 'fieldset',
-		'#title' 				=> t('Filters'),
-		'#collapsible' 	=> TRUE,
-		'#collapsed' 		=> FALSE,
-		'#weight'				=> 48,
+    '#type' 				=> 'fieldset',
+    '#title' 				=> t('Filters'),
+    '#collapsible' 	=> TRUE,
+    '#collapsed' 		=> FALSE,
+    '#weight'				=> 48,
     '#group'        => 'filters'
 	);
   
@@ -786,7 +811,7 @@ function _ram_property_setup_complete() {
     '#collapsed' 		=> FALSE,
     '#weight'				=> -50,
     '#group'        => 'cron'
- );
+  );
   
   //Time Options
   $options = array(
@@ -825,7 +850,7 @@ function _ram_property_setup_complete() {
     '#required'       => TRUE,
     '#weight'         => -49,
     '#group'          => 'cron'
- );
+  );
   
   $form['cron']['ram_property_batch_cron_time_of_day_exclude'] = array(
     '#type'           => 'select',
