@@ -49,7 +49,7 @@ function property_install() {
   $module['property_suite'] = array(
     'name'        => 'property',
     'title'       => 'Property Suite',
-    'value'       => 'Version 1.0 RC3',
+    'value'       => 'Version 1.0 RC4',
     'description' => 'This is the main module for the Property Suite Package.'
   );
   propertyInstall::_registerModule( $module );

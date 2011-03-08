@@ -5,7 +5,7 @@
  * @copyright 2010 Blue Tent Marketing
  * @author Paul T. Huntsberger <paul@bluetent.com>
  * @package Property Suite
- * @version 1.0.3-RC3
+ * @version 1.0.3-RC4
  *
  * The RAM property module extends Property Suite abstract classes to child classes and allows for the importing of
  * RAM data to content types
