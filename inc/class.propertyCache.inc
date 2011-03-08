@@ -80,5 +80,32 @@ class propertyCache {
     $data = cache_get($cid, $table);
     return (is_object($data)) ? unserialize(str_replace(array('O:16:"SimpleXMLElement":0:{}', 'O:16:"SimpleXMLElement":'), array('s:0:"";', 'O:8:"stdClass":'), $data->data)) : false;
   }
+
+  /**
+   * @name _clearCacheHistory();
+   * Clear the property_cache_cache_%date rows in the cache_property_suite table.
+   * This function grabs ALL the property_cache_cache_%date rows you request and deletes them.
+   * NOTE: This function will permantently erase data!
+   * If you are using the wildcard '*' character, this will flush ALL date ranges.
+   * If you supply an array to $caches, then it will apply each cache to the _flushCaches method.
+   * If you use the default, "HISTORY", this will delete all entries, except for yesterdays Cache.
+   */
+  public static function _clearCacheHistory($caches = 'HISTORY') {
+    if ($caches) {
+      //If we have a wildcard, clear all.
+      if ($caches == '*') {
+        self::_clearCache('property_cache_cache_', 'cache_property_suite', '*');
+      } else if (is_array($caches)) {
+        //If we have a range, then we take the $range and _flushCaches.
+        self::_flushCaches($caches);
+      } else if ($caches == 'HISTORY') {
+        //Clear all history, except for $today and $yesterday.
+        $today     = date('m_d_Y', strtotime('now'));
+        $yesterday = date('m_d_Y', strtotime('now - 1 day'));
+        $query     = "DELETE FROM {cache_property_suite} WHERE cid LIKE 'property_cache_cache_%' AND NOT LIKE 'property_cache_cache_%_bak' AND cid NOT IN ('property_cache_cache_$today', 'property_cache_cache_$yesterday')";
+        db_query($query);
+      }
+    }
+  }
   
 }
