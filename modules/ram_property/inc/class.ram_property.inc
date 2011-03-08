@@ -705,7 +705,7 @@ class ramAdmin extends propertyAdmin {
       
       if ($semaphore == 'recache') { //If we are re-caching, make sure it doesn't fall in disallowed times, and the time is later than the start time, run it and change the semaphore
         //If we are locked out from re-caching, we have to let the updated properties update themselves.
-        if ($lock == FALSE) {
+        if ($lock === FALSE) {
           //Get new Cache.
           print "Retrieving Cache\n";
           ramCache::_retrieveNewCache();
@@ -766,7 +766,9 @@ class ramAdmin extends propertyAdmin {
       
       return TRUE;
       
-    } else { //Make a watchdog log, just someone can debug slow updates
+    } else { //Make a watchdog log, just someone can debug slow updates.
+
+      print "Cannot continue because of time restrictions, Exiting\n";
       
       $watchdogMsg = array(
         '!msg'         => t('The RAM Property Module could not run cron because of time restrictions entered by this module.'),
@@ -935,7 +937,10 @@ class ramAdmin extends propertyAdmin {
         'value'    => t('All Property Batches Have Completed.'),
         'severity' => REQUIREMENT_WARNING,
       );
+      //Set to recache.
       variable_set('ram_property_cron_run_semaphore', 'recache');
+      //Un-lock.
+      variable_set('ram_property_cron_run_lock', FALSE);
     }
     
     //Image Totals
