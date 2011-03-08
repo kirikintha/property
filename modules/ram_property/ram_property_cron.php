@@ -117,10 +117,16 @@ if ( function_exists( 'ram_property_cron_sh' ) ) {
       if ( $totals['properties']['total_batches'] == 0 ) { //Sempahore Sanity Check
         
         variable_set( 'ram_property_cron_run_semaphore', 'recache' );
+        //Un-Lock anymore caches from being run until this one completes. - Note this function is not redundant, some of the others are.
+        variable_set('ram_property_cron_run_lock', FALSE);
+        print "Ready To Cache.\n";
         
       } else {
         
         variable_set( 'ram_property_cron_run_semaphore', 'batch' );
+        //Lock anymore caches from being run until this one completes. - Note this function is not redundant, some of the others are.
+        variable_set('ram_property_cron_run_lock', TRUE);
+        print "Ready To Batch.\n";
         
       }
       
